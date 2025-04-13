@@ -4,50 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jazmin's Portfolio - Coming Soon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Định nghĩa animation xuất hiện dần */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px); /* Hiệu ứng trượt nhẹ lên */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         body {
             text-align: center;
-            font-family: Arial, sans-serif;
-            padding: 50px;
-            background-color: #ffe1ef;
+            /* Sử dụng font Nunito mềm mại hơn */
+            font-family: 'Nunito', sans-serif;
+            padding: 40px 20px; /* Điều chỉnh padding */
+            /* Màu nền hồng pastel */
+            background-color: #fdeff2; /* Một tone hồng pastel khác nhẹ nhàng hơn */
+            color: #5c5c5c; /* Màu chữ chính tối hơn để dễ đọc */
+            /* Áp dụng animation cho toàn bộ body, các phần tử con sẽ kế thừa */
+            /* Hoặc áp dụng riêng cho từng phần tử với delay khác nhau */
         }
+
+        .content-wrapper {
+             /* Áp dụng animation cho container chính */
+             opacity: 0; /* Bắt đầu ẩn */
+             animation: fadeIn 1s ease-out forwards; /* forwards giữ trạng thái cuối */
+             animation-delay: 0.2s; /* Xuất hiện sau 0.2s */
+             max-width: 700px; /* Giới hạn chiều rộng nội dung */
+             margin: 0 auto; /* Căn giữa */
+        }
+
+
         h1 {
-            color: #d1728b;
+            /* Màu hồng đậm hơn một chút cho tiêu đề */
+            color: #e89cb5;
+            font-weight: 700; /* Đậm hơn */
+            margin-bottom: 25px; /* Tăng khoảng cách dưới */
+             /* Animation riêng cho H1 (nếu muốn xuất hiện trước) */
+            /* opacity: 0; */
+            /* animation: fadeIn 0.8s ease-out forwards; */
+            /* animation-delay: 0.1s; */
         }
+
         p {
-            font-size: 18px;
-            color: #333;
+            font-size: 1.1em; /* Tăng nhẹ kích thước chữ */
+            line-height: 1.7; /* Tăng khoảng cách dòng cho dễ đọc */
+            margin-bottom: 15px;
+             /* Animation riêng cho P (nếu muốn xuất hiện sau H1) */
+            /* opacity: 0; */
+            /* animation: fadeIn 0.8s ease-out forwards; */
+            /* animation-delay: 0.4s; */
         }
+
         .links {
-            margin-top: 20px;
+            margin-top: 30px; /* Tăng khoảng cách trên */
+             /* Animation riêng cho khu vực link (nếu muốn) */
+            /* opacity: 0; */
+            /* animation: fadeIn 0.8s ease-out forwards; */
+            /* animation-delay: 0.7s; */
         }
+
         .links a {
             display: inline-block;
-            margin: 5px;
-            padding: 10px 20px;
-            background: #d1728b;
+            margin: 8px 6px; /* Tăng khoảng cách giữa các nút */
+            padding: 12px 28px; /* Tăng padding để nút to và mềm hơn */
+            /* Màu nền hồng pastel cho nút */
+            background: #f4a7b9;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            /* Bo góc nhiều hơn để nút mềm mại */
+            border-radius: 25px;
+            font-weight: 700;
+            /* Hiệu ứng chuyển động mượt mà khi hover */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm đổ bóng nhẹ */
+             /* Animation riêng cho từng nút (phức tạp hơn, cần JS hoặc nth-child) */
+            /* opacity: 0; */
+            /* animation: fadeIn 0.5s ease forwards; */
+            /* Có thể dùng animation-delay khác nhau cho từng nút */
         }
+
         .links a:hover {
-            background: #be526d;
+            /* Màu nền đậm hơn khi hover */
+            background: #e095a8;
+            /* Hiệu ứng nhích nhẹ lên khi hover */
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Đổ bóng rõ hơn khi hover */
         }
+
+        /* Đảm bảo các link hoạt động tốt trên mobile */
+        @media (max-width: 576px) {
+            body {
+                padding: 20px 10px;
+            }
+            h1 {
+                font-size: 2em; /* Điều chỉnh kích thước tiêu đề cho mobile */
+            }
+             p {
+                font-size: 1em;
+             }
+            .links a {
+                padding: 10px 20px; /* Giảm padding nút trên mobile */
+                margin: 6px 4px;
+            }
+        }
+
     </style>
 </head>
 <body>
-    <h1>Coming Soon!</h1>
-    <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
-    <p>Hãy quay lại sớm nhé! Trong lúc chờ đợi, bạn có thể theo dõi tranh của mình qua các kênh bên dưới:</p>
-    <div class="links">
-        <a href="https://www.facebook.com/share/1BJegyhs3k/" target="_blank">Facebook</a>
-        <a href="https://www.twitter.com/vutothaongoc" target="_blank">Twitter</a>
-        <a href="https://www.pixiv.net/users/111399473" target="_blank">Pixiv</a>
-        <a href="https://www.youtube.com/@vutothaongoc" target="_blank">YouTube</a>
-        <a href="https://www.xiaohongshu.com/user/profile/676a2d230000000018014954?xsec_token=YBzTLsti1VFztLN33tTjSk21s1QPuQlM_8zKxsc9I5_0Y=&xsec_source=app_share&xhsshare=CopyLink&appuid=676a2d230000000018014954&apptime=1742699947&share_id=527ea7434d1540ac800dd8cf7f7776c4" target="_blank">Xiaohongshu</a>
-        <a href="https://weibo.com/u/7984182194" target="_blank">Weibo</a>
-        <a href="https://www.instagram.com/vutothaongoc?igsh=MXZieWU2ODd5a2dlbQ==" target="_blank">Instagram</a>
+    <div class="content-wrapper">
+        <h1>Coming Soon!</h1>
+        <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
+        <p>Hãy quay lại sớm nhé! Trong lúc chờ đợi, bạn có thể theo dõi tranh của mình qua các kênh bên dưới:</p>
+        <div class="links">
+            <a href="https://www.facebook.com/share/1BJegyhs3k/" target="_blank">Facebook</a>
+            <a href="https://www.twitter.com/vutothaongoc" target="_blank">Twitter</a>
+            <a href="https://www.pixiv.net/users/111399473" target="_blank">Pixiv</a>
+            <a href="https://www.youtube.com/@vutothaongoc" target="_blank">YouTube</a>
+            <a href="https://www.xiaohongshu.com/user/profile/676a2d230000000018014954?xsec_token=YBzTLsti1VFztLN33tTjSk21s1QPuQlM_8zKxsc9I5_0Y=&xsec_source=app_share&xhsshare=CopyLink&appuid=676a2d230000000018014954&apptime=1742699947&share_id=527ea7434d1540ac800dd8cf7f7776c4" target="_blank">Xiaohongshu</a>
+            <a href="https://weibo.com/u/7984182194" target="_blank">Weibo</a>
+            <a href="https://www.instagram.com/vutothaongoc?igsh=MXZieWU2ODd5a2dlbQ==" target="_blank">Instagram</a>
+        </div>
     </div>
-</body>
+
+    </body>
 </html>
