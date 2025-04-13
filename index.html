@@ -21,99 +21,104 @@
             }
         }
 
+        /* Màu sắc chủ đạo */
+        :root {
+            --pastel-pink: #ffdde1; /* Hồng pastel cho nền */
+            --pastel-blue: #cde9ff; /* Xanh pastel cho nền */
+            --button-pink: #d1a0ab; /* Hồng đậm hơn, saturation thấp cho nút */
+            --button-blue: #a3bacc; /* Xanh đậm hơn, saturation thấp cho nút */
+            --button-pink-hover: #d6a9b4; /* Màu hover nút */
+            --button-blue-hover: #adbccf; /* Màu hover nút */
+            --heading-color: #6a7a94; /* Màu tiêu đề - Xám xanh đậm để nổi bật trên cả 2 nền */
+            --text-color: #5c5c5c;    /* Màu chữ thường */
+        }
+
+        html {
+             height: 100%; /* Đảm bảo html chiếm đủ chiều cao */
+        }
+
         body {
             text-align: center;
-            /* Sử dụng font Nunito mềm mại hơn */
             font-family: 'Nunito', sans-serif;
-            padding: 40px 20px; /* Điều chỉnh padding */
-            /* Màu nền hồng pastel */
-            background-color: #fdeff2; /* Một tone hồng pastel khác nhẹ nhàng hơn */
-            color: #5c5c5c; /* Màu chữ chính tối hơn để dễ đọc */
-            /* Áp dụng animation cho toàn bộ body, các phần tử con sẽ kế thừa */
-            /* Hoặc áp dụng riêng cho từng phần tử với delay khác nhau */
+            padding: 40px 20px;
+            color: var(--text-color);
+            /* Nền Ombre hồng -> xanh */
+            background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
+            background-repeat: no-repeat; /* Không lặp lại gradient */
+            background-attachment: fixed; /* Giữ gradient cố định khi cuộn trang */
+            min-height: 100%; /* Đảm bảo body chiếm ít nhất toàn bộ chiều cao viewport */
         }
 
         .content-wrapper {
-             /* Áp dụng animation cho container chính */
-             opacity: 0; /* Bắt đầu ẩn */
-             animation: fadeIn 1s ease-out forwards; /* forwards giữ trạng thái cuối */
-             animation-delay: 0.2s; /* Xuất hiện sau 0.2s */
-             max-width: 700px; /* Giới hạn chiều rộng nội dung */
-             margin: 0 auto; /* Căn giữa */
+             opacity: 0;
+             animation: fadeIn 1s ease-out forwards;
+             animation-delay: 0.2s;
+             max-width: 700px;
+             margin: 0 auto;
+             padding: 30px; /* Thêm padding nội bộ cho wrapper */
+             /* Có thể thêm nền trắng mờ để nội dung dễ đọc hơn trên gradient */
+             /* background-color: rgba(255, 255, 255, 0.7); */
+             /* border-radius: 15px; */
+             /* box-shadow: 0 4px 15px rgba(0,0,0,0.1); */
         }
 
 
         h1 {
-            /* Màu hồng đậm hơn một chút cho tiêu đề */
-            color: #e89cb5;
-            font-weight: 700; /* Đậm hơn */
-            margin-bottom: 25px; /* Tăng khoảng cách dưới */
-             /* Animation riêng cho H1 (nếu muốn xuất hiện trước) */
-            /* opacity: 0; */
-            /* animation: fadeIn 0.8s ease-out forwards; */
-            /* animation-delay: 0.1s; */
+            color: var(--heading-color);
+            font-weight: 700;
+            margin-bottom: 25px;
         }
 
         p {
-            font-size: 1.1em; /* Tăng nhẹ kích thước chữ */
-            line-height: 1.7; /* Tăng khoảng cách dòng cho dễ đọc */
+            font-size: 1.1em;
+            line-height: 1.7;
             margin-bottom: 15px;
-             /* Animation riêng cho P (nếu muốn xuất hiện sau H1) */
-            /* opacity: 0; */
-            /* animation: fadeIn 0.8s ease-out forwards; */
-            /* animation-delay: 0.4s; */
+            color: var(--text-color); /* Đảm bảo màu chữ p rõ ràng */
         }
 
         .links {
-            margin-top: 30px; /* Tăng khoảng cách trên */
-             /* Animation riêng cho khu vực link (nếu muốn) */
-            /* opacity: 0; */
-            /* animation: fadeIn 0.8s ease-out forwards; */
-            /* animation-delay: 0.7s; */
+            margin-top: 30px;
         }
 
         .links a {
             display: inline-block;
-            margin: 8px 6px; /* Tăng khoảng cách giữa các nút */
-            padding: 12px 28px; /* Tăng padding để nút to và mềm hơn */
-            /* Màu nền hồng pastel cho nút */
-            background: #f4a7b9;
+            margin: 8px 6px;
+            padding: 12px 28px;
+            /* Nền Ombre cho nút (đậm hơn, saturation thấp hơn) */
+            background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
             color: white;
             text-decoration: none;
-            /* Bo góc nhiều hơn để nút mềm mại */
             border-radius: 25px;
             font-weight: 700;
-            /* Hiệu ứng chuyển động mượt mà khi hover */
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm đổ bóng nhẹ */
-             /* Animation riêng cho từng nút (phức tạp hơn, cần JS hoặc nth-child) */
-            /* opacity: 0; */
-            /* animation: fadeIn 0.5s ease forwards; */
-            /* Có thể dùng animation-delay khác nhau cho từng nút */
+            transition: all 0.3s ease; /* Áp dụng transition cho mọi thuộc tính */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none; /* Bỏ border nếu có */
         }
 
         .links a:hover {
-            /* Màu nền đậm hơn khi hover */
-            background: #e095a8;
-            /* Hiệu ứng nhích nhẹ lên khi hover */
+            /* Hiệu ứng Ombre khi hover */
+            background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
             transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Đổ bóng rõ hơn khi hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        /* Đảm bảo các link hoạt động tốt trên mobile */
+        /* Responsive adjustments */
         @media (max-width: 576px) {
             body {
                 padding: 20px 10px;
             }
             h1 {
-                font-size: 2em; /* Điều chỉnh kích thước tiêu đề cho mobile */
+                font-size: 2em;
             }
              p {
                 font-size: 1em;
              }
             .links a {
-                padding: 10px 20px; /* Giảm padding nút trên mobile */
+                padding: 10px 20px;
                 margin: 6px 4px;
+            }
+            .content-wrapper {
+                padding: 20px;
             }
         }
 
