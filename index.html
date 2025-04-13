@@ -23,14 +23,14 @@
 
         /* Màu sắc chủ đạo */
         :root {
-            --pastel-pink: #ffdde1; /* Hồng pastel cho nền */
-            --pastel-blue: #c1e3ff; /* Xanh pastel cho nền - TĂNG SATURATION */
-            --button-pink: #d1a0ab; /* Hồng đậm hơn, saturation thấp cho nút */
-            --button-blue: #9abdd9; /* Xanh đậm hơn, saturation thấp cho nút - ĐIỀU CHỈNH */
-            --button-pink-hover: #d6a9b4; /* Màu hover nút */
-            --button-blue-hover: #a8c7e3; /* Màu hover nút - ĐIỀU CHỈNH */
-            --heading-color: #6a7a94; /* Màu tiêu đề - Xám xanh đậm để nổi bật trên cả 2 nền */
-            --text-color: #5c5c5c;    /* Màu chữ thường */
+            --pastel-pink: #ffdde1;      /* Hồng pastel cho nền (Giữ nguyên) */
+            --pastel-blue: #c5c8ff;      /* Xanh ngả tím pastel - TĂNG SATURATION & ĐỔI HUẾ */
+            --button-pink: #d1a0b8;      /* Hồng nút - ĐIỀU CHỈNH NHẸ CHO HỢP VỚI TÍM */
+            --button-blue: #a2a6dd;      /* Xanh ngả tím nút - Đậm hơn, saturation thấp tương đối */
+            --button-pink-hover: #d6a9c0; /* Màu hover hồng nút - ĐIỀU CHỈNH */
+            --button-blue-hover: #b0b3e3; /* Màu hover xanh tím nút */
+            --heading-color: #6a7a94;    /* Màu tiêu đề (Giữ nguyên - xám xanh đậm vẫn ổn) */
+            --text-color: #5c5c5c;       /* Màu chữ thường (Giữ nguyên) */
         }
 
         html {
@@ -42,7 +42,7 @@
             font-family: 'Nunito', sans-serif;
             padding: 40px 20px;
             color: var(--text-color);
-            /* Nền Ombre hồng -> xanh */
+            /* Nền Ombre hồng -> xanh tím */
             background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
             background-repeat: no-repeat; /* Không lặp lại gradient */
             background-attachment: fixed; /* Giữ gradient cố định khi cuộn trang */
@@ -55,13 +55,8 @@
              animation-delay: 0.2s;
              max-width: 700px;
              margin: 0 auto;
-             padding: 30px; /* Thêm padding nội bộ cho wrapper */
-             /* Có thể thêm nền trắng mờ để nội dung dễ đọc hơn trên gradient */
-             /* background-color: rgba(255, 255, 255, 0.7); */
-             /* border-radius: 15px; */
-             /* box-shadow: 0 4px 15px rgba(0,0,0,0.1); */
+             padding: 30px;
         }
-
 
         h1 {
             color: var(--heading-color);
@@ -73,7 +68,7 @@
             font-size: 1.1em;
             line-height: 1.7;
             margin-bottom: 15px;
-            color: var(--text-color); /* Đảm bảo màu chữ p rõ ràng */
+            color: var(--text-color);
         }
 
         .links {
@@ -84,15 +79,15 @@
             display: inline-block;
             margin: 8px 6px;
             padding: 12px 28px;
-            /* Nền Ombre cho nút (đậm hơn, saturation thấp hơn) */
+            /* Nền Ombre cho nút (hồng lạnh -> xanh tím) */
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
             color: white;
             text-decoration: none;
             border-radius: 25px;
             font-weight: 700;
-            transition: all 0.3s ease; /* Áp dụng transition cho mọi thuộc tính */
+            transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border: none; /* Bỏ border nếu có */
+            border: none;
         }
 
         .links a:hover {
