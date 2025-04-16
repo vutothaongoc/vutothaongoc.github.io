@@ -9,32 +9,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Định nghĩa animation xuất hiện dần */
+        /* Định nghĩa animations */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px); /* Hiệu ứng trượt nhẹ lên */
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        @keyframes fall {
+            0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; } /* Bắt đầu hơi phía trên và rõ */
+            90% { opacity: 1; } /* Giữ nguyên độ mờ gần hết đường */
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; } /* Rơi hẳn xuống dưới và mờ dần */
+        }
+
 
         /* Màu sắc chủ đạo */
         :root {
-            --pastel-pink: #ffdde1;      /* Hồng pastel cho nền */
-            --pastel-blue: #c5c8ff;      /* Xanh ngả tím pastel */
-            --button-pink: #d1a0b8;      /* Hồng nút */
-            --button-blue: #a2a6dd;      /* Xanh ngả tím nút */
-            --button-pink-hover: #d6a9c0; /* Màu hover hồng nút */
-            --button-blue-hover: #b0b3e3; /* Màu hover xanh tím nút */
-            --heading-color: #5f6394;    /* Màu tiêu đề - ĐẬM HƠN, tương tự màu nút */
-            --text-color: #5c5c5c;       /* Màu chữ thường */
+            --pastel-pink: #ffdde1;
+            --pastel-blue: #c5c8ff;
+            --button-pink: #d1a0b8;
+            --button-blue: #a2a6dd;
+            --button-pink-hover: #d6a9c0;
+            --button-blue-hover: #b0b3e3;
+            /* --heading-color is replaced by gradient */
+            --text-color: #5c5c5c;
+
+            /* Màu cho gradient H1 */
+            --heading-gradient-start: #5f6394; /* Xanh tím đậm */
+            --heading-gradient-end: #a86b7f;   /* Hồng đậm */
         }
 
         html {
-             height: 100%; /* Đảm bảo html chiếm đủ chiều cao */
+             height: 100%;
         }
 
         body {
@@ -42,13 +47,54 @@
             font-family: 'Nunito', sans-serif;
             padding: 40px 20px;
             color: var(--text-color);
-            /* Nền Ombre hồng -> xanh tím */
             background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
-            background-repeat: no-repeat; /* Không lặp lại gradient */
-            background-attachment: fixed; /* Giữ gradient cố định khi cuộn trang */
-            min-height: 100%; /* Đảm bảo body chiếm ít nhất toàn bộ chiều cao viewport */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100%;
+            position: relative; /* Cần cho container hoa */
+            overflow-x: hidden; /* Tránh thanh cuộn ngang do hoa */
         }
 
+        /* Container cho hoa rơi - nằm sau nội dung */
+        .flower-container {
+            position: fixed; /* Hoặc absolute nếu body không scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Ẩn hoa khi ra khỏi màn hình */
+            pointer-events: none; /* Không bắt sự kiện chuột */
+            z-index: 0; /* Đặt sau content-wrapper */
+        }
+
+        .flower {
+            position: absolute;
+            top: -50px; /* Bắt đầu bên trên màn hình */
+            color: white;
+            font-size: 20px;
+            user-select: none; /* Không cho chọn hoa */
+            animation: fall linear infinite;
+        }
+
+        /* Tạo sự khác biệt cho từng bông hoa */
+        .flower:nth-child(1)  { left: 10%; animation-duration: 15s; animation-delay: 0s; font-size: 22px; }
+        .flower:nth-child(2)  { left: 20%; animation-duration: 10s; animation-delay: 1s; opacity: 0.8; }
+        .flower:nth-child(3)  { left: 30%; animation-duration: 14s; animation-delay: 3s; font-size: 18px; }
+        .flower:nth-child(4)  { left: 40%; animation-duration: 11s; animation-delay: 5s; opacity: 0.9; }
+        .flower:nth-child(5)  { left: 50%; animation-duration: 16s; animation-delay: 2s; font-size: 24px; }
+        .flower:nth-child(6)  { left: 60%; animation-duration: 12s; animation-delay: 6s; }
+        .flower:nth-child(7)  { left: 70%; animation-duration: 13s; animation-delay: 4s; font-size: 19px; opacity: 0.85; }
+        .flower:nth-child(8)  { left: 80%; animation-duration: 9s;  animation-delay: 7s; }
+        .flower:nth-child(9)  { left: 90%; animation-duration: 15s; animation-delay: 1s; font-size: 21px; }
+        .flower:nth-child(10) { left: 15%; animation-duration: 10s; animation-delay: 8s; opacity: 0.75; }
+        .flower:nth-child(11) { left: 25%; animation-duration: 14s; animation-delay: 9s; font-size: 20px; }
+        .flower:nth-child(12) { left: 35%; animation-duration: 11s; animation-delay: 10s; }
+        .flower:nth-child(13) { left: 45%; animation-duration: 16s; animation-delay: 0s; font-size: 17px; opacity: 0.95; }
+        .flower:nth-child(14) { left: 55%; animation-duration: 12s; animation-delay: 11s; }
+        .flower:nth-child(15) { left: 65%; animation-duration: 13s; animation-delay: 2s; font-size: 23px; }
+
+
+        /* Wrapper nội dung chính - phải có z-index cao hơn hoa */
         .content-wrapper {
              opacity: 0;
              animation: fadeIn 1s ease-out forwards;
@@ -56,13 +102,24 @@
              max-width: 700px;
              margin: 0 auto;
              padding: 30px;
+             position: relative; /* Cần để thiết lập z-index */
+             z-index: 1; /* Đảm bảo nội dung nổi lên trên hoa */
+             /* Có thể thêm nền trắng mờ nếu muốn nội dung dễ đọc hơn */
+             /* background-color: rgba(255, 255, 255, 0.6); */
+             /* border-radius: 15px; */
+             /* box-shadow: 0 4px 15px rgba(0,0,0,0.1); */
         }
 
         h1 {
-            /* Áp dụng màu mới cho H1 */
-            color: var(--heading-color);
+            /* Ombre text effect */
+            background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
+            -webkit-background-clip: text; /* Cho Safari/Chrome cũ */
+            background-clip: text;
+            color: transparent; /* Làm màu chữ gốc trong suốt */
+
             font-weight: 700;
             margin-bottom: 25px;
+            display: inline-block; /* Đôi khi cần thiết cho background-clip */
         }
 
         p {
@@ -80,7 +137,6 @@
             display: inline-block;
             margin: 8px 6px;
             padding: 12px 28px;
-            /* Nền Ombre cho nút (hồng lạnh -> xanh tím) */
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
             color: white;
             text-decoration: none;
@@ -92,7 +148,6 @@
         }
 
         .links a:hover {
-            /* Hiệu ứng Ombre khi hover */
             background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
             transform: translateY(-3px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -104,7 +159,8 @@
                 padding: 20px 10px;
             }
             h1 {
-                font-size: 2em;
+                font-size: 2.5em; /* Có thể điều chỉnh lại nếu gradient bị cắt */
+                 /* line-height: 1.2; */
             }
              p {
                 font-size: 1em;
@@ -116,11 +172,37 @@
             .content-wrapper {
                 padding: 20px;
             }
+            .flower {
+                font-size: 16px; /* Hoa nhỏ hơn trên mobile */
+            }
+             /* Giảm số lượng hoa trên mobile nếu cần tối ưu hiệu năng */
+             .flower:nth-child(n+11) {
+                /* display: none; */
+             }
         }
 
     </style>
 </head>
 <body>
+
+    <div class="flower-container">
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+        <span class="flower">❀</span>
+    </div>
+
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
         <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
