@@ -62,22 +62,22 @@
             cursor: grabbing;
             opacity: 0.9;
         }
-        /* Đa dạng hóa kích thước (25px-35px) và animation-duration (12s-18s) */
-        .flower:nth-child(1) { left: 10%; animation-duration: 14s; font-size: 27px; }
-        .flower:nth-child(2) { left: 20%; animation-duration: 16s; font-size: 30px; }
-        .flower:nth-child(3) { left: 30%; animation-duration: 13s; font-size: 32px; }
-        .flower:nth-child(4) { left: 40%; animation-duration: 15s; font-size: 25px; }
-        .flower:nth-child(5) { left: 50%; animation-duration: 17s; font-size: 35px; }
-        .flower:nth-child(6) { left: 60%; animation-duration: 12s; font-size: 28px; }
-        .flower:nth-child(7) { left: 70%; animation-duration: 18s; font-size: 31px; }
-        .flower:nth-child(8) { left: 80%; animation-duration: 14s; font-size: 26px; }
-        .flower:nth-child(9) { left: 90%; animation-duration: 16s; font-size: 29px; }
-        .flower:nth-child(10) { left: 15%; animation-duration: 13s; font-size: 33px; }
-        .flower:nth-child(11) { left: 25%; animation-duration: 15s; font-size: 27px; }
-        .flower:nth-child(12) { left: 35%; animation-duration: 17s; font-size: 30px; }
-        .flower:nth-child(13) { left: 45%; animation-duration: 12s; font-size: 32px; }
-        .flower:nth-child(14) { left: 55%; animation-duration: 14s; font-size: 25px; }
-        .flower:nth-child(15) { left: 65%; animation-duration: 16s; font-size: 34px; }
+        /* Đa dạng hóa kích thước (25px-35px) và animation-duration (15s-20s) */
+        .flower:nth-child(1) { left: 10%; animation-duration: 16s; font-size: 27px; }
+        .flower:nth-child(2) { left: 20%; animation-duration: 18s; font-size: 30px; }
+        .flower:nth-child(3) { left: 30%; animation-duration: 15s; font-size: 32px; }
+        .flower:nth-child(4) { left: 40%; animation-duration: 17s; font-size: 25px; }
+        .flower:nth-child(5) { left: 50%; animation-duration: 19s; font-size: 35px; }
+        .flower:nth-child(6) { left: 60%; animation-duration: 15s; font-size: 28px; }
+        .flower:nth-child(7) { left: 70%; animation-duration: 20s; font-size: 31px; }
+        .flower:nth-child(8) { left: 80%; animation-duration: 16s; font-size: 26px; }
+        .flower:nth-child(9) { left: 90%; animation-duration: 18s; font-size: 29px; }
+        .flower:nth-child(10) { left: 15%; animation-duration: 15s; font-size: 33px; }
+        .flower:nth-child(11) { left: 25%; animation-duration: 17s; font-size: 27px; }
+        .flower:nth-child(12) { left: 35%; animation-duration: 19s; font-size: 30px; }
+        .flower:nth-child(13) { left: 45%; animation-duration: 16s; font-size: 32px; }
+        .flower:nth-child(14) { left: 55%; animation-duration: 18s; font-size: 25px; }
+        .flower:nth-child(15) { left: 65%; animation-duration: 17s; font-size: 34px; }
         h1 {
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -103,7 +103,7 @@
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
             .flower { font-size: 20px; } /* Giảm kích thước trên mobile */
-            .flower:nth-child(n+11) { display: none; } /* Hiển thị 10 hoa trên mobile */
+            .flower:nth-child(n+13) { display: none; } /* Hiển thị 12 hoa trên mobile */
         }
     </style>
 </head>
@@ -136,22 +136,33 @@
         let offsetX = 0, offsetY = 0;
         const offsetYAdjustment = -5;
 
-        // Gán animation-delay ngẫu nhiên cho mỗi hoa và thêm reset logic
+        // Lấy animation-duration từ CSS
+        const getAnimationDuration = (flower) => {
+            const style = window.getComputedStyle(flower);
+            return parseFloat(style.animationDuration) * 1000; // Chuyển sang ms
+        };
+
+        // Reset hoa về đỉnh
+        const resetFlower = (flower) => {
+            flower.style.animation = 'none'; // Tạm dừng animation
+            flower.offsetHeight; // Trigger reflow
+            flower.style.top = '-50px'; // Đặt lại vị trí đỉnh
+            flower.style.animation = 'fall linear infinite'; // Khởi động lại
+            const randomDelay = Math.random() * 5; // Delay tối đa 5s
+            flower.style.animationDelay = `${randomDelay}s`;
+        };
+
+        // Gán delay ban đầu và reset hoa sau khi rơi xong
         flowers.forEach(flower => {
-            const resetFlower = () => {
-                flower.style.animation = 'none'; // Tạm dừng animation
-                flower.offsetHeight; // Trigger reflow
-                flower.style.top = '-50px'; // Đặt lại vị trí đỉnh
-                flower.style.animation = 'fall linear infinite'; // Khởi động lại animation
-                const randomDelay = Math.random() * 10; // Delay tối đa 10s
-                flower.style.animationDelay = `${randomDelay}s`;
-            };
-
-            // Gán delay ban đầu
-            resetFlower();
-
-            // Reset hoa khi animation kết thúc
-            flower.addEventListener('animationiteration', resetFlower);
+            resetFlower(flower); // Gán delay ban đầu
+            const duration = getAnimationDuration(flower);
+            const randomDelay = parseFloat(flower.style.animationDelay) * 1000;
+            // Reset hoa sau duration + delay
+            setInterval(() => {
+                if (!flower.classList.contains('dragging')) {
+                    resetFlower(flower);
+                }
+            }, duration + randomDelay);
         });
 
         function getEventCoords(event) {
