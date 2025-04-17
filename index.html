@@ -14,9 +14,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes fall {
-            0% { transform: translateY(-5vh) rotate(0deg); opacity: var(--flower-opacity, 0.8); }
-            90% { opacity: var(--flower-opacity, 0.8); }
-            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.1; }
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.8); }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0.1; }
         }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
@@ -40,12 +39,11 @@
             position: absolute;
             top: -50px;
             color: white;
-            font-size: 25px; /* Giá trị mặc định */
+            font-size: 30px; /* Giá trị mặc định, sẽ được JS ghi đè */
             user-select: none;
             animation: fall linear infinite;
             cursor: grab;
             pointer-events: auto;
-            touch-action: none;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -53,32 +51,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             text-align: center;
-            will-change: transform, opacity; /* Tối ưu animation */
+            will-change: transform, opacity;
         }
         .flower.dragging {
             animation-play-state: paused;
             cursor: grabbing;
             opacity: 0.9;
         }
-        /* Đa dạng hóa kích thước (25px-50px) và animation-duration (15s-20s) */
-        .flower:nth-child(1) { left: 5%; animation-duration: 16s; font-size: 27px; }
-        .flower:nth-child(2) { left: 15%; animation-duration: 18s; font-size: 30px; }
-        .flower:nth-child(3) { left: 25%; animation-duration: 15s; font-size: 35px; }
-        .flower:nth-child(4) { left: 35%; animation-duration: 17s; font-size: 25px; }
-        .flower:nth-child(5) { left: 45%; animation-duration: 19s; font-size: 50px; }
-        .flower:nth-child(6) { left: 55%; animation-duration: 15s; font-size: 28px; }
-        .flower:nth-child(7) { left: 65%; animation-duration: 20s; font-size: 40px; }
-        .flower:nth-child(8) { left: 75%; animation-duration: 16s; font-size: 26px; }
-        .flower:nth-child(9) { left: 85%; animation-duration: 18s; font-size: 32px; }
-        .flower:nth-child(10) { left: 10%; animation-duration: 15s; font-size: 45px; }
-        .flower:nth-child(11) { left: 20%; animation-duration: 17s; font-size: 29px; }
-        .flower:nth-child(12) { left: 30%; animation-duration: 19s; font-size: 38px; }
-        .flower:nth-child(13) { left: 40%; animation-duration: 16s; font-size: 42px; }
-        .flower:nth-child(14) { left: 50%; animation-duration: 18s; font-size: 31px; }
-        .flower:nth-child(15) { left: 60%; animation-duration: 17s; font-size: 36px; }
         h1 {
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -103,18 +85,21 @@
             p { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
-            .flower { font-size: 20px; } /* Giảm kích thước trên mobile */
-            .flower:nth-child(n+13) { display: none; } /* Hiển thị 12 bông tuyết trên mobile */
+            .flower { font-size: 25px; width: 50px; height: 50px; }
+            .flower:nth-child(n+16) { display: none; } /* Hiển thị 15 bông trên mobile */
         }
     </style>
 </head>
 <body>
     <div class="flower-container">
+        <!-- Tạo 20 bông hoa -->
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
+        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
+        <span class="flower">❅</span> <span class="flower">❅</span>
     </div>
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
@@ -138,19 +123,28 @@
             let offsetX = 0, offsetY = 0;
             const offsetYAdjustment = -5;
 
-            // Gán animation-delay ngẫu nhiên và opacity theo kích thước
-            flowers.forEach(flower => {
-                const randomDelay = Math.random() * 5; // Giảm delay tối đa xuống 5s
-                flower.style.animationDelay = `${randomDelay}s`;
+            flowers.forEach((flower, index) => {
+                // Phân bố vị trí ngẫu nhiên theo chiều ngang
+                const leftPercent = (index / (flowers.length - 1)) * 100;
+                flower.style.left = `${leftPercent}%`;
 
-                // Lấy font-size từ CSS
-                const fontSize = parseFloat(window.getComputedStyle(flower).fontSize);
-                // Tính opacity: từ 0.8 (fontSize=25px) đến 0.3 (fontSize=50px)
-                const opacity = 0.8 - (fontSize - 25) * (0.5 / 25);
-                // Gán biến CSS --flower-opacity
+                // Kích thước ngẫu nhiên từ 30px đến 60px
+                const size = 30 + Math.random() * 30;
+                flower.style.fontSize = `${size}px`;
+                flower.style.width = `${size}px`;
+                flower.style.height = `${size}px`;
+
+                // Thời gian rơi ngẫu nhiên từ 10s đến 15s
+                const duration = 10 + Math.random() * 5;
+                flower.style.animationDuration = `${duration}s`;
+
+                // Độ trễ ngẫu nhiên từ 0s đến 5s
+                const delay = Math.random() * 5;
+                flower.style.animationDelay = `${delay}s`;
+
+                // Độ trong dựa trên kích thước (0.3 cho 60px, 0.8 cho 30px)
+                const opacity = 0.8 - ((size - 30) / 30) * 0.5;
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
-
-                console.log('Flower initialized:', flower, 'Delay:', randomDelay.toFixed(2), 'FontSize:', fontSize, 'Opacity:', opacity.toFixed(2));
             });
 
             function getEventCoords(event) {
@@ -178,8 +172,6 @@
                 activeFlower.style.top = `${coords.y - offsetY}px`;
                 activeFlower.style.transform = 'none';
 
-                console.log('Drag start:', activeFlower);
-
                 document.addEventListener('mousemove', dragging);
                 document.addEventListener('touchmove', dragging, { passive: false });
                 document.addEventListener('mouseup', dragEnd);
@@ -197,10 +189,8 @@
 
                 const containerRect = activeFlower.parentElement.getBoundingClientRect();
                 const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
-                const flowerWidth = fontSize;
-                const flowerHeight = fontSize;
-                newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerWidth));
-                newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerHeight));
+                newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize));
+                newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize));
 
                 activeFlower.style.left = `${newX}px`;
                 activeFlower.style.top = `${newY}px`;
@@ -233,15 +223,6 @@
                 flower.addEventListener('touchstart', dragStart, { passive: false });
             });
         });
-    document.querySelectorAll('.flower').forEach(flower => {
-        const size = parseFloat(getComputedStyle(flower).fontSize); // Lấy font-size
-        const minSize = 25, maxSize = 50;
-        const minOpacity = 0.3, maxOpacity = 0.8;
-
-        // Tính độ trong dựa trên kích thước
-        const opacity = maxOpacity - ((size - minSize) / (maxSize - minSize)) * (maxOpacity - minOpacity);
-        flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
-    });
     </script>
 </body>
 </html>
