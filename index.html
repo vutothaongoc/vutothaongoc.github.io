@@ -14,7 +14,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes fall {
-            0% { transform: translateY(-5vh) rotate(0deg); opacity: var(--flower-opacity, 0.8); } /* Fallback 0.8 */
+            0% { transform: translateY(-5vh) rotate(0deg); opacity: var(--flower-opacity, 0.8); }
             90% { opacity: var(--flower-opacity, 0.8); }
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0.1; }
         }
@@ -56,6 +56,7 @@
             width: 50px;
             height: 50px;
             text-align: center;
+            will-change: transform, opacity; /* Tối ưu animation */
         }
         .flower.dragging {
             animation-play-state: paused;
@@ -131,104 +132,106 @@
     </div>
 
     <script>
-        const flowers = document.querySelectorAll('.flower');
-        let activeFlower = null;
-        let offsetX = 0, offsetY = 0;
-        const offsetYAdjustment = -5;
+        document.addEventListener('DOMContentLoaded', () => {
+            const flowers = document.querySelectorAll('.flower');
+            let activeFlower = null;
+            let offsetX = 0, offsetY = 0;
+            const offsetYAdjustment = -5;
 
-        // Gán animation-delay ngẫu nhiên và opacity theo kích thước
-        flowers.forEach(flower => {
-            const randomDelay = Math.random() * 10; // Delay ngẫu nhiên 0-10s
-            flower.style.animationDelay = `${randomDelay}s`;
+            // Gán animation-delay ngẫu nhiên và opacity theo kích thước
+            flowers.forEach(flower => {
+                const randomDelay = Math.random() * 5; // Giảm delay tối đa xuống 5s
+                flower.style.animationDelay = `${randomDelay}s`;
 
-            // Lấy font-size từ CSS
-            const fontSize = parseFloat(window.getComputedStyle(flower).fontSize);
-            // Tính opacity: từ 0.8 (fontSize=25px) đến 0.3 (fontSize=50px)
-            const opacity = 0.8 - (fontSize - 25) * (0.5 / 25);
-            // Gán biến CSS --flower-opacity
-            flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
+                // Lấy font-size từ CSS
+                const fontSize = parseFloat(window.getComputedStyle(flower).fontSize);
+                // Tính opacity: từ 0.8 (fontSize=25px) đến 0.3 (fontSize=50px)
+                const opacity = 0.8 - (fontSize - 25) * (0.5 / 25);
+                // Gán biến CSS --flower-opacity
+                flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
 
-            console.log('Flower initialized:', flower, 'Delay:', randomDelay.toFixed(2), 'FontSize:', fontSize, 'Opacity:', opacity.toFixed(2));
-        });
+                console.log('Flower initialized:', flower, 'Delay:', randomDelay.toFixed(2), 'FontSize:', fontSize, 'Opacity:', opacity.toFixed(2));
+            });
 
-        function getEventCoords(event) {
-            if (event.type.includes('touch')) {
-                const touch = event.touches[0] || event.changedTouches[0];
-                return { x: touch.clientX, y: touch.clientY };
+            function getEventCoords(event) {
+                if (event.type.includes('touch')) {
+                    const touch = event.touches[0] || event.changedTouches[0];
+                    return { x: touch.clientX, y: touch.clientY };
+                }
+                return { x: event.clientX, y: event.clientY };
             }
-            return { x: event.clientX, y: event.clientY };
-        }
 
-        function dragStart(event) {
-            if (event.type === 'mousedown' && event.button !== 0) return;
-            activeFlower = event.target;
-            const coords = getEventCoords(event);
+            function dragStart(event) {
+                if (event.type === 'mousedown' && event.button !== 0) return;
+                activeFlower = event.target;
+                const coords = getEventCoords(event);
 
-            activeFlower.classList.add('dragging');
-            activeFlower.style.animation = 'none';
+                activeFlower.classList.add('dragging');
+                activeFlower.style.animation = 'none';
 
-            const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
-            offsetX = fontSize / 2;
-            offsetY = fontSize / 2 + offsetYAdjustment;
+                const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
+                offsetX = fontSize / 2;
+                offsetY = fontSize / 2 + offsetYAdjustment;
 
-            activeFlower.style.position = 'absolute';
-            activeFlower.style.left = `${coords.x - offsetX}px`;
-            activeFlower.style.top = `${coords.y - offsetY}px`;
-            activeFlower.style.transform = 'none';
+                activeFlower.style.position = 'absolute';
+                activeFlower.style.left = `${coords.x - offsetX}px`;
+                activeFlower.style.top = `${coords.y - offsetY}px`;
+                activeFlower.style.transform = 'none';
 
-            console.log('Drag start:', activeFlower);
+                console.log('Drag start:', activeFlower);
 
-            document.addEventListener('mousemove', dragging);
-            document.addEventListener('touchmove', dragging, { passive: false });
-            document.addEventListener('mouseup', dragEnd);
-            document.addEventListener('touchend', dragEnd);
+                document.addEventListener('mousemove', dragging);
+                document.addEventListener('touchmove', dragging, { passive: false });
+                document.addEventListener('mouseup', dragEnd);
+                document.addEventListener('touchend', dragEnd);
 
-            event.preventDefault();
-        }
+                event.preventDefault();
+            }
 
-        function dragging(event) {
-            if (!activeFlower) return;
-            const coords = getEventCoords(event);
+            function dragging(event) {
+                if (!activeFlower) return;
+                const coords = getEventCoords(event);
 
-            let newX = coords.x - offsetX;
-            let newY = coords.y - offsetY;
+                let newX = coords.x - offsetX;
+                let newY = coords.y - offsetY;
 
-            const containerRect = activeFlower.parentElement.getBoundingClientRect();
-            const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
-            const flowerWidth = fontSize;
-            const flowerHeight = fontSize;
-            newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerWidth));
-            newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerHeight));
+                const containerRect = activeFlower.parentElement.getBoundingClientRect();
+                const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
+                const flowerWidth = fontSize;
+                const flowerHeight = fontSize;
+                newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerWidth));
+                newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerHeight));
 
-            activeFlower.style.left = `${newX}px`;
-            activeFlower.style.top = `${newY}px`;
+                activeFlower.style.left = `${newX}px`;
+                activeFlower.style.top = `${newY}px`;
 
-            if (event.type === 'touchmove') event.preventDefault();
-        }
+                if (event.type === 'touchmove') event.preventDefault();
+            }
 
-        function dragEnd(event) {
-            if (!activeFlower) return;
-            activeFlower.classList.remove('dragging');
+            function dragEnd(event) {
+                if (!activeFlower) return;
+                activeFlower.classList.remove('dragging');
 
-            activeFlower.style.transition = 'top 2s linear, opacity 2s linear';
-            activeFlower.style.top = '100vh';
-            activeFlower.style.opacity = '0';
+                activeFlower.style.transition = 'top 2s linear, opacity 2s linear';
+                activeFlower.style.top = '100vh';
+                activeFlower.style.opacity = '0';
 
-            setTimeout(() => {
-                activeFlower.style.display = 'none';
-            }, 2000);
+                setTimeout(() => {
+                    activeFlower.style.display = 'none';
+                }, 2000);
 
-            document.removeEventListener('mousemove', dragging);
-            document.removeEventListener('touchmove', dragging);
-            document.removeEventListener('mouseup', dragEnd);
-            document.removeEventListener('touchend', dragEnd);
+                document.removeEventListener('mousemove', dragging);
+                document.removeEventListener('touchmove', dragging);
+                document.removeEventListener('mouseup', dragEnd);
+                document.removeEventListener('touchend', dragEnd);
 
-            activeFlower = null;
-        }
+                activeFlower = null;
+            }
 
-        flowers.forEach(flower => {
-            flower.addEventListener('mousedown', dragStart);
-            flower.addEventListener('touchstart', dragStart, { passive: false });
+            flowers.forEach(flower => {
+                flower.addEventListener('mousedown', dragStart);
+                flower.addEventListener('touchstart', dragStart, { passive: false });
+            });
         });
     </script>
 </body>
