@@ -116,6 +116,8 @@
             let offsetX = 0, offsetY = 0;
             const offsetYAdjustment = -5;
 
+            const styleSheet = document.styleSheets[0];
+
             flowers.forEach((flower, index) => {
                 // Phân bố vị trí ngẫu nhiên theo chiều ngang
                 const baseLeft = (index / (flowers.length - 1)) * 100;
@@ -168,11 +170,16 @@
                 }`;
 
                 // Thêm keyframes vào style sheet
-                const styleSheet = document.styleSheets[0];
-                styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                try {
+                    styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                    console.log(`Created and inserted keyframes: ${animationName}`);
+                } catch (error) {
+                    console.error(`Error inserting keyframes for ${animationName}:`, error);
+                }
 
                 // Gán animation cho bông tuyết
                 flower.style.animationName = animationName;
+                console.log(`Assigned animation '${animationName}' to flower ${index + 1}`);
             });
 
             function getEventCoords(event) {
