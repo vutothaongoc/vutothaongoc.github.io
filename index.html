@@ -258,7 +258,28 @@
 
             // Thêm âm thanh thạch và hiệu ứng bounce
             const jellySound = document.getElementById('jellySound');
-            jellySound.volume = 0.9;
+            jellySound.volume = 0.8;
+
+            // Tải trước âm thanh ngay khi trang tải
+            jellySound.load();
+
+            // Khởi tạo âm thanh khi người dùng tương tác lần đầu
+            let isAudioInitialized = false;
+            function initializeAudio() {
+                if (!isAudioInitialized) {
+                    jellySound.play().then(() => {
+                        jellySound.pause();
+                        jellySound.currentTime = 0;
+                        isAudioInitialized = true;
+                        console.log('Audio initialized');
+                    }).catch(error => {
+                        console.log('Lỗi khởi tạo âm thanh:', error);
+                    });
+                }
+            }
+
+            document.addEventListener('click', initializeAudio, { once: true });
+            document.addEventListener('touchstart', initializeAudio, { once: true, passive: false });
 
             document.querySelectorAll('.links a').forEach(button => {
                 button.addEventListener('click', handleBounce);
