@@ -9,147 +9,77 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Định nghĩa animations */
+        /* CSS giữ nguyên như phiên bản trước */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fall {
             0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; }
             90% { opacity: 1; }
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
-
-        /* Màu sắc chủ đạo */
         :root {
-            --pastel-pink: #ffdde1;
-            --pastel-blue: #c5c8ff;
-            --button-pink: #d1a0b8;
-            --button-blue: #a2a6dd;
-            --button-pink-hover: #d6a9c0;
-            --button-blue-hover: #b0b3e3;
-            --heading-gradient-start: #5f6394;
-            --heading-gradient-end: #a86b7f;
+            --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
+            --button-pink: #d1a0b8; --button-blue: #a2a6dd;
+            --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3;
+            --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f;
             --text-color: #5c5c5c;
         }
-
         html { height: 100%; }
-
         body {
-            text-align: center;
-            font-family: 'Nunito', sans-serif;
-            padding: 40px 20px;
-            color: var(--text-color);
-            background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            min-height: 100%;
-            position: relative;
-            overflow-x: hidden;
+            text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px;
+            color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
+            background-repeat: no-repeat; background-attachment: fixed; min-height: 100%;
+            position: relative; overflow-x: hidden;
         }
-
-        /* Container hoa - Nằm trên, nhưng không bắt sự kiện */
         .flower-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none; /* Container không bắt click */
-            z-index: 2; /* Đặt TRÊN content-wrapper */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; pointer-events: none; z-index: 2;
         }
-
-        /* Bông hoa - Bắt sự kiện */
         .flower {
-            position: absolute;
-            top: -50px; /* Vị trí ban đầu của animation */
-            color: white;
-            font-size: 20px;
-            user-select: none;
-            animation: fall linear infinite;
-            cursor: grab;
-            pointer-events: auto; /* Chỉ hoa bắt click */
-            touch-action: none;
+            position: absolute; top: -50px; color: white; font-size: 20px;
+            user-select: none; animation: fall linear infinite; cursor: grab;
+            pointer-events: auto; touch-action: none;
         }
-
-        .flower.dragging {
-            animation-play-state: paused;
-            cursor: grabbing;
-            opacity: 0.9;
-        }
-
-        /* Định nghĩa vị trí ngang ban đầu và animation khác nhau */
-        .flower:nth-child(1)  { left: 10%; animation-duration: 15s; animation-delay: 0s; font-size: 22px; }
-        .flower:nth-child(2)  { left: 20%; animation-duration: 10s; animation-delay: 1s; opacity: 0.8; }
-        .flower:nth-child(3)  { left: 30%; animation-duration: 14s; animation-delay: 3s; font-size: 18px; }
-        .flower:nth-child(4)  { left: 40%; animation-duration: 11s; animation-delay: 5s; opacity: 0.9; }
-        .flower:nth-child(5)  { left: 50%; animation-duration: 16s; animation-delay: 2s; font-size: 24px; }
-        .flower:nth-child(6)  { left: 60%; animation-duration: 12s; animation-delay: 6s; }
-        .flower:nth-child(7)  { left: 70%; animation-duration: 13s; animation-delay: 4s; font-size: 19px; opacity: 0.85; }
-        .flower:nth-child(8)  { left: 80%; animation-duration: 9s;  animation-delay: 7s; }
-        .flower:nth-child(9)  { left: 90%; animation-duration: 15s; animation-delay: 1s; font-size: 21px; }
+        .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
+        .flower:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; font-size: 22px; }
+        .flower:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 1s; opacity: 0.8; }
+        .flower:nth-child(3) { left: 30%; animation-duration: 14s; animation-delay: 3s; font-size: 18px; }
+        .flower:nth-child(4) { left: 40%; animation-duration: 11s; animation-delay: 5s; opacity: 0.9; }
+        .flower:nth-child(5) { left: 50%; animation-duration: 16s; animation-delay: 2s; font-size: 24px; }
+        .flower:nth-child(6) { left: 60%; animation-duration: 12s; animation-delay: 6s; }
+        .flower:nth-child(7) { left: 70%; animation-duration: 13s; animation-delay: 4s; font-size: 19px; opacity: 0.85; }
+        .flower:nth-child(8) { left: 80%; animation-duration: 9s; animation-delay: 7s; }
+        .flower:nth-child(9) { left: 90%; animation-duration: 15s; animation-delay: 1s; font-size: 21px; }
         .flower:nth-child(10) { left: 15%; animation-duration: 10s; animation-delay: 8s; opacity: 0.75; }
         .flower:nth-child(11) { left: 25%; animation-duration: 14s; animation-delay: 9s; font-size: 20px; }
         .flower:nth-child(12) { left: 35%; animation-duration: 11s; animation-delay: 10s; }
         .flower:nth-child(13) { left: 45%; animation-duration: 16s; animation-delay: 0s; font-size: 17px; opacity: 0.95; }
         .flower:nth-child(14) { left: 55%; animation-duration: 12s; animation-delay: 11s; }
         .flower:nth-child(15) { left: 65%; animation-duration: 13s; animation-delay: 2s; font-size: 23px; }
-
-        /* Wrapper nội dung chính */
         .content-wrapper {
-             opacity: 0;
-             animation: fadeIn 1s ease-out forwards;
-             animation-delay: 0.2s;
-             max-width: 700px;
-             margin: 0 auto;
-             padding: 30px;
-             position: relative;
-             z-index: 1; /* Thấp hơn flower-container */
+            opacity: 0; animation: fadeIn 1s ease-out forwards; animation-delay: 0.2s;
+            max-width: 700px; margin: 0 auto; padding: 30px; position: relative; z-index: 1;
         }
-
         h1 {
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 700;
-            margin-bottom: 25px;
-            display: inline-block;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            font-weight: 700; margin-bottom: 25px; display: inline-block;
         }
-
-        p {
-            font-size: 1.1em;
-            line-height: 1.7;
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-
+        p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
-
         .links a {
-            display: inline-block;
-            margin: 8px 6px;
-            padding: 12px 28px;
+            display: inline-block; margin: 8px 6px; padding: 12px 28px;
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border: none;
-            position: relative;
-            z-index: 1;
+            color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
+            transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none; position: relative; z-index: 1;
         }
-
         .links a:hover {
             background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
-
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 { font-size: 2.5em; }
@@ -162,7 +92,6 @@
     </style>
 </head>
 <body>
-
     <div class="flower-container">
         <span class="flower">❀</span> <span class="flower">❀</span> <span class="flower">❀</span>
         <span class="flower">❀</span> <span class="flower">❀</span> <span class="flower">❀</span>
@@ -170,7 +99,6 @@
         <span class="flower">❀</span> <span class="flower">❀</span> <span class="flower">❀</span>
         <span class="flower">❀</span> <span class="flower">❀</span> <span class="flower">❀</span>
     </div>
-
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
         <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
@@ -187,14 +115,16 @@
     </div>
 
     <script>
+        // JS đã được hoàn nguyên logic tính toán vị trí kéo
         const flowers = document.querySelectorAll('.flower');
         let activeFlower = null;
-        // offsetX, offsetY: Khoảng cách từ điểm click/touch đến góc trên-trái của hoa
-        let offsetX = 0;
-        let offsetY = 0;
+        // Hoàn nguyên về logic dùng delta
+        let initialX = 0;
+        let initialY = 0;
+        let initialFlowerX = 0;
+        let initialFlowerY = 0;
 
         function getEventCoords(event) {
-            // Trả về tọa độ {x, y} của sự kiện chuột hoặc chạm đầu tiên
             if (event.touches && event.touches.length > 0) {
                 return { x: event.touches[0].clientX, y: event.touches[0].clientY };
             }
@@ -202,31 +132,33 @@
         }
 
         function dragStart(event) {
-            if (event.type === 'mousedown' && event.button !== 0) return; // Chỉ chuột trái
+            if (event.type === 'mousedown' && event.button !== 0) return;
 
             activeFlower = event.target;
             const coords = getEventCoords(event);
 
-            // Quan trọng: Pause animation TRƯỚC KHI lấy vị trí
+            // Lưu tọa độ chuột/touch ban đầu
+            initialX = coords.x;
+            initialY = coords.y;
+
+            // Pause animation trước khi lấy vị trí
             activeFlower.classList.add('dragging');
 
+            // Lấy vị trí hoa ban đầu (sau khi pause)
             const flowerRect = activeFlower.getBoundingClientRect();
+            initialFlowerX = flowerRect.left;
+            initialFlowerY = flowerRect.top;
 
-            // Tính offset giữa điểm click và góc trên trái của hoa
-            offsetX = coords.x - flowerRect.left;
-            offsetY = coords.y - flowerRect.top;
-
-            // Đặt ngay style để khóa vị trí trực quan ban đầu (tránh jump)
-            activeFlower.style.left = `${flowerRect.left}px`;
-            activeFlower.style.top = `${flowerRect.top}px`;
-
+            // Vẫn đặt style ngay để thử giảm "teleport" ban đầu
+            activeFlower.style.left = `${initialFlowerX}px`;
+            activeFlower.style.top = `${initialFlowerY}px`;
 
             document.addEventListener('mousemove', dragging);
             document.addEventListener('touchmove', dragging, { passive: false });
             document.addEventListener('mouseup', dragEnd);
             document.addEventListener('touchend', dragEnd);
 
-            event.preventDefault(); // Ngăn hành vi mặc định (vd: chọn text)
+            event.preventDefault();
         }
 
         function dragging(event) {
@@ -234,33 +166,37 @@
 
             const coords = getEventCoords(event);
 
-            // Tính vị trí top-left mới của hoa = vị trí chuột/touch hiện tại - offset ban đầu
-            let newX = coords.x - offsetX;
-            let newY = coords.y - offsetY;
+            // Tính độ di chuyển của chuột/touch
+            const deltaX = coords.x - initialX;
+            const deltaY = coords.y - initialY;
 
-            // (Optional) Giới hạn di chuyển trong viewport
-             const container = activeFlower.parentElement;
-             const containerRect = container.getBoundingClientRect();
-             const flowerRect = activeFlower.getBoundingClientRect(); // Lấy lại kích thước nếu cần
+            // Tính vị trí mới = vị trí hoa ban đầu + độ di chuyển
+            let newX = initialFlowerX + deltaX;
+            let newY = initialFlowerY + deltaY;
 
-             newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerRect.width));
-             newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerRect.height));
+            // (Optional) Giới hạn di chuyển
+            const container = activeFlower.parentElement;
+            const containerRect = container.getBoundingClientRect();
+            const flowerRect = activeFlower.getBoundingClientRect(); // Kích thước hoa
+
+            newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerRect.width));
+            newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerRect.height));
 
             // Cập nhật vị trí hoa
             activeFlower.style.left = `${newX}px`;
             activeFlower.style.top = `${newY}px`;
 
             if (event.type === 'touchmove') {
-                event.preventDefault(); // Ngăn cuộn trang khi kéo trên mobile
+                event.preventDefault();
             }
         }
 
         function dragEnd(event) {
             if (!activeFlower) return;
 
-            activeFlower.classList.remove('dragging'); // Chạy lại animation CSS
+            activeFlower.classList.remove('dragging');
 
-            // Xóa style inline để CSS (:nth-child và @keyframes) kiểm soát lại
+            // Xóa style inline để CSS kiểm soát lại
             activeFlower.style.left = '';
             activeFlower.style.top = '';
 
@@ -269,17 +205,18 @@
             document.removeEventListener('mouseup', dragEnd);
             document.removeEventListener('touchend', dragEnd);
 
-            activeFlower = null; // Reset
-            offsetX = 0;        // Reset
-            offsetY = 0;        // Reset
+            activeFlower = null;
+            // Reset các biến
+            initialX = 0;
+            initialY = 0;
+            initialFlowerX = 0;
+            initialFlowerY = 0;
         }
 
-        // Gán sự kiện cho tất cả các bông hoa
         flowers.forEach(flower => {
             flower.addEventListener('mousedown', dragStart);
             flower.addEventListener('touchstart', dragStart, { passive: false });
         });
-
     </script>
 
 </body>
