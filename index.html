@@ -38,10 +38,22 @@
             overflow: hidden; pointer-events: none; z-index: 2;
         }
         .flower {
-            position: absolute; top: -50px; color: white; font-size: 20px;
-            user-select: none; animation: fall linear infinite; cursor: grab;
-            pointer-events: auto; touch-action: none;
-        }
+    position: absolute;
+    top: -50px;
+    color: white;
+    font-size: 20px;
+    user-select: none;
+    animation: fall linear infinite;
+    cursor: grab;
+    pointer-events: auto;
+    touch-action: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    line-height: 1; /* Đảm bảo không có khoảng cách do line-height */
+    text-align: center; /* Căn giữa ký tự */
+    display: inline-block; /* Đảm bảo kích thước đúng với nội dung */
+}
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
         .flower:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; font-size: 22px; }
         .flower:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 1s; opacity: 0.8; }
@@ -118,6 +130,7 @@
 const flowers = document.querySelectorAll('.flower');
 let activeFlower = null;
 let offsetX = 0, offsetY = 0;
+const offsetYAdjustment = -10; // Điều chỉnh để bù lệch xuống dưới (thỏ có thể thử đổi thành -15 hoặc -5 nếu cần)
 
 function getEventCoords(event) {
     if (event.type.includes('touch')) {
@@ -138,9 +151,9 @@ function dragStart(event) {
     // Lấy bounding box của bông hoa
     const rect = activeFlower.getBoundingClientRect();
 
-    // Tính offset từ tâm bông hoa đến điểm click
+    // Tính offset từ tâm bông hoa đến điểm click, với điều chỉnh
     offsetX = rect.width / 2;
-    offsetY = rect.height / 2;
+    offsetY = rect.height / 2 + offsetYAdjustment;
 
     // Đặt vị trí ban đầu chính xác
     activeFlower.style.position = 'absolute';
