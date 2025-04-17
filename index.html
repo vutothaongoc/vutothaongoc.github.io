@@ -7,12 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
         @keyframes fall {
             0% {
                 transform: translateY(-10vh) rotate(0deg);
@@ -110,16 +105,6 @@
             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             transition: none;
         }
-        .mute-button {
-            position: fixed; top: 20px; right: 20px; z-index: 1000;
-            background: rgba(255, 255, 255, 0.8); border: none; border-radius: 50%;
-            width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; font-size: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background 0.3s ease;
-        }
-        .mute-button:hover {
-            background: rgba(255, 255, 255, 1);
-        }
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 { font-size: 2.5em; }
@@ -127,14 +112,11 @@
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; }
-            .mute-button { top: 10px; right: 10px; width: 35px; height: 35px; font-size: 18px; }
         }
     </style>
 </head>
 <body>
     <audio id="jellySound" src="jelly.wav" preload="auto"></audio>
-    <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
-    <button class="mute-button" id="muteButton">🎵</button>
     <div class="flower-container"></div>
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
@@ -152,32 +134,26 @@
     </div>
 
     <script>
-        console.log('Script started'); // Debug: Kiểm tra script chạy
+        console.log('Script started');
 
         try {
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('DOMContentLoaded triggered'); // Debug: DOM tải xong
+                console.log('DOMContentLoaded triggered');
 
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
-                const backgroundMusic = document.getElementById('backgroundMusic');
-                const muteButton = document.getElementById('muteButton');
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
                 // Thiết lập âm lượng
                 jellySound.volume = 0.8;
-                backgroundMusic.volume = 0.3;
-
-                // Kiểm tra trạng thái âm thanh, mặc định bật
-                let isMuted = localStorage.getItem('isMuted') === 'true' || false;
-                updateMuteState();
-
-                // Tải trước âm thanh
-                console.log('Loading audio files');
-                jellySound.load();
-                backgroundMusic.load();
+                console.log('Loading jellySound');
+                try {
+                    jellySound.load();
+                } catch (error) {
+                    console.error('Lỗi tải jelly.wav:', error);
+                }
 
                 // Khởi tạo âm thanh
                 let isAudioInitialized = false;
@@ -187,46 +163,16 @@
                         jellySound.play().then(() => {
                             jellySound.pause();
                             jellySound.currentTime = 0;
+                            isAudioInitialized = true;
+                            console.log('Audio initialized');
                         }).catch(error => {
-                            console.log('Lỗi khởi tạo jellySound:', error);
+                            console.error('Lỗi khởi tạo jellySound:', error);
                         });
-                        backgroundMusic.play().then(() => {
-                            if (isMuted) backgroundMusic.pause();
-                        }).catch(error => {
-                            console.log('Lỗi khởi tạo backgroundMusic:', error);
-                        });
-                        isAudioInitialized = true;
                     }
                 }
 
                 document.addEventListener('click', initializeAudio, { once: true });
                 document.addEventListener('touchstart', initializeAudio, { once: true, passive: false });
-
-                // Xử lý bật/tắt âm thanh
-                muteButton.addEventListener('click', () => {
-                    console.log('Mute button clicked, isMuted:', isMuted);
-                    isMuted = !isMuted;
-                    localStorage.setItem('isMuted', isMuted);
-                    updateMuteState();
-                });
-
-                function updateMuteState() {
-                    console.log('Updating mute state, isMuted:', isMuted);
-                    if (isMuted) {
-                        jellySound.muted = true;
-                        backgroundMusic.muted = true;
-                        muteButton.innerHTML = '🔇';
-                    } else {
-                        jellySound.muted = false;
-                        backgroundMusic.muted = false;
-                        muteButton.innerHTML = '🎵';
-                        if (isAudioInitialized) {
-                            backgroundMusic.play().catch(error => {
-                                console.log('Lỗi phát nhạc nền:', error);
-                            });
-                        }
-                    }
-                }
 
                 // Tạo bông tuyết
                 const isMobile = window.innerWidth <= 576;
@@ -234,7 +180,7 @@
                 const totalCycleTime = 10;
 
                 function createFlower(index) {
-                    console.log('Creating flower:', index); // Debug: Tạo bông tuyết
+                    console.log('Creating flower:', index);
                     const flower = document.createElement('span');
                     flower.className = 'flower';
                     flower.innerHTML = '❅';
@@ -267,8 +213,12 @@
                 }
 
                 console.log('Starting flower creation');
-                for (let i = 0; i < flowerCount; i++) {
-                    createFlower(i);
+                try {
+                    for (let i = 0; i < flowerCount; i++) {
+                        createFlower(i);
+                    }
+                } catch (error) {
+                    console.error('Lỗi tạo bông tuyết:', error);
                 }
 
                 function getEventCoords(event) {
@@ -344,10 +294,14 @@
 
                 // Gắn sự kiện cho nút link
                 console.log('Attaching link events');
-                document.querySelectorAll('.links a').forEach(button => {
-                    button.addEventListener('click', handleBounce);
-                    button.addEventListener('touchstart', handleBounce, { passive: false });
-                });
+                try {
+                    document.querySelectorAll('.links a').forEach(button => {
+                        button.addEventListener('click', handleBounce);
+                        button.addEventListener('touchstart', handleBounce, { passive: false });
+                    });
+                } catch (error) {
+                    console.error('Lỗi gắn sự kiện nút:', error);
+                }
 
                 function handleBounce(event) {
                     console.log('Handle bounce:', event.type, 'Target:', event.currentTarget.textContent);
@@ -359,14 +313,12 @@
                         button.classList.remove('bounce');
                     }, 300);
 
-                    if (!isMuted) {
-                        jellySound.currentTime = 0;
-                        jellySound.play().then(() => {
-                            console.log('Jelly sound played');
-                        }).catch(error => {
-                            console.log('Lỗi phát âm thanh jelly:', error);
-                        });
-                    }
+                    jellySound.currentTime = 0;
+                    jellySound.play().then(() => {
+                        console.log('Jelly sound played');
+                    }).catch(error => {
+                        console.error('Lỗi phát âm thanh jelly:', error);
+                    });
 
                     if (event.type === 'touchstart') {
                         event.preventDefault();
