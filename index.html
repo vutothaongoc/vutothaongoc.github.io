@@ -15,23 +15,23 @@
         }
         @keyframes fall {
             0% {
-                transform: translateY(-10vh) translateX(0) rotate(0deg);
+                transform: translateY(-10vh) rotate(0deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             25% {
-                transform: translateY(25vh) translateX(5vw) rotate(180deg);
+                transform: translateY(25vh) rotate(90deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             50% {
-                transform: translateY(50vh) translateX(-5vw) rotate(360deg);
+                transform: translateY(50vh) rotate(180deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             75% {
-                transform: translateY(75vh) translateX(5vw) rotate(540deg);
+                transform: translateY(75vh) rotate(270deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             100% {
-                transform: translateY(110vh) translateX(-5vw) rotate(720deg);
+                transform: translateY(110vh) rotate(360deg);
                 opacity: 0.1;
             }
         }
@@ -134,18 +134,18 @@
             // Xác định số lượng bông tuyết dựa trên kích thước màn hình
             const isMobile = window.innerWidth <= 576;
             const flowerCount = isMobile ? 10 : 20;
+            const totalCycleTime = 10; // Chu kỳ 10s để bông tuyết xuất hiện đều
 
             // Hàm tạo một bông tuyết
-            function createFlower(index, delay = 0) {
+            function createFlower(index) {
                 const flower = document.createElement('span');
                 flower.className = 'flower';
                 flower.innerHTML = '❅';
                 flowerContainer.appendChild(flower);
 
                 // Vị trí ngẫu nhiên theo chiều ngang
-                const baseLeft = (index % flowerCount) / (flowerCount - 1) * 100;
-                const randomOffset = (Math.random() - 0.5) * 15;
-                flower.style.left = `${baseLeft + randomOffset}%`;
+                const randomLeft = Math.random() * 100; // Ngẫu nhiên từ 0% đến 100%
+                flower.style.left = `${randomLeft}%`;
 
                 // Kích thước ngẫu nhiên từ 30px đến 60px
                 const size = 30 + Math.random() * 30;
@@ -153,11 +153,12 @@
                 flower.style.width = `${size}px`;
                 flower.style.height = `${size}px`;
 
-                // Thời gian rơi ngẫu nhiên từ 14s đến 20s
-                const duration = 14 + Math.random() * 6;
+                // Thời gian rơi cố định 10s để đồng bộ
+                const duration = 10;
                 flower.style.animationDuration = `${duration}s`;
 
-                // Độ trễ ban đầu
+                // Độ trễ ban đầu: phân bổ đều trong chu kỳ
+                const delay = (index * totalCycleTime) / flowerCount;
                 flower.style.animationDelay = `${delay}s`;
 
                 // Độ trong: 0.7 cho size 30px, 0.3 cho size 60px
@@ -171,14 +172,13 @@
                 // Tự động tạo bông tuyết mới sau khi bông hiện tại biến mất
                 setTimeout(() => {
                     flower.remove();
-                    createFlower(index, 0);
+                    createFlower(index);
                 }, (duration + delay) * 1000);
             }
 
-            // Tạo các bông tuyết ban đầu với độ trễ đều
+            // Tạo các bông tuyết ban đầu
             for (let i = 0; i < flowerCount; i++) {
-                const delay = (i * 10) / flowerCount; // Độ trễ tăng đều, tối đa 10s chia đều
-                createFlower(i, delay);
+                createFlower(i);
             }
 
             function getEventCoords(event) {
