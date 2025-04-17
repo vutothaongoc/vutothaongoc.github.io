@@ -35,12 +35,20 @@
                 opacity: 0.1;
             }
         }
-        @keyframes jelly {
+        @keyframes jellyBounce {
             0% { transform: scale(1, 1); }
-            40% { transform: scale(1.15, 0.85); } /* Nẩy chính, nhẹ nhàng */
-            60% { transform: scale(0.9, 1.1); } /* Phục hồi, hơi nén */
-            80% { transform: scale(1.05, 0.95); } /* Nẩy ngắn hơn */
-            100% { transform: scale(1, 1); } /* Trở về ban đầu */
+            10% { transform: scale(1.25, 0.75); }
+            20% { transform: scale(0.85, 1.15); }
+            30% { transform: scale(1.1, 0.9); }
+            40% { transform: scale(1, 1); }
+            50% { transform: scale(1.15, 0.85); }
+            60% { transform: scale(0.9, 1.1); }
+            70% { transform: scale(1.05, 0.95); }
+            80% { transform: scale(1, 1); }
+            85% { transform: scale(1.1, 0.9); }
+            90% { transform: scale(0.95, 1.05); }
+            95% { transform: scale(1.02, 0.98); }
+            100% { transform: scale(1, 1); }
         }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
@@ -104,8 +112,9 @@
             background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
             transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
-        .links a:active {
-            animation: jelly 0.6s ease-in-out; /* Tăng thời gian để mượt hơn */
+        .links a.bounce {
+            animation: jellyBounce 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: none;
         }
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
@@ -141,52 +150,42 @@
             let offsetX = 0, offsetY = 0;
             const offsetYAdjustment = -5;
 
-            // Xác định số lượng bông tuyết dựa trên kích thước màn hình
             const isMobile = window.innerWidth <= 576;
             const flowerCount = isMobile ? 10 : 20;
-            const totalCycleTime = 10; // Chu kỳ 10s để bông tuyết xuất hiện đều
+            const totalCycleTime = 10;
 
-            // Hàm tạo một bông tuyết
             function createFlower(index) {
                 const flower = document.createElement('span');
                 flower.className = 'flower';
                 flower.innerHTML = '❅';
                 flowerContainer.appendChild(flower);
 
-                // Vị trí ngẫu nhiên theo chiều ngang
-                const randomLeft = Math.random() * 100; // Ngẫu nhiên từ 0% đến 100%
+                const randomLeft = Math.random() * 100;
                 flower.style.left = `${randomLeft}%`;
 
-                // Kích thước ngẫu nhiên từ 30px đến 60px
                 const size = 30 + Math.random() * 30;
                 flower.style.fontSize = `${size}px`;
                 flower.style.width = `${size}px`;
                 flower.style.height = `${size}px`;
 
-                // Thời gian rơi cố định 10s để đồng bộ
                 const duration = 10;
                 flower.style.animationDuration = `${duration}s`;
 
-                // Độ trễ ban đầu: phân bổ đều trong chu kỳ
                 const delay = (index * totalCycleTime) / flowerCount;
                 flower.style.animationDelay = `${delay}s`;
 
-                // Độ trong: 0.7 cho size 30px, 0.3 cho size 60px
                 const opacity = 0.7 - ((size - 30) / 30) * 0.4;
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
 
-                // Thêm sự kiện kéo
                 flower.addEventListener('mousedown', dragStart);
                 flower.addEventListener('touchstart', dragStart, { passive: false });
 
-                // Tự động tạo bông tuyết mới sau khi bông hiện tại biến mất
                 setTimeout(() => {
                     flower.remove();
                     createFlower(index);
                 }, (duration + delay) * 1000);
             }
 
-            // Tạo các bông tuyết ban đầu
             for (let i = 0; i < flowerCount; i++) {
                 createFlower(i);
             }
@@ -260,6 +259,33 @@
                 document.removeEventListener('touchend', dragEnd);
 
                 activeFlower = null;
+            }
+
+            // Thêm âm thanh thạch và hiệu ứng bounce
+            const jellySound = new Audio('jelly.wav');
+            jellySound.volume = 0.5;
+
+            document.querySelectorAll('.links a').forEach(button => {
+                button.addEventListener('click', handleBounce);
+                button.addEventListener('touchstart', handleBounce, { passive: false });
+            });
+
+            function handleBounce(event) {
+                const button = event.currentTarget;
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 700);
+                jellySound.currentTime = 0;
+                jellySound.play().catch(error => {
+                    console.log('Lỗi phát âm thanh:', error);
+                });
+                if (event.type === 'touchstart') {
+                    event.preventDefault();
+                    setTimeout(() => {
+                        window.open(button.href, '_blank');
+                    }, 700);
+                }
             }
         });
     </script>
