@@ -13,28 +13,6 @@
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes fall {
-            0% {
-                transform: translateY(-10vh) translateX(0) rotate(0deg);
-                opacity: var(--flower-opacity, 0.7);
-            }
-            25% {
-                transform: translateY(25vh) translateX(5vw) rotate(180deg);
-                opacity: var(--flower-opacity, 0.7);
-            }
-            50% {
-                transform: translateY(50vh) translateX(-5vw) rotate(360deg);
-                opacity: var(--flower-opacity, 0.7);
-            }
-            75% {
-                transform: translateY(75vh) translateX(5vw) rotate(540deg);
-                opacity: var(--flower-opacity, 0.7);
-            }
-            100% {
-                transform: translateY(110vh) translateX(-5vw) rotate(720deg);
-                opacity: 0.1;
-            }
-        }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
             --button-pink: #d1a0b8; --button-blue: #a2a6dd;
@@ -162,6 +140,39 @@
                 const opacity = 0.7 - ((size - 30) / 30) * 0.4;
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
                 console.log(`Flower ${index + 1}: size=${size.toFixed(2)}px, opacity=${opacity.toFixed(2)}`);
+
+                // Tạo animation keyframes độc đáo cho mỗi bông tuyết
+                const zigzagIntensity = (Math.random() - 0.5) * 10; // Giá trị từ -5 đến 5 cho độ ziczac
+                const animationName = `fall-${index}`;
+                const keyframes = `@keyframes ${animationName} {
+                    0% {
+                        transform: translateY(-10vh) translateX(0) rotate(0deg);
+                        opacity: var(--flower-opacity, 0.7);
+                    }
+                    25% {
+                        transform: translateY(25vh) translateX(${5 + zigzagIntensity}vw) rotate(180deg);
+                        opacity: var(--flower-opacity, 0.7);
+                    }
+                    50% {
+                        transform: translateY(50vh) translateX(${-5 - zigzagIntensity}vw) rotate(360deg);
+                        opacity: var(--flower-opacity, 0.7);
+                    }
+                    75% {
+                        transform: translateY(75vh) translateX(${5 + zigzagIntensity}vw) rotate(540deg);
+                        opacity: var(--flower-opacity, 0.7);
+                    }
+                    100% {
+                        transform: translateY(110vh) translateX(${-5 - zigzagIntensity}vw) rotate(720deg);
+                        opacity: 0.1;
+                    }
+                }`;
+
+                // Thêm keyframes vào style sheet
+                const styleSheet = document.styleSheets[0];
+                styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+
+                // Gán animation cho bông tuyết
+                flower.style.animationName = animationName;
             });
 
             function getEventCoords(event) {
@@ -178,7 +189,7 @@
                 const coords = getEventCoords(event);
 
                 activeFlower.classList.add('dragging');
-                activeFlower.style.animation = 'none';
+                activeFlower.style.animationPlayState = 'paused'; // Dừng animation khi bắt đầu kéo
 
                 const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
                 offsetX = fontSize / 2;
@@ -222,6 +233,7 @@
                 activeFlower.style.transition = 'top 2s linear, opacity 2s linear';
                 activeFlower.style.top = '100vh';
                 activeFlower.style.opacity = '0';
+                activeFlower.style.animationPlayState = 'running'; // Tiếp tục animation khi thả
 
                 setTimeout(() => {
                     activeFlower.style.display = 'none';
