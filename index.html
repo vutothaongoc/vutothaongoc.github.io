@@ -37,14 +37,13 @@
         }
         @keyframes jellyBounce {
             0% { transform: scale(1, 1); }
-            20% { transform: scale(1.25, 0.75); }
-            40% { transform: scale(0.85, 1.15); }
-            60% { transform: scale(1.1, 0.9); }
-            70% { transform: scale(1, 1); }
-            80% { transform: scale(1.15, 0.85); }
-            90% { transform: scale(0.9, 1.1); }
-            95% { transform: scale(1.05, 0.95); }
-            100% { transform: scale(1, 1); }
+            25% { transform: scale(1.25, 0.75); }
+            50% { transform: scale(0.85, 1.15); }
+            75% { transform: scale(1.1, 0.9); }
+            80% { transform: scale(1, 1); }
+            90% { transform: scale(1.15, 0.85); }
+            95% { transform: scale(0.9, 1.1); }
+            100% { transform: scale(1.05, 0.95); }
         }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
@@ -101,7 +100,7 @@
             display: inline-block; margin: 8px 6px; padding: 12px 28px;
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
             color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
-            transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3 SNS ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border: none; position: relative; z-index: 1;
         }
         .links a:hover {
@@ -109,7 +108,7 @@
             transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         .links a.bounce {
-            animation: jellyBounce 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: jellyBounce 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transition: none;
         }
         @media (max-width: 576px) {
@@ -272,7 +271,7 @@
                 button.classList.add('bounce');
                 setTimeout(() => {
                     button.classList.remove('bounce');
-                }, 500);
+                }, 400);
                 jellySound.currentTime = 0;
                 jellySound.play().catch(error => {
                     console.log('Lỗi phát âm thanh:', error);
@@ -281,7 +280,7 @@
                     event.preventDefault();
                     setTimeout(() => {
                         window.open(button.href, '_blank');
-                    }, 500);
+                    }, 400);
                 }
             }
         });
