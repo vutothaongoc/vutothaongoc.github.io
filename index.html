@@ -19,19 +19,19 @@
                 opacity: var(--flower-opacity, 0.7);
             }
             25% {
-                transform: translateY(25vh) translateX(2vw) rotate(90deg);
+                transform: translateY(25vh) translateX(5vw) rotate(180deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             50% {
-                transform: translateY(50vh) translateX(-2vw) rotate(180deg);
+                transform: translateY(50vh) translateX(-5vw) rotate(360deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             75% {
-                transform: translateY(75vh) translateX(2vw) rotate(270deg);
+                transform: translateY(75vh) translateX(5vw) rotate(540deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             100% {
-                transform: translateY(110vh) translateX(-2vw) rotate(360deg);
+                transform: translateY(110vh) translateX(-5vw) rotate(720deg);
                 opacity: 0.1;
             }
         }
@@ -161,10 +161,7 @@
                 // Độ trong: 0.7 cho size 30px, 0.3 cho size 60px
                 const opacity = 0.7 - ((size - 30) / 30) * 0.4;
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
-
-                // Tạo độ xô lệch ngang ngẫu nhiên ban đầu
-                const initialHorizontalOffset = (Math.random() - 0.5) * 2; // Giá trị từ -1vw đến 1vw
-                flower.style.transform = `translateX(${initialHorizontalOffset}vw)`;
+                console.log(`Flower ${index + 1}: size=${size.toFixed(2)}px, opacity=${opacity.toFixed(2)}`);
             });
 
             function getEventCoords(event) {
@@ -181,7 +178,7 @@
                 const coords = getEventCoords(event);
 
                 activeFlower.classList.add('dragging');
-                activeFlower.style.animationPlayState = 'paused'; // Dừng animation khi bắt đầu kéo
+                activeFlower.style.animation = 'none';
 
                 const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
                 offsetX = fontSize / 2;
@@ -225,7 +222,6 @@
                 activeFlower.style.transition = 'top 2s linear, opacity 2s linear';
                 activeFlower.style.top = '100vh';
                 activeFlower.style.opacity = '0';
-                activeFlower.style.animationPlayState = 'running'; // Tiếp tục animation khi thả
 
                 setTimeout(() => {
                     activeFlower.style.display = 'none';
