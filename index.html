@@ -15,24 +15,24 @@
         }
         @keyframes fall {
             0% {
-                transform: translateY(-10vh) translateX(0) rotate(0deg);
+                transform: translateY(-10vh) translateX(calc(var(--zigzag-offset, 0) * 1vw)) rotate(0deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             25% {
-                transform: translateY(25vh) translateX(5vw) rotate(45deg);
+                transform: translateY(25vh) translateX(calc(var(--zigzag-amplitude, 5) * 1vw)) rotate(45deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             50% {
-                transform: translateY(50vh) translateX(-5vw) rotate(90deg);
+                transform: translateY(50vh) translateX(calc(var(--zigzag-amplitude, 5) * -1vw)) rotate(90deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             75% {
-                transform: translateY(75vh) translateX(5vw) rotate(135deg);
+                transform: translateY(75vh) translateX(calc(var(--zigzag-amplitude, 5) * 1vw)) rotate(135deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             100% {
-                transform: translateY(110vh) translateX(-5vw) rotate(180deg);
-                opacity: 0.1;
+                transform: translateY(110vh) translateX(calc(var(--zigzag-amplitude, 5) * -1vw)) rotate(180deg);
+                opacity: 0;
             }
         }
         :root {
@@ -104,7 +104,7 @@
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; }
-            .flower:nth-child(n+11) { display: none; } /* Hiển thị 10 bông trên mobile */
+            .flower:nth-child(n+16) { display: none; } /* Hiển thị 15 bông trên mobile */
         }
     </style>
 </head>
@@ -115,6 +115,8 @@
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
+        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
+        <span class="flower">❅</span> <span class="flower">❅</span>
     </div>
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
@@ -141,7 +143,7 @@
             flowers.forEach((flower, index) => {
                 // Phân bố vị trí ngẫu nhiên theo chiều ngang
                 const baseLeft = (index / (flowers.length - 1)) * 100;
-                const randomOffset = (Math.random() - 0.5) * 15; // Biến động ±7.5%
+                const randomOffset = (Math.random() - 0.5) * 10; // Biến động ±5%
                 flower.style.left = `${baseLeft + randomOffset}%`;
 
                 // Kích thước ngẫu nhiên từ 30px đến 60px
@@ -150,25 +152,33 @@
                 flower.style.width = `${size}px`;
                 flower.style.height = `${size}px`;
 
-                // Thời gian rơi ngẫu nhiên từ 10s đến 16s
-                const duration = 10 + Math.random() * 6;
+                // Thời gian rơi ngẫu nhiên từ 8s đến 12s
+                const duration = 8 + Math.random() * 4;
                 flower.style.animationDuration = `${duration}s`;
 
-                // Độ trễ ngẫu nhiên từ 0s đến 8s
-                const delay = Math.random() * 8;
+                // Độ trễ ngẫu nhiên từ 0s đến duration để phân bố đều
+                const delay = (index / flowers.length) * duration;
                 flower.style.animationDelay = `${delay}s`;
 
                 // Độ trong: 0.7 cho size 30px, 0.3 cho size 60px
                 const opacity = 0.7 - ((size - 30) / 30) * 0.4;
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
 
-                // Tạo độ xô lệch ngang ngẫu nhiên ban đầu
-                const initialHorizontalOffset = (Math.random() - 0.5) * 4; // Giá trị từ -2vw đến 2vw
-                flower.style.transform = `translateX(${initialHorizontalOffset}vw)`;
+                // Biên độ zigzag dựa trên kích thước: nhỏ zigzag mạnh (6vw), lớn zigzag nhẹ (2vw)
+                const zigzagAmplitude = 6 - ((size - 30) / 30) * 4; // Từ 6vw (size 30) đến 2vw (size 60)
+                flower.style.setProperty('--zigzag-amplitude', zigzagAmplitude.toFixed(2));
 
-                // Biến động zigzag ngẫu nhiên
-                const zigzagAmplitude = 3 + Math.random() * 2; // Biên độ zigzag từ 3vw đến 5vw
-                flower.style.setProperty('--zigzag-amplitude', `${zigzagAmplitude}vw`);
+                // Đường zigzag độc lập với offset ngẫu nhiên
+                const zigzagOffset = (Math.random() - 0.5) * 4; // Từ -2vw đến 2vw
+                flower.style.setProperty('--zigzag-offset', zigzagOffset.toFixed(2));
+
+                // Reset vị trí khi animation kết thúc để lặp lại liên tục
+                flower.addEventListener('animationiteration', () => {
+                    flower.style.top = '-50px';
+                    flower.style.opacity = opacity.toFixed(2);
+                    const newOffset = (Math.random() - 0.5) * 4; // Cập nhật offset mới mỗi chu kỳ
+                    flower.style.setProperty('--zigzag-offset', newOffset.toFixed(2));
+                });
             });
 
             function getEventCoords(event) {
@@ -233,6 +243,9 @@
 
                 setTimeout(() => {
                     activeFlower.style.display = 'none';
+                    activeFlower.style.top = '-50px';
+                    activeFlower.style.opacity = activeFlower.style.getPropertyValue('--flower-opacity');
+                    activeFlower.style.display = 'flex'; // Hiển thị lại để lặp
                 }, 2000);
 
                 document.removeEventListener('mousemove', dragging);
