@@ -37,17 +37,13 @@
         }
         @keyframes jellyBounce {
             0% { transform: scale(1, 1); }
-            10% { transform: scale(1.25, 0.75); }
-            20% { transform: scale(0.85, 1.15); }
-            30% { transform: scale(1.1, 0.9); }
-            40% { transform: scale(1, 1); }
-            50% { transform: scale(1.15, 0.85); }
-            60% { transform: scale(0.9, 1.1); }
-            70% { transform: scale(1.05, 0.95); }
-            80% { transform: scale(1, 1); }
-            85% { transform: scale(1.1, 0.9); }
-            90% { transform: scale(0.95, 1.05); }
-            95% { transform: scale(1.02, 0.98); }
+            15% { transform: scale(1.25, 0.75); }
+            30% { transform: scale(0.85, 1.15); }
+            45% { transform: scale(1.1, 0.9); }
+            60% { transform: scale(1, 1); }
+            70% { transform: scale(1.15, 0.85); }
+            80% { transform: scale(0.9, 1.1); }
+            90% { transform: scale(1.05, 0.95); }
             100% { transform: scale(1, 1); }
         }
         :root {
@@ -113,7 +109,7 @@
             transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         .links a.bounce {
-            animation: jellyBounce 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: jellyBounce 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transition: none;
         }
         @media (max-width: 576px) {
@@ -210,7 +206,7 @@
                 offsetX = fontSize / 2;
                 offsetY = fontSize / 2 + offsetYAdjustment;
 
-                activeFlower.style.position = 'absolute';
+                active花.style.position = 'absolute';
                 activeFlower.style.left = `${coords.x - offsetX}px`;
                 activeFlower.style.top = `${coords.y - offsetY}px`;
                 activeFlower.style.transform = 'none';
@@ -275,7 +271,7 @@
                 button.classList.add('bounce');
                 setTimeout(() => {
                     button.classList.remove('bounce');
-                }, 700);
+                }, 600);
                 jellySound.currentTime = 0;
                 jellySound.play().catch(error => {
                     console.log('Lỗi phát âm thanh:', error);
@@ -284,7 +280,7 @@
                     event.preventDefault();
                     setTimeout(() => {
                         window.open(button.href, '_blank');
-                    }, 700);
+                    }, 600);
                 }
             }
         });
