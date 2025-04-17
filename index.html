@@ -50,9 +50,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    line-height: 1; /* Loại bỏ khoảng cách do line-height */
-    text-align: center; /* Căn giữa ký tự */
-    display: inline-block; /* Đảm bảo kích thước đúng */
+    line-height: 1;
+    display: flex; /* Dùng flex để căn giữa */
+    justify-content: center;
+    align-items: center;
+    width: 20px; /* Kích thước cố định */
+    height: 20px;
+    text-align: center;
 }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
         .flower:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; font-size: 22px; }
@@ -130,7 +134,7 @@
 const flowers = document.querySelectorAll('.flower');
 let activeFlower = null;
 let offsetX = 0, offsetY = 0;
-const offsetYAdjustment = -10; // Bù cho lệch xuống dưới (thỏ có thể đổi thành -15 hoặc -5 nếu cần)
+const offsetYAdjustment = -5; // Bù lệch nhỏ xuống dưới (thỏ thử đổi nếu cần)
 
 function getEventCoords(event) {
     if (event.type.includes('touch')) {
@@ -145,18 +149,22 @@ function dragStart(event) {
     activeFlower = event.target;
     const coords = getEventCoords(event);
 
-    // Pause animation
+    // Dừng animation và căn chỉnh
     activeFlower.classList.add('dragging');
+    activeFlower.style.animation = 'none'; // Tắt animation fall
 
-    // Dùng offset cố định để căn tâm (bỏ qua rect vì top: -50px làm lệch)
-    offsetX = 10; // Ước lượng nửa chiều rộng ký tự ❀ (font-size: 20px)
-    offsetY = 10 + offsetYAdjustment; // Ước lượng nửa chiều cao, cộng bù lệch
+    // Offset cố định dựa trên font-size: 20px
+    offsetX = 10; // Nửa chiều rộng ký tự ❀
+    offsetY = 10 + offsetYAdjustment; // Nửa chiều cao, bù lệch
 
-    // Đặt vị trí ban đầu dựa trực tiếp trên tọa độ click
+    // Đặt vị trí trực tiếp từ tọa độ click
     activeFlower.style.position = 'absolute';
     activeFlower.style.left = `${coords.x - offsetX}px`;
     activeFlower.style.top = `${coords.y - offsetY}px`;
-    activeFlower.style.transform = 'none'; // Reset transform để tránh lệch
+    activeFlower.style.transform = 'none';
+
+    // Debug: In tọa độ để kiểm tra
+    console.log('Drag start:', { x: coords.x, y: coords.y, left: activeFlower.style.left, top: activeFlower.style.top });
 
     document.addEventListener('mousemove', dragging);
     document.addEventListener('touchmove', dragging, { passive: false });
@@ -170,20 +178,23 @@ function dragging(event) {
     if (!activeFlower) return;
     const coords = getEventCoords(event);
 
-    // Tính vị trí mới sao cho tâm bông hoa nằm dưới ngón tay/chuột
+    // Tính vị trí mới
     let newX = coords.x - offsetX;
     let newY = coords.y - offsetY;
 
     // Giới hạn trong container
     const containerRect = activeFlower.parentElement.getBoundingClientRect();
-    const flowerWidth = 20; // Ước lượng chiều rộng ký tự ❀
-    const flowerHeight = 20; // Ước lượng chiều cao
+    const flowerWidth = 20; // Ước lượng kích thước
+    const flowerHeight = 20;
     newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerWidth));
     newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerHeight));
 
     // Cập nhật vị trí
     activeFlower.style.left = `${newX}px`;
     activeFlower.style.top = `${newY}px`;
+
+    // Debug: In tọa độ khi drag
+    console.log('Dragging:', { x: coords.x, y: coords.y, left: newX, top: newY });
 
     if (event.type === 'touchmove') event.preventDefault();
 }
@@ -192,12 +203,12 @@ function dragEnd(event) {
     if (!activeFlower) return;
     activeFlower.classList.remove('dragging');
 
-    // Thêm hiệu ứng rơi tự do
+    // Hiệu ứng rơi tự do
     activeFlower.style.transition = 'top 2s linear, opacity 2s linear';
     activeFlower.style.top = '100vh';
     activeFlower.style.opacity = '0';
 
-    // Ẩn bông hoa sau khi rơi xong
+    // Ẩn sau khi rơi
     setTimeout(() => {
         activeFlower.style.display = 'none';
     }, 2000);
