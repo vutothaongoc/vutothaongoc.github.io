@@ -136,7 +136,7 @@
 const flowers = document.querySelectorAll('.flower');
 let activeFlower = null;
 let offsetX = 0, offsetY = 0;
-const offsetYAdjustment = -5; // Bù lệch nhỏ xuống dưới (thỏ thử đổi nếu cần)
+const offsetYAdjustment = -5;
 
 function getEventCoords(event) {
     if (event.type.includes('touch')) {
@@ -151,21 +151,19 @@ function dragStart(event) {
     activeFlower = event.target;
     const coords = getEventCoords(event);
 
-    // Dừng animation và căn chỉnh
     activeFlower.classList.add('dragging');
-    activeFlower.style.animation = 'none'; // Tắt animation fall
+    activeFlower.styleGIF animation = 'none';
 
-    // Offset cố định dựa trên font-size: 20px
-    offsetX = 10; // Nửa chiều rộng ký tự ❀
-    offsetY = 10 + offsetYAdjustment; // Nửa chiều cao, bù lệch
+    // Lấy font-size hiện tại để tính offset chính xác
+    const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
+    offsetX = fontSize / 2; // Căn giữa theo kích thước hoa
+    offsetY = fontSize / 2 + offsetYAdjustment;
 
-    // Đặt vị trí trực tiếp từ tọa độ click
     activeFlower.style.position = 'absolute';
     activeFlower.style.left = `${coords.x - offsetX}px`;
     activeFlower.style.top = `${coords.y - offsetY}px`;
     activeFlower.style.transform = 'none';
 
-    // Debug: In tọa độ để kiểm tra
     console.log('Drag start:', { x: coords.x, y: coords.y, left: activeFlower.style.left, top: activeFlower.style.top });
 
     document.addEventListener('mousemove', dragging);
@@ -180,22 +178,19 @@ function dragging(event) {
     if (!activeFlower) return;
     const coords = getEventCoords(event);
 
-    // Tính vị trí mới
     let newX = coords.x - offsetX;
     let newY = coords.y - offsetY;
 
-    // Giới hạn trong container
     const containerRect = activeFlower.parentElement.getBoundingClientRect();
-    const flowerWidth = 20; // Ước lượng kích thước
-    const flowerHeight = 20;
+    const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
+    const flowerWidth = fontSize;
+    const flowerHeight = fontSize;
     newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerWidth));
     newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerHeight));
 
-    // Cập nhật vị trí
     activeFlower.style.left = `${newX}px`;
     activeFlower.style.top = `${newY}px`;
 
-    // Debug: In tọa độ khi drag
     console.log('Dragging:', { x: coords.x, y: coords.y, left: newX, top: newY });
 
     if (event.type === 'touchmove') event.preventDefault();
@@ -205,12 +200,10 @@ function dragEnd(event) {
     if (!activeFlower) return;
     activeFlower.classList.remove('dragging');
 
-    // Hiệu ứng rơi tự do
     activeFlower.style.transition = 'top 2s linear, opacity 2s linear';
     activeFlower.style.top = '100vh';
     activeFlower.style.opacity = '0';
 
-    // Ẩn sau khi rơi
     setTimeout(() => {
         activeFlower.style.display = 'none';
     }, 2000);
