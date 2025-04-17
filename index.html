@@ -117,6 +117,7 @@
 </head>
 <body>
     <audio id="jellySound" src="jelly.wav" preload="auto"></audio>
+    <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
     <div class="flower-container"></div>
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
@@ -142,17 +143,20 @@
 
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
+                const backgroundMusic = document.getElementById('backgroundMusic');
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
                 // Thiết lập âm lượng
                 jellySound.volume = 0.8;
-                console.log('Loading jellySound');
+                backgroundMusic.volume = 0.5;
+                console.log('Loading audio files');
                 try {
                     jellySound.load();
+                    backgroundMusic.load();
                 } catch (error) {
-                    console.error('Lỗi tải jelly.wav:', error);
+                    console.error('Lỗi tải audio:', error);
                 }
 
                 // Khởi tạo âm thanh
@@ -160,14 +164,22 @@
                 function initializeAudio() {
                     if (!isAudioInitialized) {
                         console.log('Initializing audio');
-                        jellySound.play().then(() => {
-                            jellySound.pause();
-                            jellySound.currentTime = 0;
+                        try {
+                            jellySound.play().then(() => {
+                                jellySound.pause();
+                                jellySound.currentTime = 0;
+                            }).catch(error => {
+                                console.error('Lỗi khởi tạo jellySound:', error);
+                            });
+                            backgroundMusic.play().then(() => {
+                                console.log('Background music started');
+                            }).catch(error => {
+                                console.error('Lỗi khởi tạo backgroundMusic:', error);
+                            });
                             isAudioInitialized = true;
-                            console.log('Audio initialized');
-                        }).catch(error => {
-                            console.error('Lỗi khởi tạo jellySound:', error);
-                        });
+                        } catch (error) {
+                            console.error('Lỗi khởi tạo âm thanh:', error);
+                        }
                     }
                 }
 
