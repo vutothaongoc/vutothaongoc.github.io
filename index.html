@@ -37,7 +37,12 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden; pointer-events: none; z-index: 2;
         }
-        .flower {
+        @keyframes fall {
+    0% { transform: translateY(-5vh) rotate(0deg); opacity: 0.8; } /* Bắt đầu: opacity 0.8 */
+    90% { opacity: 0.8; } /* Giữ opacity 0.8 đến gần cuối để tránh mờ quá sớm */
+    100% { transform: translateY(105vh) rotate(360deg); opacity: 0.1; } /* Kết thúc: opacity 0.1 */
+}
+.flower {
     position: absolute;
     top: -50px;
     color: white;
@@ -61,25 +66,25 @@
 .flower.dragging {
     animation-play-state: paused;
     cursor: grabbing;
-    opacity: 0.9; /* Opacity cao khi kéo để dễ thấy */
+    opacity: 0.9; /* Opacity cao khi kéo */
 }
 
-/* Đa dạng hóa kích thước (16px-32px), độ mờ (0.1-0.5), animation-delay gán bằng JS */
-.flower:nth-child(1) { left: 10%; animation-duration: 10s; font-size: 25px; opacity: 0.4; }
-.flower:nth-child(2) { left: 20%; animation-duration: 8s; font-size: 16px; opacity: 0.1; }
-.flower:nth-child(3) { left: 30%; animation-duration: 11s; font-size: 30px; opacity: 0.5; }
-.flower:nth-child(4) { left: 40%; animation-duration: 9s; font-size: 18px; opacity: 0.2; }
-.flower:nth-child(5) { left: 50%; animation-duration: 12s; font-size: 32px; opacity: 0.45; }
-.flower:nth-child(6) { left: 60%; animation-duration: 8s; font-size: 17px; opacity: 0.15; }
-.flower:nth-child(7) { left: 70%; animation-duration: 10s; font-size: 28px; opacity: 0.35; }
-.flower:nth-child(8) { left: 80%; animation-duration: 11s; font-size: 20px; opacity: 0.3; }
-.flower:nth-child(9) { left: 90%; animation-duration: 9s; font-size: 26px; opacity: 0.4; }
-.flower:nth-child(10) { left: 15%; animation-duration: 8s; font-size: 16px; opacity: 0.1; }
-.flower:nth-child(11) { left: 25%; animation-duration: 12s; font-size: 29px; opacity: 0.45; }
-.flower:nth-child(12) { left: 35%; animation-duration: 9s; font-size: 19px; opacity: 0.2; }
-.flower:nth-child(13) { left: 45%; animation-duration: 11s; font-size: 27px; opacity: 0.35; }
-.flower:nth-child(14) { left: 55%; animation-duration: 10s; font-size: 17px; opacity: 0.25; }
-.flower:nth-child(15) { left: 65%; animation-duration: 12s; font-size: 31px; opacity: 0.5; }
+/* Đa dạng hóa kích thước (16px-32px), animation-delay gán bằng JS */
+.flower:nth-child(1) { left: 10%; animation-duration: 10s; font-size: 25px; }
+.flower:nth-child(2) { left: 20%; animation-duration: 8s; font-size: 16px; }
+.flower:nth-child(3) { left: 30%; animation-duration: 11s; font-size: 30px; }
+.flower:nth-child(4) { left: 40%; animation-duration: 9s; font-size: 18px; }
+.flower:nth-child(5) { left: 50%; animation-duration: 12s; font-size: 32px; }
+.flower:nth-child(6) { left: 60%; animation-duration: 8s; font-size: 17px; }
+.flower:nth-child(7) { left: 70%; animation-duration: 10s; font-size: 28px; }
+.flower:nth-child(8) { left: 80%; animation-duration: 11s; font-size: 20px; }
+.flower:nth-child(9) { left: 90%; animation-duration: 9s; font-size: 26px; }
+.flower:nth-child(10) { left: 15%; animation-duration: 8s; font-size: 16px; }
+.flower:nth-child(11) { left: 25%; animation-duration: 12s; font-size: 29px; }
+.flower:nth-child(12) { left: 35%; animation-duration: 9s; font-size: 19px; }
+.flower:nth-child(13) { left: 45%; animation-duration: 11s; font-size: 27px; }
+.flower:nth-child(14) { left: 55%; animation-duration: 10s; font-size: 17px; }
+.flower:nth-child(15) { left: 65%; animation-duration: 12s; font-size: 31px; }
         h1 {
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
