@@ -62,22 +62,22 @@
             cursor: grabbing;
             opacity: 0.9;
         }
-        /* Đa dạng hóa kích thước (25px-35px) và animation-duration (15s-20s) */
+        /* Đa dạng hóa kích thước (25px-35px), animation-duration (15s-20s), và delay (0s-8s) */
         .flower:nth-child(1) { left: 5%; animation-duration: 16s; font-size: 27px; animation-delay: 0s; }
-        .flower:nth-child(2) { left: 15%; animation-duration: 18s; font-size: 30px; animation-delay: 0.5s; }
-        .flower:nth-child(3) { left: 25%; animation-duration: 15s; font-size: 32px; animation-delay: 1s; }
-        .flower:nth-child(4) { left: 35%; animation-duration: 17s; font-size: 25px; animation-delay: 1.5s; }
-        .flower:nth-child(5) { left: 45%; animation-duration: 19s; font-size: 35px; animation-delay: 2s; }
-        .flower:nth-child(6) { left: 55%; animation-duration: 15s; font-size: 28px; animation-delay: 2.5s; }
-        .flower:nth-child(7) { left: 65%; animation-duration: 20s; font-size: 31px; animation-delay: 3s; }
-        .flower:nth-child(8) { left: 75%; animation-duration: 16s; font-size: 26px; animation-delay: 0.2s; }
-        .flower:nth-child(9) { left: 85%; animation-duration: 18s; font-size: 29px; animation-delay: 0.7s; }
-        .flower:nth-child(10) { left: 10%; animation-duration: 15s; font-size: 33px; animation-delay: 1.2s; }
-        .flower:nth-child(11) { left: 20%; animation-duration: 17s; font-size: 27px; animation-delay: 1.7s; }
-        .flower:nth-child(12) { left: 30%; animation-duration: 19s; font-size: 30px; animation-delay: 2.2s; }
-        .flower:nth-child(13) { left: 40%; animation-duration: 16s; font-size: 32px; animation-delay: 2.7s; }
-        .flower:nth-child(14) { left: 50%; animation-duration: 18s; font-size: 25px; animation-delay: 0.3s; }
-        .flower:nth-child(15) { left: 60%; animation-duration: 17s; font-size: 34px; animation-delay: 0.8s; }
+        .flower:nth-child(2) { left: 15%; animation-duration: 18s; font-size: 30px; animation-delay: 1s; }
+        .flower:nth-child(3) { left: 25%; animation-duration: 15s; font-size: 32px; animation-delay: 2s; }
+        .flower:nth-child(4) { left: 35%; animation-duration: 17s; font-size: 25px; animation-delay: 3s; }
+        .flower:nth-child(5) { left: 45%; animation-duration: 19s; font-size: 35px; animation-delay: 4s; }
+        .flower:nth-child(6) { left: 55%; animation-duration: 15s; font-size: 28px; animation-delay: 5s; }
+        .flower:nth-child(7) { left: 65%; animation-duration: 20s; font-size: 31px; animation-delay: 6s; }
+        .flower:nth-child(8) { left: 75%; animation-duration: 16s; font-size: 26px; animation-delay: 7s; }
+        .flower:nth-child(9) { left: 85%; animation-duration: 18s; font-size: 29px; animation-delay: 8s; }
+        .flower:nth-child(10) { left: 10%; animation-duration: 15s; font-size: 33px; animation-delay: 0.5s; }
+        .flower:nth-child(11) { left: 20%; animation-duration: 17s; font-size: 27px; animation-delay: 1.5s; }
+        .flower:nth-child(12) { left: 30%; animation-duration: 19s; font-size: 30px; animation-delay: 2.5s; }
+        .flower:nth-child(13) { left: 40%; animation-duration: 16s; font-size: 32px; animation-delay: 3.5s; }
+        .flower:nth-child(14) { left: 50%; animation-duration: 18s; font-size: 25px; animation-delay: 4.5s; }
+        .flower:nth-child(15) { left: 60%; animation-duration: 17s; font-size: 34px; animation-delay: 5.5s; }
         h1 {
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -136,9 +136,9 @@
         let offsetX = 0, offsetY = 0;
         const offsetYAdjustment = -5;
 
-        // Gán animation-delay ban đầu (đã có trong CSS)
+        // Debug: Kiểm tra hoa khởi tạo
         flowers.forEach(flower => {
-            console.log('Flower initialized:', flower); // Debug để kiểm tra hoa
+            console.log('Flower initialized:', flower);
         });
 
         function getEventCoords(event) {
@@ -166,7 +166,7 @@
             activeFlower.style.top = `${coords.y - offsetY}px`;
             activeFlower.style.transform = 'none';
 
-            console.log('Drag start:', activeFlower); // Debug kéo hoa
+            console.log('Drag start:', activeFlower);
 
             document.addEventListener('mousemove', dragging);
             document.addEventListener('touchmove', dragging, { passive: false });
