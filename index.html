@@ -144,7 +144,7 @@ function dragStart(event) {
     // Thiết lập inline để override CSS
     activeFlower.style.left = `${rect.left}px`;
     activeFlower.style.top  = `${rect.top}px`;
-    activeFlower.style.transform = 'none'; // Đã thêm để sửa lỗi lệch
+    activeFlower.style.transform = 'none'; // Reset transform để không lệch
 
     initialX = coords.x;
     initialY = coords.y;
@@ -181,15 +181,17 @@ function dragging(event) {
 
 function dragEnd(event) {
     if (!activeFlower) return;
-    // Giữ nguyên left/top, dừng animation
     activeFlower.classList.remove('dragging');
-    activeFlower.style.animation = 'none'; // Đã thêm để dừng animation
-
+    activeFlower.style.transition = 'top 2s linear, opacity 2s linear';
+    activeFlower.style.top = '100vh';
+    activeFlower.style.opacity = '0';
+    setTimeout(() => {
+        activeFlower.style.display = 'none';
+    }, 2000);
     document.removeEventListener('mousemove', dragging);
     document.removeEventListener('touchmove', dragging);
     document.removeEventListener('mouseup',   dragEnd);
     document.removeEventListener('touchend',  dragEnd);
-
     activeFlower = null;
 }
 
