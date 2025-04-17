@@ -163,10 +163,10 @@
 
             // Thiết lập âm lượng
             jellySound.volume = 0.8;
-            backgroundMusic.volume = 0.3; // Nhạc nền nhỏ hơn hiệu ứng
+            backgroundMusic.volume = 0.3;
 
-            // Kiểm tra trạng thái âm thanh từ localStorage
-            let isMuted = localStorage.getItem('isMuted') === 'true';
+            // Kiểm tra trạng thái âm thanh từ localStorage, mặc định bật
+            let isMuted = localStorage.getItem('isMuted') === 'true' || false;
             updateMuteState();
 
             // Tải trước cả hai âm thanh
@@ -322,7 +322,7 @@
                 activeFlower.style.opacity = '0';
 
                 setTimeout(() => {
-                    flower.style.display = 'none';
+                    activeFlower.style.display = 'none';
                 }, 2000);
 
                 document.removeEventListener('mousemove', dragging);
@@ -340,6 +340,7 @@
             });
 
             function handleBounce(event) {
+                console.log('Handle bounce:', event.type);
                 const button = event.currentTarget;
                 if (button.classList.contains('bounce')) return;
 
@@ -348,10 +349,14 @@
                     button.classList.remove('bounce');
                 }, 300);
 
-                jellySound.currentTime = 0;
-                jellySound.play().catch(error => {
-                    console.log('Lỗi phát âm thanh:', error);
-                });
+                if (!isMuted) {
+                    jellySound.currentTime = 0;
+                    jellySound.play().then(() => {
+                        console.log('Jelly sound played');
+                    }).catch(error => {
+                        console.log('Lỗi phát âm thanh jelly:', error);
+                    });
+                }
 
                 if (event.type === 'touchstart') {
                     event.preventDefault();
