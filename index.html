@@ -14,7 +14,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.8); }
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.7); }
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0.1; }
         }
         :root {
@@ -124,9 +124,10 @@
             const offsetYAdjustment = -5;
 
             flowers.forEach((flower, index) => {
-                // Phân bố vị trí ngẫu nhiên theo chiều ngang
-                const leftPercent = (index / (flowers.length - 1)) * 100;
-                flower.style.left = `${leftPercent}%`;
+                // Phân bố vị trí ngẫu nhiên theo chiều ngang, thêm biến động nhỏ
+                const baseLeft = (index / (flowers.length - 1)) * 100;
+                const randomOffset = (Math.random() - 0.5) * 10; // Biến động ±5%
+                flower.style.left = `${baseLeft + randomOffset}%`;
 
                 // Kích thước ngẫu nhiên từ 30px đến 60px
                 const size = 30 + Math.random() * 30;
@@ -134,16 +135,16 @@
                 flower.style.width = `${size}px`;
                 flower.style.height = `${size}px`;
 
-                // Thời gian rơi ngẫu nhiên từ 10s đến 15s
-                const duration = 10 + Math.random() * 5;
+                // Thời gian rơi ngẫu nhiên từ 12s đến 18s
+                const duration = 12 + Math.random() * 6;
                 flower.style.animationDuration = `${duration}s`;
 
-                // Độ trễ ngẫu nhiên từ 0s đến 5s
-                const delay = Math.random() * 5;
+                // Độ trễ ngẫu nhiên từ 0s đến 8s để thưa hơn
+                const delay = Math.random() * 8;
                 flower.style.animationDelay = `${delay}s`;
 
-                // Độ trong dựa trên kích thước (0.3 cho 60px, 0.8 cho 30px)
-                const opacity = 0.8 - ((size - 30) / 30) * 0.5;
+                // Độ trong: 0.7 cho size 30px, 0.3 cho size 60px
+                const opacity = 0.7 - ((size - 30) / 30) * 0.4;
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
             });
 
