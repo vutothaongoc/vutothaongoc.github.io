@@ -37,10 +37,10 @@
         }
         @keyframes jelly {
             0% { transform: scale(1, 1); }
-            25% { transform: scale(1.2, 0.8); }
-            50% { transform: scale(0.8, 1.2); }
-            75% { transform: scale(1.1, 0.9); }
-            100% { transform: scale(1, 1); }
+            40% { transform: scale(1.15, 0.85); } /* Nẩy chính, nhẹ nhàng */
+            60% { transform: scale(0.9, 1.1); } /* Phục hồi, hơi nén */
+            80% { transform: scale(1.05, 0.95); } /* Nẩy ngắn hơn */
+            100% { transform: scale(1, 1); } /* Trở về ban đầu */
         }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
@@ -105,7 +105,7 @@
             transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         .links a:active {
-            animation: jelly 0.4s ease;
+            animation: jelly 0.6s ease-in-out; /* Tăng thời gian để mượt hơn */
         }
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
