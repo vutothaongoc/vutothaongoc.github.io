@@ -159,32 +159,43 @@
                     console.error('Lỗi tải audio:', error);
                 }
 
-                // Khởi tạo âm thanh
-                let isAudioInitialized = false;
-                function initializeAudio() {
-                    if (!isAudioInitialized) {
-                        console.log('Initializing audio');
-                        try {
-                            jellySound.play().then(() => {
-                                jellySound.pause();
-                                jellySound.currentTime = 0;
-                            }).catch(error => {
-                                console.error('Lỗi khởi tạo jellySound:', error);
-                            });
-                            backgroundMusic.play().then(() => {
-                                console.log('Background music started');
-                            }).catch(error => {
-                                console.error('Lỗi khởi tạo backgroundMusic:', error);
-                            });
-                            isAudioInitialized = true;
-                        } catch (error) {
-                            console.error('Lỗi khởi tạo âm thanh:', error);
-                        }
+                // Thử autoplay khi trang tải
+                function tryAutoPlay() {
+                    console.log('Trying autoplay');
+                    try {
+                        backgroundMusic.play().then(() => {
+                            console.log('Background music autoplay succeeded');
+                        }).catch(error => {
+                            console.error('Autoplay bị chặn, cần tương tác:', error);
+                            // Fallback: Phát sau tương tác đầu tiên
+                            const playOnInteraction = () => {
+                                backgroundMusic.play().then(() => {
+                                    console.log('Background music started after interaction');
+                                }).catch(err => {
+                                    console.error('Lỗi phát sau tương tác:', err);
+                                });
+                                document.removeEventListener('click', playOnInteraction);
+                                document.removeEventListener('touchstart', playOnInteraction);
+                            };
+                            document.addEventListener('click', playOnInteraction, { once: true });
+                            document.addEventListener('touchstart', playOnInteraction, { once: true, passive: false });
+                        });
+
+                        // Khởi tạo jellySound
+                        jellySound.play().then(() => {
+                            jellySound.pause();
+                            jellySound.currentTime = 0;
+                            console.log('jellySound initialized');
+                        }).catch(error => {
+                            console.error('Lỗi khởi tạo jellySound:', error);
+                        });
+                    } catch (error) {
+                        console.error('Lỗi khởi tạo âm thanh:', error);
                     }
                 }
 
-                document.addEventListener('click', initializeAudio, { once: true });
-                document.addEventListener('touchstart', initializeAudio, { once: true, passive: false });
+                // Gọi autoplay ngay khi trang tải
+                tryAutoPlay();
 
                 // Tạo bông tuyết
                 const isMobile = window.innerWidth <= 576;
