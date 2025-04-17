@@ -37,11 +37,10 @@
         }
         @keyframes jellyBounce {
             0% { transform: scale(1, 1); }
-            25% { transform: scale(1.25, 0.75); }
-            50% { transform: scale(0.85, 1.15); }
-            75% { transform: scale(1.1, 0.9); }
-            80% { transform: scale(1, 1); }
-            90% { transform: scale(1.15, 0.85); }
+            33% { transform: scale(1.25, 0.75); }
+            67% { transform: scale(0.85, 1.15); }
+            75% { transform: scale(1, 1); }
+            85% { transform: scale(1.15, 0.85); }
             95% { transform: scale(0.9, 1.1); }
             100% { transform: scale(1.05, 0.95); }
         }
@@ -100,7 +99,7 @@
             display: inline-block; margin: 8px 6px; padding: 12px 28px;
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
             color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
-            transition: all 0.3 SNS ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border: none; position: relative; z-index: 1;
         }
         .links a:hover {
@@ -108,7 +107,7 @@
             transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         .links a.bounce {
-            animation: jellyBounce 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             transition: none;
         }
         @media (max-width: 576px) {
@@ -182,7 +181,7 @@
                 }, (duration + delay) * 1000);
             }
 
-            for (let i = 0; i < flowerCount; i++) {
+            for (let i = 0정 i < flowerCount; i++) {
                 createFlower(i);
             }
 
@@ -224,7 +223,7 @@
                 const coords = getEventCoords(event);
 
                 let newX = coords.x - offsetX;
-                let newY = coords.y - offsetY;
+                let порівня newY = coords.y - offsetY;
 
                 const containerRect = activeFlower.parentElement.getBoundingClientRect();
                 const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
@@ -261,26 +260,32 @@
             const jellySound = document.getElementById('jellySound');
             jellySound.volume = 0.5;
 
+            // Khởi động âm thanh khi tương tác đầu tiên để tránh trễ
+            document.addEventListener('click', () => {
+                jellySound.load();
+            }, { once: true });
+
             document.querySelectorAll('.links a').forEach(button => {
                 button.addEventListener('click', handleBounce);
                 button.addEventListener('touchstart', handleBounce, { passive: false });
+                button.addEventListener('mousedown', handleBounce);
             });
 
             function handleBounce(event) {
                 const button = event.currentTarget;
-                button.classList.add('bounce');
-                setTimeout(() => {
-                    button.classList.remove('bounce');
-                }, 400);
                 jellySound.currentTime = 0;
                 jellySound.play().catch(error => {
                     console.log('Lỗi phát âm thanh:', error);
                 });
+                button.classList.add('bounce');
+                setTimeout(() => {
+                    button.classList.remove('bounce');
+                }, 300);
                 if (event.type === 'touchstart') {
                     event.preventDefault();
                     setTimeout(() => {
                         window.open(button.href, '_blank');
-                    }, 400);
+                    }, 300);
                 }
             }
         });
