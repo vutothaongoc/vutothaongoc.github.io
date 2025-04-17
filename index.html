@@ -57,7 +57,7 @@
             position: absolute;
             top: -50px;
             color: white;
-            font-size: 30px; /* Giá trị mặc định, sẽ được JS ghi đè */
+            font-size: 30px;
             user-select: none;
             animation: fall linear infinite;
             cursor: grab;
@@ -104,18 +104,11 @@
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; }
-            .flower:nth-child(n+11) { display: none; } /* Hiển thị 10 bông trên mobile */
         }
     </style>
 </head>
 <body>
-    <div class="flower-container">
-        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
-        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
-        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
-        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
-        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
-    </div>
+    <div class="flower-container"></div>
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
         <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
@@ -133,15 +126,25 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const flowers = document.querySelectorAll('.flower');
+            const flowerContainer = document.querySelector('.flower-container');
             let activeFlower = null;
             let offsetX = 0, offsetY = 0;
             const offsetYAdjustment = -5;
 
-            flowers.forEach((flower, index) => {
-                // Phân bố vị trí ngẫu nhiên theo chiều ngang
-                const baseLeft = (index / (flowers.length - 1)) * 100;
-                const randomOffset = (Math.random() - 0.5) * 15; // Biến động ±7.5%
+            // Xác định số lượng bông tuyết dựa trên kích thước màn hình
+            const isMobile = window.innerWidth <= 576;
+            const flowerCount = isMobile ? 10 : 20;
+
+            // Hàm tạo một bông tuyết
+            function createFlower(index, delay = 0) {
+                const flower = document.createElement('span');
+                flower.className = 'flower';
+                flower.innerHTML = '❅';
+                flowerContainer.appendChild(flower);
+
+                // Vị trí ngẫu nhiên theo chiều ngang
+                const baseLeft = (index % flowerCount) / (flowerCount - 1) * 100;
+                const randomOffset = (Math.random() - 0.5) * 15;
                 flower.style.left = `${baseLeft + randomOffset}%`;
 
                 // Kích thước ngẫu nhiên từ 30px đến 60px
@@ -154,15 +157,29 @@
                 const duration = 14 + Math.random() * 6;
                 flower.style.animationDuration = `${duration}s`;
 
-                // Độ trễ ngẫu nhiên từ 0s đến 10s
-                const delay = Math.random() * 10;
+                // Độ trễ ban đầu
                 flower.style.animationDelay = `${delay}s`;
 
                 // Độ trong: 0.7 cho size 30px, 0.3 cho size 60px
                 const opacity = 0.7 - ((size - 30) / 30) * 0.4;
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
-                console.log(`Flower ${index + 1}: size=${size.toFixed(2)}px, opacity=${opacity.toFixed(2)}`);
-            });
+
+                // Thêm sự kiện kéo
+                flower.addEventListener('mousedown', dragStart);
+                flower.addEventListener('touchstart', dragStart, { passive: false });
+
+                // Tự động tạo bông tuyết mới sau khi bông hiện tại biến mất
+                setTimeout(() => {
+                    flower.remove();
+                    createFlower(index, 0);
+                }, (duration + delay) * 1000);
+            }
+
+            // Tạo các bông tuyết ban đầu với độ trễ đều
+            for (let i = 0; i < flowerCount; i++) {
+                const delay = (i * 10) / flowerCount; // Độ trễ tăng đều, tối đa 10s chia đều
+                createFlower(i, delay);
+            }
 
             function getEventCoords(event) {
                 if (event.type.includes('touch')) {
@@ -234,11 +251,6 @@
 
                 activeFlower = null;
             }
-
-            flowers.forEach(flower => {
-                flower.addEventListener('mousedown', dragStart);
-                flower.addEventListener('touchstart', dragStart, { passive: false });
-            });
         });
     </script>
 </body>
