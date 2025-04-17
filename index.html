@@ -16,19 +16,19 @@
         @keyframes fall {
             0% {
                 transform: translateY(-10vh) rotate(0deg);
-                opacity: var(--flower-opacity, 0.8);
+                opacity: var(--flower-opacity, 0.9);
             }
             25% {
                 transform: translateY(25vh) rotate(90deg);
-                opacity: var(--flower-opacity, 0.8);
+                opacity: var(--flower-opacity, 0.9);
             }
             50% {
                 transform: translateY(50vh) rotate(180deg);
-                opacity: var(--flower-opacity, 0.8);
+                opacity: var(--flower-opacity, 0.9);
             }
             75% {
                 transform: translateY(75vh) rotate(270deg);
-                opacity: var(--flower-opacity, 0.8);
+                opacity: var(--flower-opacity, 0.9);
             }
             100% {
                 transform: translateY(110vh) rotate(360deg);
@@ -169,7 +169,7 @@
                 const delay = (index * totalCycleTime) / flowerCount;
                 flower.style.animationDelay = `${delay}s`;
 
-                const opacity = 0.8 - ((size - 30) / 30) * 0.4;
+                const opacity = 0.9 - ((size - 30) / 30) * 0.4;
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
 
                 flower.addEventListener('mousedown', dragStart);
