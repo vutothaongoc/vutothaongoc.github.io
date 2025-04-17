@@ -233,6 +233,15 @@
                 flower.addEventListener('touchstart', dragStart, { passive: false });
             });
         });
+    document.querySelectorAll('.flower').forEach(flower => {
+        const size = parseFloat(getComputedStyle(flower).fontSize); // Lấy font-size
+        const minSize = 25, maxSize = 50;
+        const minOpacity = 0.3, maxOpacity = 0.8;
+
+        // Tính độ trong dựa trên kích thước
+        const opacity = maxOpacity - ((size - minSize) / (maxSize - minSize)) * (maxOpacity - minOpacity);
+        flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
+    });
     </script>
 </body>
 </html>
