@@ -19,19 +19,19 @@
                 opacity: var(--flower-opacity, 0.7);
             }
             25% {
-                transform: translateY(25vh) translateX(2vw) rotate(90deg);
+                transform: translateY(25vh) translateX(5vw) rotate(45deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             50% {
-                transform: translateY(50vh) translateX(-2vw) rotate(180deg);
+                transform: translateY(50vh) translateX(-5vw) rotate(90deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             75% {
-                transform: translateY(75vh) translateX(2vw) rotate(270deg);
+                transform: translateY(75vh) translateX(5vw) rotate(135deg);
                 opacity: var(--flower-opacity, 0.7);
             }
             100% {
-                transform: translateY(110vh) translateX(-2vw) rotate(360deg);
+                transform: translateY(110vh) translateX(-5vw) rotate(180deg);
                 opacity: 0.1;
             }
         }
@@ -150,12 +150,12 @@
                 flower.style.width = `${size}px`;
                 flower.style.height = `${size}px`;
 
-                // Thời gian rơi ngẫu nhiên từ 14s đến 20s
-                const duration = 14 + Math.random() * 6;
+                // Thời gian rơi ngẫu nhiên từ 10s đến 16s
+                const duration = 10 + Math.random() * 6;
                 flower.style.animationDuration = `${duration}s`;
 
-                // Độ trễ ngẫu nhiên từ 0s đến 10s
-                const delay = Math.random() * 10;
+                // Độ trễ ngẫu nhiên từ 0s đến 8s
+                const delay = Math.random() * 8;
                 flower.style.animationDelay = `${delay}s`;
 
                 // Độ trong: 0.7 cho size 30px, 0.3 cho size 60px
@@ -163,8 +163,12 @@
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
 
                 // Tạo độ xô lệch ngang ngẫu nhiên ban đầu
-                const initialHorizontalOffset = (Math.random() - 0.5) * 2; // Giá trị từ -1vw đến 1vw
+                const initialHorizontalOffset = (Math.random() - 0.5) * 4; // Giá trị từ -2vw đến 2vw
                 flower.style.transform = `translateX(${initialHorizontalOffset}vw)`;
+
+                // Biến động zigzag ngẫu nhiên
+                const zigzagAmplitude = 3 + Math.random() * 2; // Biên độ zigzag từ 3vw đến 5vw
+                flower.style.setProperty('--zigzag-amplitude', `${zigzagAmplitude}vw`);
             });
 
             function getEventCoords(event) {
