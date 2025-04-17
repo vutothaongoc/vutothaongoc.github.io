@@ -38,9 +38,9 @@
         @keyframes jellyBounce {
             0% { transform: scale(1, 1); }
             33% { transform: scale(1.25, 0.75); }
-            67% { transform: scale(0.85, 1.15); }
+            66% { transform: scale(0.85, 1.15); }
             75% { transform: scale(1, 1); }
-            85% { transform: scale(1.15, 0.85); }
+            90% { transform: scale(1.15, 0.85); }
             95% { transform: scale(0.9, 1.1); }
             100% { transform: scale(1.05, 0.95); }
         }
@@ -181,7 +181,7 @@
                 }, (duration + delay) * 1000);
             }
 
-            for (let i = 0정 i < flowerCount; i++) {
+            for (let i = 0; i < flowerCount; i++) {
                 createFlower(i);
             }
 
@@ -223,7 +223,7 @@
                 const coords = getEventCoords(event);
 
                 let newX = coords.x - offsetX;
-                let порівня newY = coords.y - offsetY;
+                let newY = coords.y - offsetY;
 
                 const containerRect = activeFlower.parentElement.getBoundingClientRect();
                 const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
@@ -260,11 +260,6 @@
             const jellySound = document.getElementById('jellySound');
             jellySound.volume = 0.5;
 
-            // Khởi động âm thanh khi tương tác đầu tiên để tránh trễ
-            document.addEventListener('click', () => {
-                jellySound.load();
-            }, { once: true });
-
             document.querySelectorAll('.links a').forEach(button => {
                 button.addEventListener('click', handleBounce);
                 button.addEventListener('touchstart', handleBounce, { passive: false });
@@ -273,14 +268,18 @@
 
             function handleBounce(event) {
                 const button = event.currentTarget;
-                jellySound.currentTime = 0;
-                jellySound.play().catch(error => {
-                    console.log('Lỗi phát âm thanh:', error);
-                });
+                if (button.classList.contains('bounce')) return;
+
                 button.classList.add('bounce');
                 setTimeout(() => {
                     button.classList.remove('bounce');
                 }, 300);
+
+                jellySound.currentTime = 0;
+                jellySound.play().catch(error => {
+                    console.log('Lỗi phát âm thanh:', error);
+                });
+
                 if (event.type === 'touchstart') {
                     event.preventDefault();
                     setTimeout(() => {
