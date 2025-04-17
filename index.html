@@ -14,8 +14,17 @@
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.7); }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0.1; }
+            0% { 
+                transform: translateY(-10vh) translateX(0) rotate(0deg); 
+                opacity: var(--flower-opacity, 0.7); 
+            }
+            25% { transform: translateY(25vh) translateX(2vw) rotate(180deg); }
+            50% { transform: translateY(50vh) translateX(-2vw) rotate(360deg); }
+            75% { transform: translateY(75vh) translateX(2vw) rotate(540deg); }
+            100% { 
+                transform: translateY(110vh) translateX(0) rotate(720deg); 
+                opacity: 0.1; 
+            }
         }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
@@ -86,20 +95,18 @@
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; }
-            .flower:nth-child(n+16) { display: none; } /* Hiển thị 15 bông trên mobile */
+            .flower:nth-child(n+11) { display: none; } /* Hiển thị 10 bông trên mobile */
         }
     </style>
 </head>
 <body>
     <div class="flower-container">
-        <!-- Tạo 20 bông hoa -->
+        <!-- Tạo 15 bông hoa -->
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
         <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
-        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
-        <span class="flower">❅</span> <span class="flower">❅</span>
     </div>
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
@@ -124,9 +131,9 @@
             const offsetYAdjustment = -5;
 
             flowers.forEach((flower, index) => {
-                // Phân bố vị trí ngẫu nhiên theo chiều ngang, thêm biến động nhỏ
+                // Phân bố vị trí ngẫu nhiên theo chiều ngang, thêm biến động
                 const baseLeft = (index / (flowers.length - 1)) * 100;
-                const randomOffset = (Math.random() - 0.5) * 10; // Biến động ±5%
+                const randomOffset = (Math.random() - 0.5) * 15; // Biến động ±7.5%
                 flower.style.left = `${baseLeft + randomOffset}%`;
 
                 // Kích thước ngẫu nhiên từ 30px đến 60px
@@ -135,12 +142,12 @@
                 flower.style.width = `${size}px`;
                 flower.style.height = `${size}px`;
 
-                // Thời gian rơi ngẫu nhiên từ 12s đến 18s
-                const duration = 12 + Math.random() * 6;
+                // Thời gian rơi ngẫu nhiên từ 14s đến 20s
+                const duration = 14 + Math.random() * 6;
                 flower.style.animationDuration = `${duration}s`;
 
-                // Độ trễ ngẫu nhiên từ 0s đến 8s để thưa hơn
-                const delay = Math.random() * 8;
+                // Độ trễ ngẫu nhiên từ 0s đến 10s để thưa hơn
+                const delay = Math.random() * 10;
                 flower.style.animationDelay = `${delay}s`;
 
                 // Độ trong: 0.7 cho size 30px, 0.3 cho size 60px
