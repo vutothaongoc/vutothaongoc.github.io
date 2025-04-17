@@ -50,9 +50,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    line-height: 1; /* Đảm bảo không có khoảng cách do line-height */
+    line-height: 1; /* Loại bỏ khoảng cách do line-height */
     text-align: center; /* Căn giữa ký tự */
-    display: inline-block; /* Đảm bảo kích thước đúng với nội dung */
+    display: inline-block; /* Đảm bảo kích thước đúng */
 }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
         .flower:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; font-size: 22px; }
@@ -130,7 +130,7 @@
 const flowers = document.querySelectorAll('.flower');
 let activeFlower = null;
 let offsetX = 0, offsetY = 0;
-const offsetYAdjustment = -10; // Điều chỉnh để bù lệch xuống dưới (thỏ có thể thử đổi thành -15 hoặc -5 nếu cần)
+const offsetYAdjustment = -10; // Bù cho lệch xuống dưới (thỏ có thể đổi thành -15 hoặc -5 nếu cần)
 
 function getEventCoords(event) {
     if (event.type.includes('touch')) {
@@ -148,14 +148,11 @@ function dragStart(event) {
     // Pause animation
     activeFlower.classList.add('dragging');
 
-    // Lấy bounding box của bông hoa
-    const rect = activeFlower.getBoundingClientRect();
+    // Dùng offset cố định để căn tâm (bỏ qua rect vì top: -50px làm lệch)
+    offsetX = 10; // Ước lượng nửa chiều rộng ký tự ❀ (font-size: 20px)
+    offsetY = 10 + offsetYAdjustment; // Ước lượng nửa chiều cao, cộng bù lệch
 
-    // Tính offset từ tâm bông hoa đến điểm click, với điều chỉnh
-    offsetX = rect.width / 2;
-    offsetY = rect.height / 2 + offsetYAdjustment;
-
-    // Đặt vị trí ban đầu chính xác
+    // Đặt vị trí ban đầu dựa trực tiếp trên tọa độ click
     activeFlower.style.position = 'absolute';
     activeFlower.style.left = `${coords.x - offsetX}px`;
     activeFlower.style.top = `${coords.y - offsetY}px`;
@@ -173,17 +170,16 @@ function dragging(event) {
     if (!activeFlower) return;
     const coords = getEventCoords(event);
 
-    // Lấy lại bounding box để đảm bảo kích thước chính xác
-    const rect = activeFlower.getBoundingClientRect();
-
     // Tính vị trí mới sao cho tâm bông hoa nằm dưới ngón tay/chuột
     let newX = coords.x - offsetX;
     let newY = coords.y - offsetY;
 
     // Giới hạn trong container
     const containerRect = activeFlower.parentElement.getBoundingClientRect();
-    newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - rect.width));
-    newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - rect.height));
+    const flowerWidth = 20; // Ước lượng chiều rộng ký tự ❀
+    const flowerHeight = 20; // Ước lượng chiều cao
+    newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerWidth));
+    newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerHeight));
 
     // Cập nhật vị trí
     activeFlower.style.left = `${newX}px`;
