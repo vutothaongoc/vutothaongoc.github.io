@@ -41,7 +41,7 @@
     position: absolute;
     top: -50px;
     color: white;
-    font-size: 20px;
+    font-size: 20px; /* Giá trị mặc định, sẽ được ghi đè */
     user-select: none;
     animation: fall linear infinite;
     cursor: grab;
@@ -51,33 +51,35 @@
     padding: 0;
     box-sizing: border-box;
     line-height: 1;
-    display: flex; /* Dùng flex để căn giữa */
+    display: flex;
     justify-content: center;
     align-items: center;
-    width: 20px; /* Kích thước cố định */
-    height: 20px;
+    width: 32px; /* Tăng kích thước container cho hoa lớn nhất */
+    height: 32px;
     text-align: center;
 }
-        .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
-        .flower:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; font-size: 22px; }
-        .flower:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 1s; opacity: 0.8; }
-        .flower:nth-child(3) { left: 30%; animation-duration: 14s; animation-delay: 3s; font-size: 18px; }
-        .flower:nth-child(4) { left: 40%; animation-duration: 11s; animation-delay: 5s; opacity: 0.9; }
-        .flower:nth-child(5) { left: 50%; animation-duration: 16s; animation-delay: 2s; font-size: 24px; }
-        .flower:nth-child(6) { left: 60%; animation-duration: 12s; animation-delay: 6s; }
-        .flower:nth-child(7) { left: 70%; animation-duration: 13s; animation-delay: 4s; font-size: 19px; opacity: 0.85; }
-        .flower:nth-child(8) { left: 80%; animation-duration: 9s; animation-delay: 7s; }
-        .flower:nth-child(9) { left: 90%; animation-duration: 15s; animation-delay: 1s; font-size: 21px; }
-        .flower:nth-child(10) { left: 15%; animation-duration: 10s; animation-delay: 8s; opacity: 0.75; }
-        .flower:nth-child(11) { left: 25%; animation-duration: 14s; animation-delay: 9s; font-size: 20px; }
-        .flower:nth-child(12) { left: 35%; animation-duration: 11s; animation-delay: 10s; }
-        .flower:nth-child(13) { left: 45%; animation-duration: 16s; animation-delay: 0s; font-size: 17px; opacity: 0.95; }
-        .flower:nth-child(14) { left: 55%; animation-duration: 12s; animation-delay: 11s; }
-        .flower:nth-child(15) { left: 65%; animation-duration: 13s; animation-delay: 2s; font-size: 23px; }
-        .content-wrapper {
-            opacity: 0; animation: fadeIn 1s ease-out forwards; animation-delay: 0.2s;
-            max-width: 700px; margin: 0 auto; padding: 30px; position: relative; z-index: 1;
-        }
+.flower.dragging {
+    animation-play-state: paused;
+    cursor: grabbing;
+    opacity: 0.9;
+}
+
+/* Đa dạng hóa kích thước và độ mờ */
+.flower:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; font-size: 25px; opacity: 0.9; }
+.flower:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 1s; font-size: 12px; opacity: 0.5; }
+.flower:nth-child(3) { left: 30%; animation-duration: 14s; animation-delay: 3s; font-size: 30px; opacity: 1.0; }
+.flower:nth-child(4) { left: 40%; animation-duration: 11s; animation-delay: 5s; font-size: 16px; opacity: 0.6; }
+.flower:nth-child(5) { left: 50%; animation-duration: 16s; animation-delay: 2s; font-size: 32px; opacity: 0.95; }
+.flower:nth-child(6) { left: 60%; animation-duration: 12s; animation-delay: 6s; font-size: 14px; opacity: 0.55; }
+.flower:nth-child(7) { left: 70%; animation-duration: 13s; animation-delay: 4s; font-size: 28px; opacity: 0.85; }
+.flower:nth-child(8) { left: 80%; animation-duration: 9s; animation-delay: 7s; font-size: 18px; opacity: 0.7; }
+.flower:nth-child(9) { left: 90%; animation-duration: 15s; animation-delay: 1s; font-size: 26px; opacity: 0.9; }
+.flower:nth-child(10) { left: 15%; animation-duration: 10s; animation-delay: 8s; font-size: 13px; opacity: 0.5; }
+.flower:nth-child(11) { left: 25%; animation-duration: 14s; animation-delay: 9s; font-size: 29px; opacity: 0.95; }
+.flower:nth-child(12) { left: 35%; animation-duration: 11s; animation-delay: 10s; font-size: 15px; opacity: 0.6; }
+.flower:nth-child(13) { left: 45%; animation-duration: 16s; animation-delay: 0s; font-size: 27px; opacity: 0.85; }
+.flower:nth-child(14) { left: 55%; animation-duration: 12s; animation-delay: 11s; font-size: 17px; opacity: 0.65; }
+.flower:nth-child(15) { left: 65%; animation-duration: 13s; animation-delay: 2s; font-size: 31px; opacity: 1.0; }
         h1 {
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
