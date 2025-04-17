@@ -16,19 +16,19 @@
         @keyframes fall {
             0% {
                 transform: translateY(-10vh) rotate(0deg);
-                opacity: var(--flower-opacity, 0.7);
+                opacity: var(--flower-opacity, 0.8);
             }
             25% {
                 transform: translateY(25vh) rotate(90deg);
-                opacity: var(--flower-opacity, 0.7);
+                opacity: var(--flower-opacity, 0.8);
             }
             50% {
                 transform: translateY(50vh) rotate(180deg);
-                opacity: var(--flower-opacity, 0.7);
+                opacity: var(--flower-opacity, 0.8);
             }
             75% {
                 transform: translateY(75vh) rotate(270deg);
-                opacity: var(--flower-opacity, 0.7);
+                opacity: var(--flower-opacity, 0.8);
             }
             100% {
                 transform: translateY(110vh) rotate(360deg);
@@ -37,13 +37,13 @@
         }
         @keyframes jellyBounce {
             0% { transform: scale(1, 1); }
-            15% { transform: scale(1.25, 0.75); }
-            30% { transform: scale(0.85, 1.15); }
-            45% { transform: scale(1.1, 0.9); }
-            60% { transform: scale(1, 1); }
-            70% { transform: scale(1.15, 0.85); }
-            80% { transform: scale(0.9, 1.1); }
-            90% { transform: scale(1.05, 0.95); }
+            20% { transform: scale(1.25, 0.75); }
+            40% { transform: scale(0.85, 1.15); }
+            60% { transform: scale(1.1, 0.9); }
+            70% { transform: scale(1, 1); }
+            80% { transform: scale(1.15, 0.85); }
+            90% { transform: scale(0.9, 1.1); }
+            95% { transform: scale(1.05, 0.95); }
             100% { transform: scale(1, 1); }
         }
         :root {
@@ -109,7 +109,7 @@
             transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         .links a.bounce {
-            animation: jellyBounce 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: jellyBounce 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             transition: none;
         }
         @media (max-width: 576px) {
@@ -123,6 +123,7 @@
     </style>
 </head>
 <body>
+    <audio id="jellySound" src="jelly.wav" preload="auto"></audio>
     <div class="flower-container"></div>
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
@@ -170,7 +171,7 @@
                 const delay = (index * totalCycleTime) / flowerCount;
                 flower.style.animationDelay = `${delay}s`;
 
-                const opacity = 0.7 - ((size - 30) / 30) * 0.4;
+                const opacity = 0.8 - ((size - 30) / 30) * 0.4;
                 flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
 
                 flower.addEventListener('mousedown', dragStart);
@@ -206,7 +207,7 @@
                 offsetX = fontSize / 2;
                 offsetY = fontSize / 2 + offsetYAdjustment;
 
-                active花.style.position = 'absolute';
+                activeFlower.style.position = 'absolute';
                 activeFlower.style.left = `${coords.x - offsetX}px`;
                 activeFlower.style.top = `${coords.y - offsetY}px`;
                 activeFlower.style.transform = 'none';
@@ -258,7 +259,7 @@
             }
 
             // Thêm âm thanh thạch và hiệu ứng bounce
-            const jellySound = new Audio('jelly.wav');
+            const jellySound = document.getElementById('jellySound');
             jellySound.volume = 0.5;
 
             document.querySelectorAll('.links a').forEach(button => {
@@ -271,7 +272,7 @@
                 button.classList.add('bounce');
                 setTimeout(() => {
                     button.classList.remove('bounce');
-                }, 600);
+                }, 500);
                 jellySound.currentTime = 0;
                 jellySound.play().catch(error => {
                     console.log('Lỗi phát âm thanh:', error);
@@ -280,7 +281,7 @@
                     event.preventDefault();
                     setTimeout(() => {
                         window.open(button.href, '_blank');
-                    }, 600);
+                    }, 500);
                 }
             }
         });
