@@ -110,6 +110,16 @@
             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             transition: none;
         }
+        .mute-button {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            background: rgba(255, 255, 255, 0.8); border: none; border-radius: 50%;
+            width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+        .mute-button:hover {
+            background: rgba(255, 255, 255, 1);
+        }
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 { font-size: 2.5em; }
@@ -117,11 +127,14 @@
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; }
+            .mute-button { top: 10px; right: 10px; width: 35px; height: 35px; font-size: 18px; }
         }
     </style>
 </head>
 <body>
     <audio id="jellySound" src="jelly.wav" preload="auto"></audio>
+    <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
+    <button class="mute-button" id="muteButton">🎵</button>
     <div class="flower-container"></div>
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
@@ -141,9 +154,73 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const flowerContainer = document.querySelector('.flower-container');
+            const jellySound = document.getElementById('jellySound');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const muteButton = document.getElementById('muteButton');
             let activeFlower = null;
             let offsetX = 0, offsetY = 0;
             const offsetYAdjustment = -5;
+
+            // Thiết lập âm lượng
+            jellySound.volume = 0.8;
+            backgroundMusic.volume = 0.3; // Nhạc nền nhỏ hơn hiệu ứng
+
+            // Kiểm tra trạng thái âm thanh từ localStorage
+            let isMuted = localStorage.getItem('isMuted') === 'true';
+            updateMuteState();
+
+            // Tải trước cả hai âm thanh
+            jellySound.load();
+            backgroundMusic.load();
+
+            // Khởi tạo âm thanh khi người dùng tương tác lần đầu
+            let isAudioInitialized = false;
+            function initializeAudio() {
+                if (!isAudioInitialized) {
+                    Promise.all([
+                        jellySound.play().then(() => {
+                            jellySound.pause();
+                            jellySound.currentTime = 0;
+                        }),
+                        backgroundMusic.play().then(() => {
+                            if (isMuted) backgroundMusic.pause();
+                        })
+                    ]).then(() => {
+                        isAudioInitialized = true;
+                        console.log('Audio initialized');
+                    }).catch(error => {
+                        console.log('Lỗi khởi tạo âm thanh:', error);
+                    });
+                }
+            }
+
+            // Gắn sự kiện khởi tạo âm thanh
+            document.addEventListener('click', initializeAudio, { once: true });
+            document.addEventListener('touchstart', initializeAudio, { once: true, passive: false });
+
+            // Xử lý bật/tắt âm thanh
+            muteButton.addEventListener('click', () => {
+                isMuted = !isMuted;
+                localStorage.setItem('isMuted', isMuted);
+                updateMuteState();
+            });
+
+            function updateMuteState() {
+                if (isMuted) {
+                    jellySound.muted = true;
+                    backgroundMusic.muted = true;
+                    muteButton.innerHTML = '🔇';
+                } else {
+                    jellySound.muted = false;
+                    backgroundMusic.muted = false;
+                    muteButton.innerHTML = '🎵';
+                    if (isAudioInitialized) {
+                        backgroundMusic.play().catch(error => {
+                            console.log('Lỗi phát nhạc nền:', error);
+                        });
+                    }
+                }
+            }
 
             const isMobile = window.innerWidth <= 576;
             const flowerCount = isMobile ? 10 : 20;
@@ -245,7 +322,7 @@
                 activeFlower.style.opacity = '0';
 
                 setTimeout(() => {
-                    activeFlower.style.display = 'none';
+                    flower.style.display = 'none';
                 }, 2000);
 
                 document.removeEventListener('mousemove', dragging);
@@ -255,31 +332,6 @@
 
                 activeFlower = null;
             }
-
-            // Thêm âm thanh thạch và hiệu ứng bounce
-            const jellySound = document.getElementById('jellySound');
-            jellySound.volume = 1.0;
-
-            // Tải trước âm thanh ngay khi trang tải
-            jellySound.load();
-
-            // Khởi tạo âm thanh khi người dùng tương tác lần đầu
-            let isAudioInitialized = false;
-            function initializeAudio() {
-                if (!isAudioInitialized) {
-                    jellySound.play().then(() => {
-                        jellySound.pause();
-                        jellySound.currentTime = 0;
-                        isAudioInitialized = true;
-                        console.log('Audio initialized');
-                    }).catch(error => {
-                        console.log('Lỗi khởi tạo âm thanh:', error);
-                    });
-                }
-            }
-
-            document.addEventListener('click', initializeAudio, { once: true });
-            document.addEventListener('touchstart', initializeAudio, { once: true, passive: false });
 
             document.querySelectorAll('.links a').forEach(button => {
                 button.addEventListener('click', handleBounce);
