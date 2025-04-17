@@ -35,6 +35,13 @@
                 opacity: 0.1;
             }
         }
+        @keyframes jelly {
+            0% { transform: scale(1, 1); }
+            25% { transform: scale(1.2, 0.8); }
+            50% { transform: scale(0.8, 1.2); }
+            75% { transform: scale(1.1, 0.9); }
+            100% { transform: scale(1, 1); }
+        }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
             --button-pink: #d1a0b8; --button-blue: #a2a6dd;
@@ -96,6 +103,9 @@
         .links a:hover {
             background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
             transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .links a:active {
+            animation: jelly 0.4s ease;
         }
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
