@@ -14,8 +14,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes fall {
-            0% { transform: translateY(-5vh) rotate(0deg); opacity: 0.8; }
-            90% { opacity: 0.8; }
+            0% { transform: translateY(-5vh) rotate(0deg); opacity: 0.7; } /* Giảm opacity */
+            90% { opacity: 0.7; }
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0.1; }
         }
         :root {
@@ -53,8 +53,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 35px;
-            height: 35px;
+            width: 40px; /* Tăng để phù hợp kích thước tối đa */
+            height: 40px;
             text-align: center;
         }
         .flower.dragging {
@@ -62,20 +62,20 @@
             cursor: grabbing;
             opacity: 0.9;
         }
-        /* Đa dạng hóa kích thước (25px-35px) và animation-duration (15s-20s) */
+        /* Đa dạng hóa kích thước (25px-40px) và animation-duration (15s-20s) */
         .flower:nth-child(1) { left: 5%; animation-duration: 16s; font-size: 27px; }
         .flower:nth-child(2) { left: 15%; animation-duration: 18s; font-size: 30px; }
         .flower:nth-child(3) { left: 25%; animation-duration: 15s; font-size: 32px; }
         .flower:nth-child(4) { left: 35%; animation-duration: 17s; font-size: 25px; }
-        .flower:nth-child(5) { left: 45%; animation-duration: 19s; font-size: 35px; }
+        .flower:nth-child(5) { left: 45%; animation-duration: 19s; font-size: 40px; } /* Tăng max */
         .flower:nth-child(6) { left: 55%; animation-duration: 15s; font-size: 28px; }
         .flower:nth-child(7) { left: 65%; animation-duration: 20s; font-size: 31px; }
         .flower:nth-child(8) { left: 75%; animation-duration: 16s; font-size: 26px; }
         .flower:nth-child(9) { left: 85%; animation-duration: 18s; font-size: 29px; }
         .flower:nth-child(10) { left: 10%; animation-duration: 15s; font-size: 33px; }
         .flower:nth-child(11) { left: 20%; animation-duration: 17s; font-size: 27px; }
-        .flower:nth-child(12) { left: 30%; animation-duration: 19s; font-size: 30px; }
-        .flower:nth-child(13) { left: 40%; animation-duration: 16s; font-size: 32px; }
+        .flower:nth-child(12) { left: 30%; animation-duration: 19s; font-size: 35px; }
+        .flower:nth-child(13) { left: 40%; animation-duration: 16s; font-size: 38px; } /* Tăng */
         .flower:nth-child(14) { left: 50%; animation-duration: 18s; font-size: 25px; }
         .flower:nth-child(15) { left: 60%; animation-duration: 17s; font-size: 34px; }
         h1 {
@@ -109,11 +109,11 @@
 </head>
 <body>
     <div class="flower-container">
-        <span class="flower">❀</span> <span class="flower">❀</span> <span class="flower">❀</span>
-        <span class="flower">❀</span> <span class="flower">❀</span> <span class="flower">❀</span>
-        <span class="flower">❀</span> <span class="flower">❀</span> <span class="flower">❀</span>
-        <span class="flower">❀</span> <span class="flower">❀</span> <span class="flower">❀</span>
-        <span class="flower">❀</span> <span class="flower">❀</span> <span class="flower">❀</span>
+        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
+        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
+        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
+        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
+        <span class="flower">❅</span> <span class="flower">❅</span> <span class="flower">❅</span>
     </div>
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
