@@ -114,110 +114,88 @@
         </div>
     </div>
 
-    <script>
-        // JS đã được hoàn nguyên logic tính toán vị trí kéo
-        const flowers = document.querySelectorAll('.flower');
-        let activeFlower = null;
-        // Hoàn nguyên về logic dùng delta
-        let initialX = 0;
-        let initialY = 0;
-        let initialFlowerX = 0;
-        let initialFlowerY = 0;
+   <script>
+    const flowers = document.querySelectorAll('.flower');
+    let activeFlower = null;
+    let initialX = 0, initialY = 0;
+    let offsetX = 0, offsetY = 0;
 
-        function getEventCoords(event) {
-            if (event.touches && event.touches.length > 0) {
-                return { x: event.touches[0].clientX, y: event.touches[0].clientY };
-            }
-            return { x: event.clientX, y: event.clientY };
+    function getEventCoords(event) {
+        if (event.touches && event.touches.length) {
+            return { x: event.touches[0].clientX, y: event.touches[0].clientY };
         }
+        return { x: event.clientX, y: event.clientY };
+    }
 
-        function dragStart(event) {
-            if (event.type === 'mousedown' && event.button !== 0) return;
+    function dragStart(event) {
+        if (event.type === 'mousedown' && event.button !== 0) return;
+        activeFlower = event.target;
+        const coords = getEventCoords(event);
 
-            activeFlower = event.target;
-            const coords = getEventCoords(event);
+        // Pause animation
+        activeFlower.classList.add('dragging');
 
-            // Lưu tọa độ chuột/touch ban đầu
-            initialX = coords.x;
-            initialY = coords.y;
+        // Lấy bounding box
+        const rect = activeFlower.getBoundingClientRect();
+        // Tính offset từ góc hoa đến nơi click
+        offsetX = coords.x - rect.left;
+        offsetY = coords.y - rect.top;
 
-            // Pause animation trước khi lấy vị trí
-            activeFlower.classList.add('dragging');
+        // Thiết lập inline để override CSS
+        activeFlower.style.left = `${rect.left}px`;
+        activeFlower.style.top  = `${rect.top}px`;
 
-            // Lấy vị trí hoa ban đầu (sau khi pause)
-            const flowerRect = activeFlower.getBoundingClientRect();
-            initialFlowerX = flowerRect.left;
-            initialFlowerY = flowerRect.top;
+        initialX = coords.x;
+        initialY = coords.y;
 
-            // Vẫn đặt style ngay để thử giảm "teleport" ban đầu
-            activeFlower.style.left = `${initialFlowerX}px`;
-            activeFlower.style.top = `${initialFlowerY}px`;
+        document.addEventListener('mousemove', dragging);
+        document.addEventListener('touchmove', dragging, { passive: false });
+        document.addEventListener('mouseup',   dragEnd);
+        document.addEventListener('touchend',  dragEnd);
 
-            document.addEventListener('mousemove', dragging);
-            document.addEventListener('touchmove', dragging, { passive: false });
-            document.addEventListener('mouseup', dragEnd);
-            document.addEventListener('touchend', dragEnd);
+        event.preventDefault();
+    }
 
-            event.preventDefault();
-        }
+    function dragging(event) {
+        if (!activeFlower) return;
+        const coords = getEventCoords(event);
 
-        function dragging(event) {
-            if (!activeFlower) return;
+        // Dùng offset để căn giữa
+        let newX = coords.x - offsetX;
+        let newY = coords.y - offsetY;
 
-            const coords = getEventCoords(event);
+        // Giới hạn trong container
+        const containerRect = activeFlower.parentElement.getBoundingClientRect();
+        const fw = activeFlower.getBoundingClientRect().width;
+        const fh = activeFlower.getBoundingClientRect().height;
 
-            // Tính độ di chuyển của chuột/touch
-            const deltaX = coords.x - initialX;
-            const deltaY = coords.y - initialY;
+        newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fw));
+        newY = Math.max(containerRect.top,  Math.min(newY, containerRect.bottom - fh));
 
-            // Tính vị trí mới = vị trí hoa ban đầu + độ di chuyển
-            let newX = initialFlowerX + deltaX;
-            let newY = initialFlowerY + deltaY;
+        activeFlower.style.left = `${newX}px`;
+        activeFlower.style.top  = `${newY}px`;
 
-            // (Optional) Giới hạn di chuyển
-            const container = activeFlower.parentElement;
-            const containerRect = container.getBoundingClientRect();
-            const flowerRect = activeFlower.getBoundingClientRect(); // Kích thước hoa
+        if (event.type === 'touchmove') event.preventDefault();
+    }
 
-            newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerRect.width));
-            newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerRect.height));
+    function dragEnd(event) {
+        if (!activeFlower) return;
+        // Giữ nguyên left/top, chỉ resume animation
+        activeFlower.classList.remove('dragging');
 
-            // Cập nhật vị trí hoa
-            activeFlower.style.left = `${newX}px`;
-            activeFlower.style.top = `${newY}px`;
+        document.removeEventListener('mousemove', dragging);
+        document.removeEventListener('touchmove', dragging);
+        document.removeEventListener('mouseup',   dragEnd);
+        document.removeEventListener('touchend',  dragEnd);
 
-            if (event.type === 'touchmove') {
-                event.preventDefault();
-            }
-        }
+        activeFlower = null;
+    }
 
-        function dragEnd(event) {
-            if (!activeFlower) return;
-
-            activeFlower.classList.remove('dragging');
-
-            // Xóa style inline để CSS kiểm soát lại
-            activeFlower.style.left = '';
-            activeFlower.style.top = '';
-
-            document.removeEventListener('mousemove', dragging);
-            document.removeEventListener('touchmove', dragging);
-            document.removeEventListener('mouseup', dragEnd);
-            document.removeEventListener('touchend', dragEnd);
-
-            activeFlower = null;
-            // Reset các biến
-            initialX = 0;
-            initialY = 0;
-            initialFlowerX = 0;
-            initialFlowerY = 0;
-        }
-
-        flowers.forEach(flower => {
-            flower.addEventListener('mousedown', dragStart);
-            flower.addEventListener('touchstart', dragStart, { passive: false });
-        });
-    </script>
+    flowers.forEach(flower => {
+        flower.addEventListener('mousedown', dragStart);
+        flower.addEventListener('touchstart', dragStart, { passive: false });
+    });
+</script>
 
 </body>
 </html>
