@@ -17,7 +17,7 @@
         html { height: 100%; }
         body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
-        .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; }
+        .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; /* Giữ animation gốc */ cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
         h1 { background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; margin-bottom: 25px; display: inline-block; will-change: transform; }
         h1.bounce-first { animation: headingBounceFirst 1.5s cubic-bezier(0.7, -0.5, 0.3, 1.5); }
@@ -78,16 +78,15 @@
                  // --- KẾT THÚC PASTE ---
 
                 // ============================================
-                // SỬA LỖI HOA RƠI TRÊN CODE GỐC (v8)
+                // SỬA LỖI HOA RƠI TRÊN CODE GỐC (v9)
                 // ============================================
                 const isMobile = window.innerWidth <= 576;
-                const flowerCount = isMobile ? 10 : 20;
-                const totalCycleTime = 10; // Dùng cho lần delay đầu tiên
-                const flowerFallDuration = 10; // Duration cố định
+                const flowerCount = isMobile ? 10 : 20; // Số lượng hoa gốc
+                const totalCycleTime = 10; // Cycle time gốc
+                const flowerFallDuration = 10; // Duration gốc
 
-                // Sửa hàm createFlower để nhận thêm cờ isRecreation
-                function createFlower(index, isRecreation = false) {
-                    // console.log(isRecreation ? `Recreating (index ${index})` : `Creating (index ${index})`);
+                function createFlower(index) { // Giữ nguyên tham số index
+                    // console.log('Creating flower:', index);
                     const flower = document.createElement('span');
                     flower.className = 'flower';
                     flower.innerHTML = '❅';
@@ -103,21 +102,12 @@
                     flower.style.width = `${size}px`;
                     flower.style.height = `${size}px`;
 
-                    // *** Sửa cách tính delay ***
-                    let delay;
-                    if (isRecreation) {
-                        // Nếu là tạo lại -> delay ngẫu nhiên
-                        delay = Math.random() * flowerFallDuration; // Ngẫu nhiên từ 0 đến 10s
-                        // console.log(`... random delay: ${delay.toFixed(2)}s`);
-                    } else {
-                        // Nếu là lần đầu -> delay theo index gốc
-                        delay = (index * totalCycleTime) / flowerCount;
-                         // console.log(`... initial index delay: ${delay.toFixed(2)}s`);
-                    }
-                    // Áp dụng duration và delay (âm)
+                    // Duration gốc
                     flower.style.animationDuration = `${flowerFallDuration}s`;
-                    flower.style.animationDelay = `-${delay}s`;
 
+                    // Delay âm dựa trên index gốc (quyết định lần rơi đầu tiên)
+                    const delay = (index * totalCycleTime) / flowerCount;
+                    flower.style.animationDelay = `-${delay}s`;
 
                     // Opacity gốc
                     const opacity = 0.9 - ((size - 30) / 30) * 0.4;
@@ -127,32 +117,44 @@
                     flower.addEventListener('mousedown', dragStart);
                     flower.addEventListener('touchstart', dragStart, { passive: false });
 
-                    // *** Sửa setTimeout ***
-                    // 1. Sửa thời gian chờ thành duration cố định
-                    // 2. Truyền cờ isRecreation = true vào lời gọi createFlower
-                    setTimeout(() => {
-                        // Kiểm tra xem hoa còn tồn tại không trước khi xóa
-                        // (Phòng trường hợp bị xóa bởi dragEnd)
-                        if (flower.parentNode) {
-                           flower.remove();
-                           createFlower(index, true); // Gọi lại với cờ true
-                        }
-                    }, flowerFallDuration * 1000); // Chờ đúng bằng thời gian animation
-                    // *** KẾT THÚC Sửa setTimeout ***
+                    // *** THAY THẾ setTimeout BẰNG animationiteration ***
+                    // Xóa bỏ dòng setTimeout cũ:
+                    // setTimeout(() => {
+                    //     flower.remove();
+                    //     createFlower(index); // Lỗi nằm ở đây
+                    // }, (duration + delay) * 1000); // Thời gian chờ cũ cũng có vấn đề
+
+                    // Thêm listener mới:
+                    flower.addEventListener('animationiteration', () => {
+                        // Khi hết 1 vòng animation (sau lần rơi đầu):
+                        // 1. Reset vị trí ngang ngẫu nhiên
+                        flower.style.left = `${Math.random() * 100}%`;
+
+                        // 2. *** QUAN TRỌNG: KHÔNG reset animation-delay về 0 ***
+                        //    Hãy để animation 'infinite' tự lặp lại chu kỳ.
+                        //    Delay âm ban đầu chỉ ảnh hưởng lần xuất hiện đầu.
+                        // flower.style.animationDelay = '0s'; // << Bỏ dòng này đi
+
+                        // Optional: Random lại size/opacity nếu muốn
+                        // const newSize = 30 + Math.random() * 30;
+                        // flower.style.fontSize = `${newSize}px`; ...
+                    });
+                    // *** KẾT THÚC THAY THẾ ***
                 }
 
                 // Hàm dragStart gốc - KHÔNG SỬA
                 function dragStart(event) { if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault(); }
                 // Hàm dragging gốc - KHÔNG SỬA
                 function dragging(event) { if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault(); }
-                // Hàm dragEnd gốc - KHÔNG SỬA
+                // Hàm dragEnd gốc - KHÔNG SỬA (Lưu ý: vẫn có issue là hoa bị mất dần khi kéo thả)
                 function dragEnd(event) { if (!activeFlower) return; activeFlower.classList.remove('dragging'); activeFlower.style.transition = 'top 2s linear, opacity 2s linear'; activeFlower.style.top = '100vh'; activeFlower.style.opacity = '0'; const currentDraggedFlower = activeFlower; setTimeout(() => { if (currentDraggedFlower && currentDraggedFlower.style.opacity === '0') { currentDraggedFlower.style.display = 'none'; } }, 2000); document.removeEventListener('mousemove', dragging); document.removeEventListener('touchmove', dragging); document.removeEventListener('mouseup', dragEnd); document.removeEventListener('touchend', dragEnd); activeFlower = null; }
+
 
                 console.log('Starting flower creation (original loop)');
                 try {
                     // Vòng lặp tạo hoa gốc
                     for (let i = 0; i < flowerCount; i++) {
-                        createFlower(i, false); // Gọi lần đầu với isRecreation = false
+                        createFlower(i); // Gọi với index gốc
                     }
                 } catch (error) {
                     console.error('Lỗi tạo bông tuyết:', error);
