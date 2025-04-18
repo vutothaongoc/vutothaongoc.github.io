@@ -41,41 +41,49 @@
         }
         @keyframes headingBounceFirst {
             /* Nhún 2 lần: 0-20% (~0.3s) */
-            0% { transform: translateY(0); }
-            5% { transform: translateY(5px); } /* Nhún 1 xuống */
-            10% { transform: translateY(0); } /* Lên */
-            15% { transform: translateY(5px); } /* Nhún 2 xuống */
-            20% { transform: translateY(0); } /* Lên */
+            0% { transform: translateY(0) scaleY(1); }
+            5% { transform: translateY(5px) scaleY(1); } /* Nhún 1 xuống */
+            10% { transform: translateY(0) scaleY(1); } /* Lên */
+            15% { transform: translateY(5px) scaleY(1); } /* Nhún 2 xuống */
+            20% { transform: translateY(0) scaleY(1); } /* Lên */
             /* Nhảy lên đáp đất: 20-40% (~0.3s) */
-            30% { transform: translateY(-15px); } /* Nhảy lên */
-            40% { transform: translateY(3px); } /* Đáp đất */
+            30% { transform: translateY(-15px) scaleY(1); } /* Nhảy lên */
+            40% { transform: translateY(3px) scaleY(0.8); } /* Đáp đất, ép xuống */
+            42% { transform: translateY(3px) scaleY(1); } /* Hồi phục */
             /* Bounce: 40-100% (~0.9s) */
-            55% { transform: translateY(-10px); } /* Bật 1 */
-            65% { transform: translateY(2px); }
-            75% { transform: translateY(-8px); } /* Bật 2 */
-            85% { transform: translateY(1px); }
-            90% { transform: translateY(-5px); } /* Bật 3 */
-            95% { transform: translateY(0); }
-            100% { transform: translateY(0); }
+            55% { transform: translateY(-10px) scaleY(1); } /* Bật 1 */
+            65% { transform: translateY(2px) scaleY(0.8); } /* Chạm đất, ép xuống */
+            67% { transform: translateY(2px) scaleY(1); } /* Hồi phục */
+            75% { transform: translateY(-8px) scaleY(1); } /* Bật 2 */
+            85% { transform: translateY(1px) scaleY(0.8); } /* Chạm đất, ép xuống */
+            87% { transform: translateY(1px) scaleY(1); } /* Hồi phục */
+            90% { transform: translateY(-5px) scaleY(1); } /* Bật 3 */
+            95% { transform: translateY(0) scaleY(0.8); } /* Chạm đất, ép xuống */
+            97% { transform: translateY(0) scaleY(1); } /* Hồi phục */
+            100% { transform: translateY(0) scaleY(1); }
         }
         @keyframes headingBounce {
             /* Nhún 2 lần: 0-18.75% (~0.3s) */
-            0% { transform: translateY(0); }
-            4.7% { transform: translateY(5px); } /* Nhún 1 xuống */
-            9.4% { transform: translateY(0); } /* Lên */
-            14.1% { transform: translateY(5px); } /* Nhún 2 xuống */
-            18.75% { transform: translateY(0); } /* Lên */
+            0% { transform: translateY(0) scaleY(1); }
+            4.7% { transform: translateY(5px) scaleY(1); } /* Nhún 1 xuống */
+            9.4% { transform: translateY(0) scaleY(1); } /* Lên */
+            14.1% { transform: translateY(5px) scaleY(1); } /* Nhún 2 xuống */
+            18.75% { transform: translateY(0) scaleY(1); } /* Lên */
             /* Nhảy lên đáp đất: 18.75-37.5% (~0.3s) */
-            28.1% { transform: translateY(-15px); } /* Nhảy lên */
-            37.5% { transform: translateY(3px); } /* Đáp đất */
+            28.1% { transform: translateY(-15px) scaleY(1); } /* Nhảy lên */
+            37.5% { transform: translateY(3px) scaleY(0.8); } /* Đáp đất, ép xuống */
+            39.5% { transform: translateY(3px) scaleY(1); } /* Hồi phục */
             /* Bounce: 37.5-100% (~1.0s) */
-            53% { transform: translateY(-10px); } /* Bật 1 */
-            65% { transform: translateY(2px); }
-            75% { transform: translateY(-8px); } /* Bật 2 */
-            85% { transform: translateY(1px); }
-            90% { transform: translateY(-5px); } /* Bật 3 */
-            95% { transform: translateY(0); }
-            100% { transform: translateY(0); }
+            53% { transform: translateY(-10px) scaleY(1); } /* Bật 1 */
+            65% { transform: translateY(2px) scaleY(0.8); } /* Chạm đất, ép xuống */
+            67% { transform: translateY(2px) scaleY(1); } /* Hồi phục */
+            75% { transform: translateY(-8px) scaleY(1); } /* Bật 2 */
+            85% { transform: translateY(1px) scaleY(0.8); } /* Chạm đất, ép xuống */
+            87% { transform: translateY(1px) scaleY(1); } /* Hồi phục */
+            90% { transform: translateY(-5px) scaleY(1); } /* Bật 3 */
+            95% { transform: translateY(0) scaleY(0.8); } /* Chạm đất, ép xuống */
+            97% { transform: translateY(0) scaleY(1); } /* Hồi phục */
+            100% { transform: translateY(0) scaleY(1); }
         }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
