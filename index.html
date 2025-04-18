@@ -40,40 +40,42 @@
             100% { transform: scale(1.05, 0.95); letter-spacing: 0; }
         }
         @keyframes headingBounceFirst {
-            /* Nhún 2 lần: 0-22% (~0.2s) */
-            0% { transform: translateY(0); }
-            5.5% { transform: translateY(5px); } /* Nhún 1 xuống */
-            11% { transform: translateY(0); } /* Lên */
-            16.5% { transform: translateY(5px); } /* Nhún 2 xuống */
-            22% { transform: translateY(0); } /* Lên */
-            /* Nhảy lên đáp đất: 22-44% (~0.2s) */
-            33% { transform: translateY(-10px); } /* Nhảy lên */
-            44% { transform: translateY(2px); } /* Đáp đất */
-            /* Bounce: 44-100% (~0.5s) */
-            60% { transform: scale(1.25, 0.75) translateY(0); letter-spacing: 2px; }
-            77% { transform: scale(0.85, 1.15) translateY(0); letter-spacing: 1px; }
-            83% { transform: scale(1, 1) translateY(0); letter-spacing: 0; }
-            94% { transform: scale(1.15, 0.85) translateY(0); letter-spacing: 0.5px; }
-            97% { transform: scale(0.9, 1.1) translateY(0); letter-spacing: 0.2px; }
-            100% { transform: scale(1.05, 0.95) translateY(0); letter-spacing: 0; }
-        }
-        @keyframes headingBounce {
-            /* Nhún 2 lần: 0-20% (~0.2s) */
+            /* Nhún 2 lần: 0-20% (~0.3s) */
             0% { transform: translateY(0); }
             5% { transform: translateY(5px); } /* Nhún 1 xuống */
             10% { transform: translateY(0); } /* Lên */
             15% { transform: translateY(5px); } /* Nhún 2 xuống */
             20% { transform: translateY(0); } /* Lên */
-            /* Nhảy lên đáp đất: 20-40% (~0.2s) */
-            30% { transform: translateY(-10px); } /* Nhảy lên */
-            40% { transform: translateY(2px); } /* Đáp đất */
-            /* Bounce: 40-100% (~0.6s) */
-            60% { transform: scale(1.25, 0.75) translateY(0); letter-spacing: 2px; }
-            80% { transform: scale(0.85, 1.15) translateY(0); letter-spacing: 1px; }
-            85% { transform: scale(1, 1) translateY(0); letter-spacing: 0; }
-            95% { transform: scale(1.15, 0.85) translateY(0); letter-spacing: 0.5px; }
-            97% { transform: scale(0.9, 1.1) translateY(0); letter-spacing: 0.2px; }
-            100% { transform: scale(1.05, 0.95) translateY(0); letter-spacing: 0; }
+            /* Nhảy lên đáp đất: 20-40% (~0.3s) */
+            30% { transform: translateY(-15px); } /* Nhảy lên */
+            40% { transform: translateY(3px); } /* Đáp đất */
+            /* Bounce: 40-100% (~0.9s) */
+            55% { transform: translateY(-10px); letter-spacing: 2px; } /* Bật 1 */
+            65% { transform: translateY(2px); letter-spacing: 1px; }
+            75% { transform: translateY(-8px); letter-spacing: 1.5px; } /* Bật 2 */
+            85% { transform: translateY(1px); letter-spacing: 0.5px; }
+            90% { transform: translateY(-5px); letter-spacing: 0.2px; } /* Bật 3 */
+            95% { transform: translateY(0); letter-spacing: 0; }
+            100% { transform: translateY(0); letter-spacing: 0; }
+        }
+        @keyframes headingBounce {
+            /* Nhún 2 lần: 0-18.75% (~0.3s) */
+            0% { transform: translateY(0); }
+            4.7% { transform: translateY(5px); } /* Nhún 1 xuống */
+            9.4% { transform: translateY(0); } /* Lên */
+            14.1% { transform: translateY(5px); } /* Nhún 2 xuống */
+            18.75% { transform: translateY(0); } /* Lên */
+            /* Nhảy lên đáp đất: 18.75-37.5% (~0.3s) */
+            28.1% { transform: translateY(-15px); } /* Nhảy lên */
+            37.5% { transform: translateY(3px); } /* Đáp đất */
+            /* Bounce: 37.5-100% (~1.0s) */
+            53% { transform: translateY(-10px); letter-spacing: 2px; } /* Bật 1 */
+            65% { transform: translateY(2px); letter-spacing: 1px; }
+            75% { transform: translateY(-8px); letter-spacing: 1.5px; } /* Bật 2 */
+            85% { transform: translateY(1px); letter-spacing: 0.5px; }
+            90% { transform: translateY(-5px); letter-spacing: 0.2px; } /* Bật 3 */
+            95% { transform: translateY(0); letter-spacing: 0; }
+            100% { transform: translateY(0); letter-spacing: 0; }
         }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
@@ -125,10 +127,10 @@
             font-weight: 700; margin-bottom: 25px; display: inline-block;
         }
         h1.bounce-first {
-            animation: headingBounceFirst 0.9s cubic-bezier(0.4, 0, 0.2, 1); /* Lần đầu: 0.9s */
+            animation: headingBounceFirst 1.5s cubic-bezier(0.4, 0, 0.2, 1); /* Lần đầu: 1.5s */
         }
         h1.bounce {
-            animation: headingBounce 1.0s cubic-bezier(0.4, 0, 0.2, 1); /* Lần lặp: 1.0s */
+            animation: headingBounce 1.6s cubic-bezier(0.4, 0, 0.2, 1); /* Lần lặp: 1.6s */
         }
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
@@ -239,15 +241,15 @@
                 // Gọi autoplay ngay khi trang tải
                 tryAutoPlay();
 
-                // Bounce h1: Lần đầu 0.9s, lặp mỗi 10s với 1.0s
+                // Bounce h1: Lần đầu 1.5s, lặp mỗi 10s với 1.6s
                 console.log('Starting h1 bounce interval');
                 try {
                     function triggerHeadingBounce(isFirst = false) {
-                        console.log('Triggering h1 bounce', isFirst ? 'first (0.9s)' : 'repeat (1.0s)');
+                        console.log('Triggering h1 bounce', isFirst ? 'first (1.5s)' : 'repeat (1.6s)');
                         heading.classList.add(isFirst ? 'bounce-first' : 'bounce');
                         setTimeout(() => {
                             heading.classList.remove(isFirst ? 'bounce-first' : 'bounce');
-                        }, isFirst ? 900 : 1000); // 0.9s cho lần đầu, 1.0s cho lặp
+                        }, isFirst ? 1500 : 1600); // 1.5s cho lần đầu, 1.6s cho lặp
                     }
                     // Bounce lần đầu
                     triggerHeadingBounce(true);
