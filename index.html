@@ -88,7 +88,7 @@
         }
         html { height: 100%; }
         body {
-            text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px;
+            text-align: center; font-family: 'Nunito', sans-serif; /* Removed padding */
             color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
             background-repeat: no-repeat; background-attachment: fixed; min-height: 100%;
             position: relative; overflow-x: hidden;
@@ -130,7 +130,7 @@
         }
         h1 span {
             display: inline-block;
-            opacity: 1; /* Đảm bảo chữ hiện ngay */
+            opacity: 1; /* Đảm bảo opacity: 1 */
             will-change: transform, opacity; /* Tối ưu render */
         }
         h1.bounce-first span {
@@ -155,12 +155,17 @@
         .links a.bounce {
             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Nút: 0.3s */
         }
+        .content-wrapper {
+            padding: 40px 20px; /* Added padding to content wrapper */
+            position: relative; /* Added position to create stacking context */
+            z-index: 3; /* Added z-index to stack above flower-container */
+        }
         @media (max-width: 576px) {
-            body { padding: 20px 10px; }
+            body { /* Removed padding */ }
             h1 { font-size: 2.5em; }
             p { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
-            .content-wrapper { padding: 20px; }
+            .content-wrapper { padding: 20px 10px; } /* Adjusted padding for mobile */
             .flower { font-size: 25px; width: 50px; height: 50px; }
         }
     </style>
