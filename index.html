@@ -12,43 +12,29 @@
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
-        /* ===== ANIMATION JELLY MỚI CHO H1 ===== */
-        @keyframes jellyDrop {
+        /* ===== ANIMATION CARTOON NETWORK MỚI CHO H1 ===== */
+        @keyframes cnPop {
             0% {
-                transform: translateY(-60vh) scaleY(0.8); /* Bắt đầu từ trên cao, hơi co lại chút */
+                /* Bắt đầu rất nhỏ, xoay ngược, và trong suốt */
+                transform: scale(0.1) rotate(-270deg);
                 opacity: 0;
             }
-            40% {
-                transform: translateY(0) scaleY(0.9); /* Sắp chạm đất, hơi co lại */
+            60% {
+                /* Phóng to hơn kích thước cuối, xoay quá đà một chút */
+                transform: scale(1.15) rotate(10deg);
                 opacity: 1;
             }
-            55% {
-                /* Chạm đất và LÚN MẠNH */
-                transform: translateY(15px) scale(1.3, 0.4); /* Lún xuống, bẹp dí */
-                animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95); /* Chuyển động lún */
-            }
-            75% {
-                /* Nảy lên CAO */
-                transform: translateY(-30px) scale(0.7, 1.3); /* Vọt lên cao, giãn dài */
-                animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95); /* Chuyển động nảy */
-            }
-            85% {
-                /* Rơi xuống lần 2, lún nhẹ hơn */
-                transform: translateY(8px) scale(1.1, 0.7);
-                animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
-            }
-            95% {
-                /* Nảy lên lần 2, thấp hơn */
-                transform: translateY(-10px) scale(0.9, 1.1);
-                animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            80% {
+                /* Giật lại nhỏ hơn một chút, xoay ngược lại nhẹ */
+                transform: scale(0.95) rotate(-5deg);
             }
             100% {
-                /* Ổn định */
-                transform: translateY(0) scale(1, 1);
+                /* Ổn định tại kích thước và góc cuối cùng */
+                transform: scale(1) rotate(0deg);
                 opacity: 1;
             }
         }
-        /* ===== KẾT THÚC ANIMATION JELLY ===== */
+        /* ===== KẾT THÚC ANIMATION CN ===== */
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
@@ -67,8 +53,9 @@
             display: inline-block;
             will-change: transform, opacity;
             opacity: 0; /* Bắt đầu ẩn */
-            /* ===== ÁP DỤNG ANIMATION JELLY ===== */
-            animation: jellyDrop 1.8s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+            /* ===== ÁP DỤNG ANIMATION CN ===== */
+            /* Đổi tên, giảm thời gian, đổi cubic-bezier cho phù hợp */
+            animation: cnPop 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             animation-delay: 0.3s;
         }
 
@@ -100,6 +87,8 @@
     </div>
 
     <script>
+        // ===== PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC =====
+        // (Không cần thay đổi gì ở đây)
         console.log('Script started');
 
         try {
@@ -172,7 +161,7 @@
                     });
                 } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                // LOGIC HOA RƠI (Giữ nguyên từ bản gốc/v9 đã sửa)
+                // LOGIC HOA RƠI (Giữ nguyên)
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
@@ -204,7 +193,6 @@
 
                 function dragStart(event) { if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault(); }
                 function dragging(event) { if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault(); }
-                // HÀM dragEnd ĐÃ SỬA (v13 - Có hiệu ứng rơi)
                 function dragEnd(event) {
                     if (!activeFlower) return;
                     const flower = activeFlower;
