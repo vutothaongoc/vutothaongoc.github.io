@@ -62,9 +62,7 @@
             display: inline-block;
             will-change: transform;
             /* ===== ÁP DỤNG ANIMATION JELLY NÂNG CAO ===== */
-            /* Đổi tên animation, đổi timing-function */
             animation: enhancedJellyWobble 10s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-            /* cubic-bezier tạo hiệu ứng nảy tưng (overshoot) */
             animation-delay: 0.3s;
         }
 
@@ -79,7 +77,9 @@
 <body>
     <audio id="jellySound" src="jelly.wav" preload="auto"></audio>
     <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
+
     <div class="flower-container"></div>
+
     <div class="content-wrapper">
         <h1>Coming Soon!</h1>
         <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
@@ -96,13 +96,14 @@
     </div>
 
     <script>
-        // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
+        // ----- PHẦN JAVASCRIPT (Bao gồm nhạc và hoa) -----
         console.log('Script started');
 
         try {
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('DOMContentLoaded triggered');
 
+                // Các biến cho hoa và nhạc
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
@@ -114,7 +115,7 @@
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                // Thử autoplay khi trang tải
+                // Thử autoplay nhạc nền
                 function tryAutoPlay() {
                     console.log('Trying autoplay');
                     try {
@@ -136,7 +137,7 @@
                         }
                     } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
                 }
-                tryAutoPlay();
+                tryAutoPlay(); // Gọi hàm chạy nhạc
 
                 // Lấy tọa độ event
                 function getEventCoords(event) {
@@ -149,7 +150,6 @@
 
                 // Xử lý bounce nút link
                 function handleBounce(event) {
-                   // console.log('Handle bounce:', event.type, 'Target:', event.currentTarget.textContent);
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
                     button.classList.add('bounce');
@@ -169,17 +169,17 @@
                     });
                 } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                // LOGIC HOA RƠI (Giữ nguyên)
+                // LOGIC HOA RƠI VÀ KÉO THẢ (Nguyên bản từ v13 - không đổi)
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
-                const flowerFallDuration = 10;
+                const flowerFallDuration = 10; // Giữ nguyên cho dragEnd
 
-                function createFlower(index) {
+                function createFlower(index) { // Hàm tạo hoa
                     const flower = document.createElement('span');
                     flower.className = 'flower';
                     flower.innerHTML = '❅';
-                    flowerContainer.appendChild(flower);
+                    flowerContainer.appendChild(flower); // Thêm hoa vào container
 
                     const randomLeft = Math.random() * 100;
                     flower.style.left = `${randomLeft}%`;
@@ -191,41 +191,70 @@
                     const opacity = 0.9 - ((size - 30) / 30) * 0.4;
                     flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
 
+                    // Gắn sự kiện kéo thả
                     flower.addEventListener('mousedown', dragStart);
                     flower.addEventListener('touchstart', dragStart, { passive: false });
 
+                    // Reset vị trí khi lặp lại animation
                     flower.addEventListener('animationiteration', () => {
                         flower.style.left = `${Math.random() * 100}%`;
                     });
                 }
 
+                // Các hàm kéo thả hoa (dragStart, dragging, dragEnd)
                 function dragStart(event) { if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault(); }
                 function dragging(event) { if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault(); }
+                // HÀM dragEnd ĐÃ SỬA (v13 - Có hiệu ứng rơi khi thả)
                 function dragEnd(event) {
                     if (!activeFlower) return;
                     const flower = activeFlower;
                     activeFlower = null;
                     flower.classList.remove('dragging');
-                    const fallTransitionDuration = 1000;
+                    const fallTransitionDuration = 1000; // Thời gian rơi xuống khi thả
                     flower.style.transition = `top ${fallTransitionDuration / 1000}s linear, opacity ${fallTransitionDuration / 1000}s linear`;
-                    flower.style.position = 'absolute';
-                    flower.style.top = '110vh';
-                    flower.style.opacity = '0';
-                    setTimeout(() => {
-                        if (!flower.parentNode) return;
+                    flower.style.position = 'absolute'; // Đảm bảo position
+                    flower.style.top = '110vh';       // Rơi xuống dưới màn hình
+                    flower.style.opacity = '0';       // Mờ dần đi
+                    setTimeout(() => { // Chờ transition kết thúc
+                        if (!flower.parentNode) return; // Kiểm tra hoa còn tồn tại
+                        // Reset hoàn toàn trạng thái
                         flower.style.transition = 'none';
                         flower.style.position = '';
                         flower.style.top = '';
                         flower.style.opacity = '';
                         flower.style.transform = '';
-                        flower.style.animation = 'none';
+                        flower.style.animation = 'none'; // Dừng animation tạm thời
+                        // Đặt lại vị trí ngang ngẫu nhiên
                         flower.style.left = `${Math.random() * 100}%`;
-                        void flower.offsetWidth;
+                        void flower.offsetWidth; // Ép reflow
+                        // Áp dụng lại animation 'fall' gốc
                         flower.style.animationDuration = `${flowerFallDuration}s`;
-                        flower.style.animationDelay = '0s';
+                        flower.style.animationDelay = '0s'; // Bắt đầu rơi lại ngay
                         flower.style.animationName = 'fall';
                         flower.style.animationTimingFunction = 'linear';
                         flower.style.animationIterationCount = 'infinite';
                     }, fallTransitionDuration);
+                    // Xóa listener document
                     document.removeEventListener('mousemove', dragging);
                     document.removeEventListener('touchmove', dragging);
+                    document.removeEventListener('mouseup', dragEnd);
+                    document.removeEventListener('touchend', dragEnd);
+                }
+
+                // Vòng lặp tạo hoa
+                console.log('Starting flower creation');
+                try {
+                    for (let i = 0; i < flowerCount; i++) {
+                        createFlower(i); // Gọi hàm tạo hoa
+                    }
+                } catch (error) {
+                    console.error('Lỗi tạo bông tuyết:', error);
+                }
+
+            }); // Kết thúc DOMContentLoaded
+        } catch (error) {
+            console.error('Lỗi toàn cục trong script:', error);
+        }
+    </script>
+</body>
+</html>
