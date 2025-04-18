@@ -8,10 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS hoa rơi, nút bấm, biến màu,... giữ nguyên như v13 */
+        /* CSS hoa rơi, nút bấm, biến màu,... giữ nguyên */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
-        /* Xóa keyframes heading cũ */
+        /* Keyframes heading cũ đã bị xóa */
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
@@ -19,45 +19,38 @@
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
-        h1 {
-            /* Giữ nguyên style gradient */
-            background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-            font-weight: 700; margin-bottom: 25px; display: inline-block;
-            /* Thêm perspective để hiệu ứng 3D (xoay) đẹp hơn nếu muốn */
-             /* perspective: 400px; */
-        }
+        h1 { background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; margin-bottom: 25px; display: inline-block; }
 
-        /* === CSS CHO HIỆU ỨNG CHỮ CÁI BAY VÀO === */
+        /* === CSS CHO HIỆU ỨNG CHỮ CÁI BAY VÀO (v16) === */
         h1 .letter-wrap {
-            display: inline-block; /* Để có thể transform */
-            /* Fix lỗi ngắt dòng giữa các chữ cái */
+            display: inline-block;
             white-space: nowrap;
         }
-        h1 .letter-wrap span.letter { /* Áp dụng cho từng chữ cái */
-            display: inline-block; /* Để transform hoạt động */
-            opacity: 0; /* Bắt đầu ẩn */
-            /* Trạng thái ban đầu: hơi dưới, hơi nhỏ, hơi nghiêng */
+        h1 .letter-wrap span.letter {
+            display: inline-block;
+            opacity: 0;
             transform: translate(0, 30px) scale(0.7) rotateY(90deg);
-            /* Hiệu ứng chuyển động */
-            transition: transform 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000), /* Ease Out Cubic */
+            /* Bỏ transition-delay ở đây vì sẽ set bằng JS */
+            transition: transform 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000),
                         opacity 0.4s ease-out;
-            /* Delay sẽ được set bằng JS cho từng chữ */
-            transition-delay: var(--letter-delay);
+            /* Delay sẽ được set bằng style.transitionDelay */
         }
         h1 .letter-wrap span.space {
-             /* Xử lý khoảng trắng nếu cần */
              display: inline-block;
-             width: 0.5em; /* Điều chỉnh độ rộng nếu cần */
+             width: 0.5em;
+             opacity: 0; /* Cũng ẩn đi ban đầu */
+             transition: opacity 0.4s ease-out; /* Chỉ cần fade-in */
+             /* Delay cũng sẽ set bằng JS */
         }
 
-        /* Khi h1 có class 'letters-animated' -> kích hoạt transition */
         h1.letters-animated .letter-wrap span.letter {
             opacity: 1;
-            transform: translate(0, 0) scale(1) rotateY(0deg); /* Trở về trạng thái bình thường */
+            transform: translate(0, 0) scale(1) rotateY(0deg);
+        }
+        h1.letters-animated .letter-wrap span.space {
+            opacity: 1; /* Hiện khoảng trắng ra */
         }
         /* === KẾT THÚC CSS CHỮ CÁI === */
-
 
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
@@ -96,7 +89,7 @@
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
-                const heading = document.querySelector('h1'); // << Vẫn lấy heading
+                const heading = document.querySelector('h1');
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
@@ -112,13 +105,21 @@
                  // --- KẾT THÚC PASTE ---
 
 
-                // === THAY ĐỔI LOGIC ANIMATION HEADING ===
+                // === SỬA LẠI LOGIC ANIMATION HEADING (v16) ===
                 function setupLetterAnimation() {
-                    if (!heading) return;
-                    const text = heading.textContent;
+                    if (!heading) {
+                        console.error("Heading element not found!");
+                        return;
+                    }
+                    const originalText = heading.textContent; // Lưu lại text gốc phòng lỗi
+                    if (!originalText) {
+                         console.error("Heading text is empty!");
+                         return;
+                    }
+
                     heading.innerHTML = ''; // Xóa text gốc
-                    let totalDelay = 0;
-                    const baseDelay = 0.05; // Thời gian delay giữa các chữ (giây)
+                    const text = originalText; // Dùng biến mới để rõ ràng
+                    const baseDelay = 0.05; // Delay giữa các chữ (giây)
 
                     text.split('').forEach((char, index) => {
                         const wrapSpan = document.createElement('span');
@@ -127,43 +128,49 @@
                         const letterSpan = document.createElement('span');
                         if (char === ' ') {
                             letterSpan.className = 'space';
-                            letterSpan.innerHTML = '&nbsp;'; // Hoặc để trống tùy ý
+                            letterSpan.innerHTML = '&nbsp;'; // Dùng &nbsp; cho khoảng trắng
                         } else {
                             letterSpan.className = 'letter';
                             letterSpan.textContent = char;
                         }
 
-                        // Tính delay tăng dần
+                        // Tính và đặt delay trực tiếp vào style
                         const delay = index * baseDelay;
-                        letterSpan.style.setProperty('--letter-delay', `${delay}s`);
-                        totalDelay = delay; // Lưu lại delay cuối cùng
+                        letterSpan.style.transitionDelay = `${delay}s`;
 
                         wrapSpan.appendChild(letterSpan);
                         heading.appendChild(wrapSpan);
                     });
 
-                    // Thêm class để kích hoạt animation sau khi tất cả span đã được tạo
-                    // Thêm 1 khoảng chờ nhỏ để đảm bảo trình duyệt đã áp dụng style ban đầu
-                    setTimeout(() => {
-                        heading.classList.add('letters-animated');
-                         console.log('Letter animation triggered');
-                    }, 100); // Chờ 100ms
+                    // Đảm bảo heading nhìn thấy được trước khi thêm class animation
+                    // (Phòng trường hợp CSS mặc định ẩn nó đi)
+                    heading.style.opacity = '1'; // Hoặc đặt trong CSS cho h1
+
+                    // Thêm class để kích hoạt animation sau một frame
+                    requestAnimationFrame(() => {
+                         setTimeout(() => { // Thêm timeout nhỏ nữa cho chắc ăn
+                            heading.classList.add('letters-animated');
+                            console.log('Letter animation triggered');
+                         }, 50); // Chờ 50ms
+                    });
                 }
 
                 console.log('Setting up letter animation');
                 try {
                     setupLetterAnimation();
-                    // Xóa bỏ code gọi triggerHeadingBounce cũ
                 } catch(error) {
                     console.error('Lỗi setup letter animation:', error);
-                    heading.style.opacity = 1; // Đảm bảo heading hiện ra nếu JS lỗi
+                    // Fallback nếu có lỗi: hiện lại text gốc
+                    if(heading) {
+                        heading.innerHTML = 'Coming Soon!'; // Khôi phục text
+                        heading.style.opacity = 1; // Đảm bảo nhìn thấy được
+                    }
                 }
                 // === KẾT THÚC THAY ĐỔI LOGIC ANIMATION HEADING ===
 
 
                 // === LOGIC HOA RƠI VÀ KÉO THẢ GIỮ NGUYÊN TỪ v13 ===
-                const isMobile = window.innerWidth <= 576;
-                const flowerCount = isMobile ? 10 : 20; const totalCycleTime = 10; const flowerFallDuration = 10;
+                const isMobile = window.innerWidth <= 576; const flowerCount = isMobile ? 10 : 20; const totalCycleTime = 10; const flowerFallDuration = 10;
                 function createFlower(index) { const flower = document.createElement('span'); flower.className = 'flower'; flower.innerHTML = '❅'; flowerContainer.appendChild(flower); const randomLeft = Math.random() * 100; flower.style.left = `${randomLeft}%`; const size = 30 + Math.random() * 30; flower.style.fontSize = `${size}px`; flower.style.width = `${size}px`; flower.style.height = `${size}px`; flower.style.animationDuration = `${flowerFallDuration}s`; const delay = (index * totalCycleTime) / flowerCount; flower.style.animationDelay = `-${delay}s`; const opacity = 0.9 - ((size - 30) / 30) * 0.4; flower.style.setProperty('--flower-opacity', opacity.toFixed(2)); flower.addEventListener('mousedown', dragStart); flower.addEventListener('touchstart', dragStart, { passive: false }); flower.addEventListener('animationiteration', () => { flower.style.left = `${Math.random() * 100}%`; }); }
                 function dragStart(event) { if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault(); }
                 function dragging(event) { if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault(); }
