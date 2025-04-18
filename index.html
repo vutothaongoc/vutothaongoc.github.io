@@ -88,7 +88,7 @@
         }
         html { height: 100%; }
         body {
-            text-align: center; font-family: 'Nunito', sans-serif; /* Removed padding */
+            text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; /* Kept padding here */
             color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
             background-repeat: no-repeat; background-attachment: fixed; min-height: 100%;
             position: relative; overflow-x: hidden;
@@ -127,6 +127,10 @@
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             font-weight: 700; margin-bottom: 25px; display: inline-block;
+            /* --- FIX START --- */
+            position: relative; /* Cần thiết cho z-index hoạt động */
+            z-index: 3; /* Đảm bảo H1 nằm trên flower-container có z-index: 2 */
+            /* --- FIX END --- */
         }
         h1 span {
             display: inline-block;
@@ -146,7 +150,7 @@
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
             color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
             transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border: none; position: relative; z-index: 1;
+            border: none; position: relative; z-index: 1; /* Giữ z-index cho nút nếu cần */
         }
         .links a:hover {
             background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
@@ -156,16 +160,14 @@
             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Nút: 0.3s */
         }
         .content-wrapper {
-            padding: 40px 20px; /* Added padding to content wrapper */
-            position: relative; /* Added position to create stacking context */
-            z-index: 3; /* Added z-index to stack above flower-container */
+            /* Reverted padding back to body, removed position/z-index */
         }
         @media (max-width: 576px) {
-            body { /* Removed padding */ }
+            body { padding: 20px 10px; /* Kept mobile padding here */ }
             h1 { font-size: 2.5em; }
             p { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
-            .content-wrapper { padding: 20px 10px; } /* Adjusted padding for mobile */
+            .content-wrapper { /* Reverted padding */ }
             .flower { font-size: 25px; width: 50px; height: 50px; }
         }
     </style>
