@@ -89,7 +89,7 @@
             font-weight: 700; margin-bottom: 25px; display: inline-block;
         }
         h1.bounce {
-            animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: jellyBounce 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Chậm hơn: 0.6s */
         }
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
@@ -105,8 +105,7 @@
             transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         .links a.bounce {
-            animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transition: none;
+            animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Nút giữ 0.3s */
         }
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
@@ -201,15 +200,22 @@
                 // Gọi autoplay ngay khi trang tải
                 tryAutoPlay();
 
-                // Áp dụng bounce cho h1
-                console.log('Applying bounce to h1');
+                // Bounce h1 mỗi 10 giây
+                console.log('Starting h1 bounce interval');
                 try {
-                    heading.classList.add('bounce');
-                    setTimeout(() => {
-                        heading.classList.remove('bounce');
-                    }, 300);
+                    function triggerHeadingBounce() {
+                        console.log('Triggering h1 bounce');
+                        heading.classList.add('bounce');
+                        setTimeout(() => {
+                            heading.classList.remove('bounce');
+                        }, 600); // Thời gian bounce: 0.6s
+                    }
+                    // Bounce ngay khi tải
+                    triggerHeadingBounce();
+                    // Lặp mỗi 10 giây
+                    setInterval(triggerHeadingBounce, 10000);
                 } catch (error) {
-                    console.error('Lỗi áp dụng bounce cho h1:', error);
+                    console.error('Lỗi thiết lập bounce h1:', error);
                 }
 
                 // Tạo bông tuyết
@@ -349,7 +355,7 @@
                     button.classList.add('bounce');
                     setTimeout(() => {
                         button.classList.remove('bounce');
-                    }, 300);
+                    }, 300); // Nút giữ 0.3s
 
                     jellySound.currentTime = 0;
                     jellySound.play().then(() => {
