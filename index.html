@@ -12,35 +12,35 @@
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
-        /* ===== ANIMATION JELLY LẶP LẠI MỖI 10s CHO H1 ===== */
-        /* Tổng duration là 10s, wobble xảy ra trong 1.5s đầu (15%) */
+        /* ===== ANIMATION JELLY LẶP LẠI MỖI 10s (Wobble nhanh hơn) ===== */
+        /* Tổng duration 10s, wobble xảy ra trong 1.2s đầu (12%) */
         @keyframes jellyWobblePeriodic {
-            /* Trạng thái bắt đầu, kết thúc và giữ nguyên trong 8.5s cuối */
-            0%, 15%, 100% {
+            /* Trạng thái bắt đầu, kết thúc và giữ nguyên */
+            0%, 12%, 100% { /* Kết thúc wobble ở 12% */
                 transform: scale(1, 1);
             }
-             /* Các bước wobble tính theo % của 1.5s đầu (tức là 15% của tổng 10s) */
-             /* 15% * 15% = 2.25% */
-            2.25% {
+             /* Các bước wobble tính theo % của 1.2s đầu (tức là 12% của tổng 10s) */
+             /* 15% của 12% = 1.8% */
+            1.8% {
                 transform: scale(1.25, 0.75);
             }
-             /* 30% * 15% = 4.5% */
-            4.5% {
+             /* 30% của 12% = 3.6% */
+            3.6% {
                 transform: scale(0.8, 1.2);
             }
-            /* 45% * 15% = 6.75% */
-            6.75% {
+            /* 45% của 12% = 5.4% */
+            5.4% {
                 transform: scale(1.15, 0.85);
             }
-            /* 60% * 15% = 9% */
-            9% {
+            /* 60% của 12% = 7.2% */
+            7.2% {
                 transform: scale(0.9, 1.1);
             }
-            /* 75% * 15% = 11.25% */
-            11.25% {
+            /* 75% của 12% = 9.0% */
+            9.0% {
                 transform: scale(1.05, 0.95);
             }
-            /* 15% là kết thúc wobble, quay về scale(1,1) và giữ đến 100% */
+            /* 12% là kết thúc wobble, quay về scale(1,1) và giữ đến 100% */
         }
         /* ===== KẾT THÚC ANIMATION JELLY ===== */
 
@@ -61,8 +61,9 @@
             display: inline-block;
             will-change: transform;
             /* ===== ÁP DỤNG ANIMATION JELLY LẶP LẠI ===== */
-            animation: jellyWobblePeriodic 10s ease-in-out infinite; /* Đổi tên, duration 10s, lặp vô hạn */
-            animation-delay: 0.3s; /* Delay cho lần chạy đầu tiên */
+            /* Giữ nguyên các thuộc tính animation */
+            animation: jellyWobblePeriodic 10s ease-in-out infinite;
+            animation-delay: 0.3s;
         }
 
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
