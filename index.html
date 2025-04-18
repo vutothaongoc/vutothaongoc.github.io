@@ -40,47 +40,51 @@
             100% { transform: scale(1.05, 0.95); letter-spacing: 0; }
         }
         @keyframes headingBounceFirst {
-            /* Nhún 2 lần: 0-20% (~0.3s) */
-            0% { transform: translateY(0) scaleY(1) scaleX(1); }
-            7% { transform: translateY(5px) scaleY(0.85) scaleX(1.1); } /* Nhún 1 xuống, squash */
-            13% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Lên, stretch, overshoot */
-            17% { transform: translateY(5px) scaleY(0.85) scaleX(1.1); } /* Nhún 2 xuống, squash */
-            20% { transform: translateY(0) scaleY(1) scaleX(1); } /* Lên, hồi phục */
-            /* Nhảy lên đáp đất: 20-40% (~0.3s) */
-            30% { transform: translateY(-20px) scaleY(1) scaleX(1); } /* Nhảy lên */
-            38% { transform: translateY(0) scaleY(0.8) scaleX(1.15); } /* Đáp đất, squash */
-            40% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
-            /* Bounce: 40-100% (~0.9s) */
-            55% { transform: translateY(-12px) scaleY(1) scaleX(1); } /* Bật 1 */
-            65% { transform: translateY(0) scaleY(0.8) scaleX(1.15); } /* Chạm đất, squash */
-            67% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
-            75% { transform: translateY(-8px) scaleY(1) scaleX(1); } /* Bật 2 */
-            85% { transform: translateY(0) scaleY(0.8) scaleX(1.15); } /* Chạm đất, squash */
-            87% { transform: translateY(-1px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
-            93% { transform: translateY(-4px) scaleY(1) scaleX(1); } /* Bật 3 */
-            97% { transform: translateY(0) scaleY(0.8) scaleX(1.15); } /* Chạm đất, squash */
+            /* Pop-in: 0-10% (~0.15s) */
+            0% { transform: scale(0.5); opacity: 0; }
+            10% { transform: scale(1.2); opacity: 1; } /* Pop lớn */
+            /* Nhún 2 lần: 10-30% (~0.3s) */
+            15% { transform: translateY(5px) scaleY(0.75) scaleX(1.2); } /* Nhún 1 xuống, squash */
+            20% { transform: translateY(-5px) scaleY(1.2) scaleX(0.8); } /* Lên, stretch, overshoot */
+            25% { transform: translateY(5px) scaleY(0.75) scaleX(1.2); } /* Nhún 2 xuống, squash */
+            30% { transform: translateY(0) scaleY(1) scaleX(1); } /* Lên, hồi phục */
+            /* Nhảy lên đáp đất: 30-50% (~0.3s) */
+            40% { transform: translateY(-25px) scaleY(1) scaleX(1); } /* Nhảy lên */
+            48% { transform: translateY(0) scaleY(0.75) scaleX(1.2); } /* Đáp đất, squash */
+            50% { transform: translateY(-5px) scaleY(1.2) scaleX(0.8); } /* Stretch, overshoot */
+            /* Bounce: 50-100% (~0.75s) */
+            60% { transform: translateY(-12px) scaleY(1) scaleX(1); } /* Bật 1 */
+            70% { transform: translateY(0) scaleY(0.75) scaleX(1.2); } /* Chạm đất, squash */
+            72% { transform: translateY(-5px) scaleY(1.2) scaleX(0.8); } /* Stretch, overshoot */
+            80% { transform: translateY(-8px) scaleY(1) scaleX(1); } /* Bật 2 */
+            88% { transform: translateY(0) scaleY(0.75) scaleX(1.2); } /* Chạm đất, squash */
+            90% { transform: translateY(-3px) scaleY(1.2) scaleX(0.8); } /* Stretch, overshoot */
+            95% { transform: translateY(-2px) scaleY(1) scaleX(1); } /* Micro-bounce 1 */
+            98% { transform: translateY(-1px) scaleY(1) scaleX(1); } /* Micro-bounce 2 */
             100% { transform: translateY(0) scaleY(1) scaleX(1); } /* Hồi phục */
         }
         @keyframes headingBounce {
-            /* Nhún 2 lần: 0-18.75% (~0.3s) */
-            0% { transform: translateY(0) scaleY(1) scaleX(1); }
-            6.25% { transform: translateY(5px) scaleY(0.85) scaleX(1.1); } /* Nhún 1 xuống, squash */
-            12.5% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Lên, stretch, overshoot */
-            16.25% { transform: translateY(5px) scaleY(0.85) scaleX(1.1); } /* Nhún 2 xuống, squash */
-            18.75% { transform: translateY(0) scaleY(1) scaleX(1); } /* Lên, hồi phục */
-            /* Nhảy lên đáp đất: 18.75-37.5% (~0.3s) */
-            28.1% { transform: translateY(-20px) scaleY(1) scaleX(1); } /* Nhảy lên */
-            35.5% { transform: translateY(0) scaleY(0.8) scaleX(1.15); } /* Đáp đất, squash */
-            37.5% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
-            /* Bounce: 37.5-100% (~1.0s) */
-            53% { transform: translateY(-12px) scaleY(1) scaleX(1); } /* Bật 1 */
-            65% { transform: translateY(0) scaleY(0.8) scaleX(1.15); } /* Chạm đất, squash */
-            67% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
-            75% { transform: translateY(-8px) scaleY(1) scaleX(1); } /* Bật 2 */
-            85% { transform: translateY(0) scaleY(0.8) scaleX(1.15); } /* Chạm đất, squash */
-            87% { transform: translateY(-1px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
-            93% { transform: translateY(-4px) scaleY(1) scaleX(1); } /* Bật 3 */
-            97% { transform: translateY(0) scaleY(0.8) scaleX(1.15); } /* Chạm đất, squash */
+            /* Pop-in: 0-9.375% (~0.15s) */
+            0% { transform: scale(0.5); opacity: 0; }
+            9.375% { transform: scale(1.2); opacity: 1; } /* Pop lớn */
+            /* Nhún 2 lần: 9.375-28.125% (~0.3s) */
+            14.1% { transform: translateY(5px) scaleY(0.75) scaleX(1.2); } /* Nhún 1 xuống, squash */
+            18.75% { transform: translateY(-5px) scaleY(1.2) scaleX(0.8); } /* Lên, stretch, overshoot */
+            23.4% { transform: translateY(5px) scaleY(0.75) scaleX(1.2); } /* Nhún 2 xuống, squash */
+            28.125% { transform: translateY(0) scaleY(1) scaleX(1); } /* Lên, hồi phục */
+            /* Nhảy lên đáp đất: 28.125-46.875% (~0.3s) */
+            37.5% { transform: translateY(-25px) scaleY(1) scaleX(1); } /* Nhảy lên */
+            45% { transform: translateY(0) scaleY(0.75) scaleX(1.2); } /* Đáp đất, squash */
+            46.875% { transform: translateY(-5px) scaleY(1.2) scaleX(0.8); } /* Stretch, overshoot */
+            /* Bounce: 46.875-100% (~0.85s) */
+            57.5% { transform: translateY(-12px) scaleY(1) scaleX(1); } /* Bật 1 */
+            67.5% { transform: translateY(0) scaleY(0.75) scaleX(1.2); } /* Chạm đất, squash */
+            69.375% { transform: translateY(-5px) scaleY(1.2) scaleX(0.8); } /* Stretch, overshoot */
+            77.5% { transform: translateY(-8px) scaleY(1) scaleX(1); } /* Bật 2 */
+            85% { transform: translateY(0) scaleY(0.75) scaleX(1.2); } /* Chạm đất, squash */
+            86.875% { transform: translateY(-3px) scaleY(1.2) scaleX(0.8); } /* Stretch, overshoot */
+            92.5% { transform: translateY(-2px) scaleY(1) scaleX(1); } /* Micro-bounce 1 */
+            97.5% { transform: translateY(-1px) scaleY(1) scaleX(1); } /* Micro-bounce 2 */
             100% { transform: translateY(0) scaleY(1) scaleX(1); } /* Hồi phục */
         }
         :root {
@@ -131,13 +135,13 @@
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             font-weight: 700; margin-bottom: 25px; display: inline-block;
-            will-change: transform; /* Tối ưu render */
+            will-change: transform, opacity; /* Tối ưu render */
         }
         h1.bounce-first {
-            animation: headingBounceFirst 1.5s cubic-bezier(0.7, -0.5, 0.3, 1.5); /* Lần đầu: 1.5s, elastic nhẹ */
+            animation: headingBounceFirst 1.5s cubic-bezier(0.8, -1, 0.2, 1.7); /* Lần đầu: 1.5s, siêu elastic */
         }
         h1.bounce {
-            animation: headingBounce 1.6s cubic-bezier(0.7, -0.5, 0.3, 1.5); /* Lần lặp: 1.6s, elastic nhẹ */
+            animation: headingBounce 1.6s cubic-bezier(0.8, -1, 0.2, 1.7); /* Lần lặp: 1.6s, siêu elastic */
         }
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
@@ -149,7 +153,7 @@
             border: none; position: relative; z-index: 1;
         }
         .links a:hover {
-            background-image: linear-gradient(to right, var(--button-pink-hover), --button-blue-hover);
+            background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
             transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
         .links a.bounce {
