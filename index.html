@@ -41,49 +41,49 @@
         }
         @keyframes headingBounceFirst {
             /* Nhún 2 lần: 0-20% (~0.3s) */
-            0% { transform: translateY(0) scaleY(1); }
-            5% { transform: translateY(5px) scaleY(1); } /* Nhún 1 xuống */
-            10% { transform: translateY(0) scaleY(1); } /* Lên */
-            15% { transform: translateY(5px) scaleY(1); } /* Nhún 2 xuống */
-            20% { transform: translateY(0) scaleY(1); } /* Lên */
+            0% { transform: translateY(0) scaleY(1) scaleX(1); }
+            5% { transform: translateY(5px) scaleY(0.9) scaleX(1.05); } /* Nhún 1 xuống, squash */
+            10% { transform: translateY(-2px) scaleY(1.05) scaleX(0.95); } /* Lên, stretch, overshoot */
+            15% { transform: translateY(5px) scaleY(0.9) scaleX(1.05); } /* Nhún 2 xuống, squash */
+            20% { transform: translateY(0) scaleY(1) scaleX(1); } /* Lên, hồi phục */
             /* Nhảy lên đáp đất: 20-40% (~0.3s) */
-            30% { transform: translateY(-15px) scaleY(1); } /* Nhảy lên */
-            40% { transform: translateY(3px) scaleY(0.8); } /* Đáp đất, ép xuống */
-            42% { transform: translateY(3px) scaleY(1); } /* Hồi phục */
+            30% { transform: translateY(-20px) scaleY(1) scaleX(1); } /* Nhảy lên */
+            38% { transform: translateY(2px) scaleY(0.85) scaleX(1.1); } /* Đáp đất, squash */
+            40% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
             /* Bounce: 40-100% (~0.9s) */
-            55% { transform: translateY(-10px) scaleY(1); } /* Bật 1 */
-            65% { transform: translateY(2px) scaleY(0.8); } /* Chạm đất, ép xuống */
-            67% { transform: translateY(2px) scaleY(1); } /* Hồi phục */
-            75% { transform: translateY(-8px) scaleY(1); } /* Bật 2 */
-            85% { transform: translateY(1px) scaleY(0.8); } /* Chạm đất, ép xuống */
-            87% { transform: translateY(1px) scaleY(1); } /* Hồi phục */
-            90% { transform: translateY(-5px) scaleY(1); } /* Bật 3 */
-            95% { transform: translateY(0) scaleY(0.8); } /* Chạm đất, ép xuống */
-            97% { transform: translateY(0) scaleY(1); } /* Hồi phục */
-            100% { transform: translateY(0) scaleY(1); }
+            55% { transform: translateY(-15px) scaleY(1) scaleX(1); } /* Bật 1 */
+            65% { transform: translateY(2px) scaleY(0.85) scaleX(1.1); } /* Chạm đất, squash */
+            67% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
+            75% { transform: translateY(-8px) scaleY(1) scaleX(1); } /* Bật 2 */
+            85% { transform: translateY(1px) scaleY(0.85) scaleX(1.1); } /* Chạm đất, squash */
+            87% { transform: translateY(-1px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
+            90% { transform: translateY(-4px) scaleY(1) scaleX(1); } /* Bật 3 */
+            95% { transform: translateY(0) scaleY(0.85) scaleX(1.1); } /* Chạm đất, squash */
+            97% { transform: translateY(0) scaleY(1) scaleX(1); } /* Hồi phục */
+            100% { transform: translateY(0) scaleY(1) scaleX(1); }
         }
         @keyframes headingBounce {
             /* Nhún 2 lần: 0-18.75% (~0.3s) */
-            0% { transform: translateY(0) scaleY(1); }
-            4.7% { transform: translateY(5px) scaleY(1); } /* Nhún 1 xuống */
-            9.4% { transform: translateY(0) scaleY(1); } /* Lên */
-            14.1% { transform: translateY(5px) scaleY(1); } /* Nhún 2 xuống */
-            18.75% { transform: translateY(0) scaleY(1); } /* Lên */
+            0% { transform: translateY(0) scaleY(1) scaleX(1); }
+            4.7% { transform: translateY(5px) scaleY(0.9) scaleX(1.05); } /* Nhún 1 xuống, squash */
+            9.4% { transform: translateY(-2px) scaleY(1.05) scaleX(0.95); } /* Lên, stretch, overshoot */
+            14.1% { transform: translateY(5px) scaleY(0.9) scaleX(1.05); } /* Nhún 2 xuống, squash */
+            18.75% { transform: translateY(0) scaleY(1) scaleX(1); } /* Lên, hồi phục */
             /* Nhảy lên đáp đất: 18.75-37.5% (~0.3s) */
-            28.1% { transform: translateY(-15px) scaleY(1); } /* Nhảy lên */
-            37.5% { transform: translateY(3px) scaleY(0.8); } /* Đáp đất, ép xuống */
-            39.5% { transform: translateY(3px) scaleY(1); } /* Hồi phục */
+            28.1% { transform: translateY(-20px) scaleY(1) scaleX(1); } /* Nhảy lên */
+            35.5% { transform: translateY(2px) scaleY(0.85) scaleX(1.1); } /* Đáp đất, squash */
+            37.5% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
             /* Bounce: 37.5-100% (~1.0s) */
-            53% { transform: translateY(-10px) scaleY(1); } /* Bật 1 */
-            65% { transform: translateY(2px) scaleY(0.8); } /* Chạm đất, ép xuống */
-            67% { transform: translateY(2px) scaleY(1); } /* Hồi phục */
-            75% { transform: translateY(-8px) scaleY(1); } /* Bật 2 */
-            85% { transform: translateY(1px) scaleY(0.8); } /* Chạm đất, ép xuống */
-            87% { transform: translateY(1px) scaleY(1); } /* Hồi phục */
-            90% { transform: translateY(-5px) scaleY(1); } /* Bật 3 */
-            95% { transform: translateY(0) scaleY(0.8); } /* Chạm đất, ép xuống */
-            97% { transform: translateY(0) scaleY(1); } /* Hồi phục */
-            100% { transform: translateY(0) scaleY(1); }
+            53% { transform: translateY(-15px) scaleY(1) scaleX(1); } /* Bật 1 */
+            65% { transform: translateY(2px) scaleY(0.85) scaleX(1.1); } /* Chạm đất, squash */
+            67% { transform: translateY(-2px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
+            75% { transform: translateY(-8px) scaleY(1) scaleX(1); } /* Bật 2 */
+            85% { transform: translateY(1px) scaleY(0.85) scaleX(1.1); } /* Chạm đất, squash */
+            87% { transform: translateY(-1px) scaleY(1.1) scaleX(0.9); } /* Stretch, overshoot */
+            90% { transform: translateY(-4px) scaleY(1) scaleX(1); } /* Bật 3 */
+            95% { transform: translateY(0) scaleY(0.85) scaleX(1.1); } /* Chạm đất, squash */
+            97% { transform: translateY(0) scaleY(1) scaleX(1); } /* Hồi phục */
+            100% { transform: translateY(0) scaleY(1) scaleX(1); }
         }
         :root {
             --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff;
@@ -135,10 +135,10 @@
             font-weight: 700; margin-bottom: 25px; display: inline-block;
         }
         h1.bounce-first {
-            animation: headingBounceFirst 1.5s cubic-bezier(0.4, 0, 0.2, 1); /* Lần đầu: 1.5s */
+            animation: headingBounceFirst 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Lần đầu: 1.5s, bouncy */
         }
         h1.bounce {
-            animation: headingBounce 1.6s cubic-bezier(0.4, 0, 0.2, 1); /* Lần lặp: 1.6s */
+            animation: headingBounce 1.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Lần lặp: 1.6s, bouncy */
         }
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
@@ -291,7 +291,7 @@
                     flower.style.animationDuration = `${duration}s`;
 
                     const delay = (index * totalCycleTime) / flowerCount;
-                    flower.style.animationDelay = `${delay}s`;
+                    flower.style.animationDelay = `${-delay}s`;
 
                     const opacity = 0.9 - ((size - 30) / 30) * 0.4;
                     flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
