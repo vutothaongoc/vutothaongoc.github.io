@@ -12,35 +12,36 @@
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
-        /* ===== ANIMATION JELLY LẶP LẠI MỖI 10s (Wobble nhanh hơn) ===== */
-        /* Tổng duration 10s, wobble xảy ra trong 1.2s đầu (12%) */
-        @keyframes jellyWobblePeriodic {
-            /* Trạng thái bắt đầu, kết thúc và giữ nguyên */
-            0%, 12%, 100% { /* Kết thúc wobble ở 12% */
+        /* ===== ANIMATION JELLY NÂNG CAO (Áp dụng nguyên tắc) ===== */
+        /* Tổng duration 10s, wobble trong 1.2s đầu (12%) */
+        @keyframes enhancedJellyWobble {
+            /* Trạng thái Bắt đầu, Kết thúc wobble (12%), và Kết thúc chu kỳ (100%) */
+            0%, 12%, 100% {
                 transform: scale(1, 1);
             }
-             /* Các bước wobble tính theo % của 1.2s đầu (tức là 12% của tổng 10s) */
-             /* 15% của 12% = 1.8% */
-            1.8% {
-                transform: scale(1.25, 0.75);
+            /* 1. Anticipation: Hơi giãn lên trước khi nén (rất nhanh) */
+            0.5% { /* Khoảng 0.05s */
+                 transform: scale(0.97, 1.03);
             }
-             /* 30% của 12% = 3.6% */
-            3.6% {
-                transform: scale(0.8, 1.2);
+            /* 2. Squash (Exaggerated): Nén mạnh xuống */
+            2% { /* Khoảng 0.2s */
+                transform: scale(1.35, 0.6); /* Phóng đại hơn chút */
             }
-            /* 45% của 12% = 5.4% */
-            5.4% {
-                transform: scale(1.15, 0.85);
+            /* 3. Stretch (Exaggerated): Giãn vọt lên */
+            4% { /* Khoảng 0.4s */
+                transform: scale(0.7, 1.35); /* Phóng đại hơn chút */
             }
-            /* 60% của 12% = 7.2% */
-            7.2% {
+            /* Các bước nảy giảm dần (Timing) */
+            6% {
+                transform: scale(1.15, 0.8);
+            }
+            8% {
                 transform: scale(0.9, 1.1);
             }
-            /* 75% của 12% = 9.0% */
-            9.0% {
-                transform: scale(1.05, 0.95);
+            10% {
+                 transform: scale(1.05, 0.95);
             }
-            /* 12% là kết thúc wobble, quay về scale(1,1) và giữ đến 100% */
+            /* 12% quay về trạng thái bình thường và giữ đến 100% */
         }
         /* ===== KẾT THÚC ANIMATION JELLY ===== */
 
@@ -60,9 +61,10 @@
             margin-bottom: 25px;
             display: inline-block;
             will-change: transform;
-            /* ===== ÁP DỤNG ANIMATION JELLY LẶP LẠI ===== */
-            /* Giữ nguyên các thuộc tính animation */
-            animation: jellyWobblePeriodic 10s ease-in-out infinite;
+            /* ===== ÁP DỤNG ANIMATION JELLY NÂNG CAO ===== */
+            /* Đổi tên animation, đổi timing-function */
+            animation: enhancedJellyWobble 10s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            /* cubic-bezier tạo hiệu ứng nảy tưng (overshoot) */
             animation-delay: 0.3s;
         }
 
@@ -227,23 +229,3 @@
                     }, fallTransitionDuration);
                     document.removeEventListener('mousemove', dragging);
                     document.removeEventListener('touchmove', dragging);
-                    document.removeEventListener('mouseup', dragEnd);
-                    document.removeEventListener('touchend', dragEnd);
-                }
-
-                console.log('Starting flower creation (original loop)');
-                try {
-                    for (let i = 0; i < flowerCount; i++) {
-                        createFlower(i);
-                    }
-                } catch (error) {
-                    console.error('Lỗi tạo bông tuyết:', error);
-                }
-
-            }); // Kết thúc DOMContentLoaded
-        } catch (error) {
-            console.error('Lỗi toàn cục trong script:', error);
-        }
-    </script>
-</body>
-</html>
