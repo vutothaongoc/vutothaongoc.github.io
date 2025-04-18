@@ -39,7 +39,7 @@
             95% { transform: scale(0.9, 1.1); letter-spacing: 0.2px; }
             100% { transform: scale(1.05, 0.95); letter-spacing: 0; }
         }
-        /* --- NEW ANIMATION KEYFRAMES --- */
+        /* --- NEW ANIMATION KEYFRAMES (Kept) --- */
         @keyframes jellyPopInBounce {
             0% { opacity: 0; transform: scale(0); }
             1% { opacity: 1; transform: scale(0.1); } /* Pop in very quickly */
@@ -101,14 +101,17 @@
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             font-weight: 700; margin-bottom: 25px; display: inline-block;
-            /* Removed position and z-index from here */
+            /* --- RE-APPLIED Z-INDEX FIX --- */
+            position: relative; /* Cần thiết cho z-index hoạt động */
+            z-index: 3; /* Đảm bảo H1 nằm trên flower-container có z-index: 2 */
+            /* --- END RE-APPLIED Z-INDEX FIX --- */
         }
         h1 span {
             display: inline-block;
             opacity: 0; /* Bắt đầu ẩn để animation hiện ra */
             will-change: transform, opacity; /* Tối ưu render */
         }
-         /* --- NEW ANIMATION RULE --- */
+         /* --- NEW ANIMATION RULE (Kept) --- */
         h1.animate-jelly span {
             animation: jellyPopInBounce 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Dùng animation mới */
         }
@@ -121,7 +124,7 @@
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
             color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
             transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border: none; position: relative; z-index: 1;
+            border: none; position: relative; z-index: 1; /* Giữ z-index cho nút nếu cần */
         }
         .links a:hover {
             background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
@@ -131,14 +134,14 @@
             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Nút: 0.3s */
         }
         .content-wrapper {
-            /* No changes here */
+             /* Reverted to original state */
         }
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 { font-size: 2.5em; }
             p { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
-            .content-wrapper { /* No changes */ }
+            .content-wrapper { /* Reverted */ }
             .flower { font-size: 25px; width: 50px; height: 50px; }
         }
     </style>
@@ -188,7 +191,7 @@
                     console.error('Error loading audio:', error);
                 }
 
-                // Thêm stagger cho từng chữ
+                // Thêm stagger cho từng chữ và trigger animation
                 console.log('Setting up stagger for h1');
                 try {
                     const text = heading.textContent.trim(); // Lấy "Coming Soon!"
@@ -202,7 +205,6 @@
                     });
                     console.log(`Added ${text.length} spans for stagger`);
 
-                    // --- TRIGGER NEW ANIMATION ---
                     // Kích hoạt animation ngay sau khi thêm spans
                     setTimeout(() => { // Dùng setTimeout 0 để đảm bảo spans đã được render
                          heading.classList.add('animate-jelly');
@@ -252,12 +254,13 @@
                 // Gọi autoplay
                 tryAutoPlay();
 
-                // Removed the setInterval for the old bouncing animation
+                // Removed the setInterval for the old bouncing animation (Kept)
 
-                // Tạo bông tuyết (giữ nguyên)
+
+                // Tạo bông tuyết (Giữ nguyên code gốc của em)
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
-                const totalCycleTime = 10;
+                const totalCycleTime = 10; // Should match animation duration for seamless loop
 
                 function createFlower(index) {
                     console.log('Creating flower:', index);
@@ -271,14 +274,15 @@
 
                     const size = 30 + Math.random() * 30;
                     flower.style.fontSize = `${size}px`;
-                    flower.style.width = `${size}px`;
+                    flower.style.width = `${size}px`; // Ensure width/height match font-size roughly
                     flower.style.height = `${size}px`;
 
-                    const duration = 10;
+                    const duration = 10; // Ensure this matches totalCycleTime
                     flower.style.animationDuration = `${duration}s`;
 
+                    // Delay the start of the animation for staggering
                     const delay = (index * totalCycleTime) / flowerCount;
-                    flower.style.animationDelay = `${-delay}s`;
+                    flower.style.animationDelay = `${-delay}s`; // Use negative delay to start in the middle of animation
 
                     const opacity = 0.9 - ((size - 30) / 30) * 0.4;
                     flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
@@ -286,19 +290,18 @@
                     flower.addEventListener('mousedown', dragStart);
                     flower.addEventListener('touchstart', dragStart, { passive: false });
 
-                    // Removed the timeout logic that recreated flowers,
-                    // as the fall animation handles looping. Re-adding if needed.
-                    // Let's keep the original timeout logic for now to match user's code structure.
-                     setTimeout(() => {
+                    // Original logic to recreate flowers after they fall
+                    // The animation itself handles looping visually. This setTimeout is for element replacement.
+                    setTimeout(() => {
                          flower.remove();
-                         createFlower(index); // Recreate flower after it falls
-                     }, (duration + delay) * 1000);
+                         createFlower(index); // Recreate a flower to maintain the count
+                     }, (duration + delay) * 1000); // Time until this specific flower finishes its cycle
+
                 }
 
                 console.log('Starting flower creation');
                 try {
-                    // Clear existing flowers if any before creating new ones (might not be needed if container is always empty initially)
-                    // flowerContainer.innerHTML = '';
+                    // Revert flower creation to original loop
                     for (let i = 0; i < flowerCount; i++) {
                         createFlower(i);
                     }
@@ -306,6 +309,7 @@
                     console.error('Error creating flowers:', error);
                 }
 
+                // --- DRAG FUNCTIONS (Reverted to Original) ---
                 function getEventCoords(event) {
                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
@@ -323,10 +327,9 @@
                     activeFlower.style.animation = 'none'; // Stop fall animation
 
                     const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
-                    // Calculate offset based on current position relative to event coords
-                    const flowerRect = activeFlower.getBoundingClientRect();
-                    offsetX = coords.x - flowerRect.left;
-                    offsetY = coords.y - flowerRect.top;
+                    // Reverted offsetX/Y calculation to original logic
+                    offsetX = fontSize / 2;
+                    offsetY = fontSize / 2 + offsetYAdjustment;
 
 
                     activeFlower.style.position = 'absolute';
@@ -339,7 +342,7 @@
                     document.addEventListener('mouseup', dragEnd);
                     document.addEventListener('touchend', dragEnd);
 
-                    event.preventDefault();
+                    event.preventDefault(); // Prevent default on touchstart/mousedown
                 }
 
                 function dragging(event) {
@@ -349,68 +352,41 @@
                     let newX = coords.x - offsetX;
                     let newY = coords.y - offsetY;
 
-                    // Optional: Constrain dragging within container bounds if needed
-                    // const containerRect = activeFlower.parentElement.getBoundingClientRect();
-                    // const flowerWidth = activeFlower.offsetWidth; // Use offsetWidth/Height or clientWidth/Height
-                    // const flowerHeight = activeFlower.offsetHeight;
-                    // newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerWidth));
-                    // newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerHeight));
-
+                    // Reverted to original drag constraints logic (none explicitly defined in original)
+                    // The original code didn't constrain within container, just set top/left directly.
+                    // Keeping it simple as original.
 
                     activeFlower.style.left = `${newX}px`;
                     activeFlower.style.top = `${newY}px`;
 
-                    if (event.type === 'touchmove') event.preventDefault();
+                    if (event.type === 'touchmove') event.preventDefault(); // Prevent scrolling while dragging
                 }
 
                  function dragEnd(event) {
                     if (!activeFlower) return;
                     activeFlower.classList.remove('dragging');
 
-                    // Instead of just disappearing, maybe re-introduce the fall animation?
-                    // For now, keeping the hide logic as in the original code snippet.
+                    // Reverted dragEnd transition/removal logic to original
                     activeFlower.style.transition = 'top 2s linear, opacity 2s linear';
-                    activeFlower.style.top = '110vh'; // Ensure it falls off screen
-                    activeFlower.style.opacity = '0.1'; // Match the end state opacity from fall animation
+                    activeFlower.style.top = '100vh';
+                    activeFlower.style.opacity = '0';
 
-                     // Remove the element after the transition finishes
-                     activeFlower.addEventListener('transitionend', function handler() {
-                         activeFlower.removeEventListener('transitionend', handler);
-                         // Recreate the flower to maintain the count
-                         // Need to know which index this flower was... might need a different approach for drag+recreate
-                         // Simple fix: just recreate one after a delay, assuming one was removed.
-                         // Or better: the original code recreated via a setTimeout from createFlower. Let's rely on that.
-                         activeFlower.remove(); // Remove the dragged one
-                         // A new one will be created by the loop's setTimeout or the initial loop
-
-                          // Simpler recreation logic after drag ends:
-                          // Find index? No, just create a new one to keep count consistent.
-                          // This might mess up the staggered timing slightly, but keeps the number of flowers stable.
-                          // Let's simplify: just remove the dragged flower. The initial loop's setTimeout will eventually replace it.
-                          // Or, call createFlower directly?
-                          // createFlower(Math.floor(Math.random() * flowerCount)); // Creates one immediately.
-                          // Or, let the original timeout handle it. The original code used a setTimeout *within* createFlower
-                          // which means after a flower finishes its animation, it removes itself and calls createFlower again.
-                          // Dragging stops the animation, so the original timeout never fires for the dragged flower.
-                          // We need to manually trigger recreation or re-add it to the animation loop.
-                          // Simplest: just remove it. The page might end up with slightly fewer flowers temporarily until the original timeouts catch up.
-                          // A more robust solution would be to find its place in the animation cycle and restart its animation or replace it correctly.
-                          // Given the user's focus is on the text, let's stick close to the original flower logic.
-                          // The original timeout logic for recreating flowers after they fall is in the createFlower function.
-                          // When dragging stops the animation, that timeout doesn't fire.
-                          // Let's re-evaluate the original recreation logic. Yes, it removes and calls createFlower(index).
-                          // So when dragging ends, we need to remove it, and rely on the initial loop/timeouts to maintain flowers.
-                          // Or, call createFlower(someIndex) here. Let's call createFlower with a random index.
-                          activeFlower.remove(); // Remove the dragged element from the DOM
-                           // The createFlower loop is already running and will replace fallen flowers over time.
-                           // No need to manually call createFlower here, it might duplicate.
-                           // The timeout logic *within* createFlower ensures replacement.
-                           // When dragged, animation stops, timeout doesn't run.
-                           // We need to re-integrate it. Let's remove the element and let the background loop handle replacement eventually.
-                           // Or, restart its animation? Restarting animation is complex with manual positioning.
-                           // Let's revert the dragEnd to just remove, trusting the initial loop's setTimeout.
-                           console.log('Flower removed after drag');
-                     }, 2000); // Match transition duration
+                    setTimeout(() => {
+                        activeFlower.style.display = 'none';
+                         // Note: The original code had display: 'none' here but the setTimeout in createFlower
+                         // is what actually handles removing and recreating the element to maintain the count.
+                         // Need to rely on that or modify it. Let's trust the original createFlower setTimeout for now.
+                         // If dragged flowers aren't replaced, we might need to call createFlower(someIndex) here.
+                         // Let's just remove the element directly here after transition end,
+                         // or rely on the original setTimeout from *when it was created* to trigger its replacement.
+                         // The original code's structure implies the setTimeout *in createFlower* is key.
+                         // Stopping animation stops the passage of time for *that specific animation*.
+                         // It doesn't stop the general JS setTimeout call that was scheduled.
+                         // So the original setTimeout *should* still fire after (duration + delay) seconds from its creation.
+                         // Let's just remove the element immediately on dragEnd.
+                         activeFlower.remove(); // Remove the element from DOM
+                         console.log('Flower removed after drag end'); // Log for debugging
+                    }, 50); // Removed the 2s timeout, remove almost instantly on drag end. Let the original creation setTimeout handle replacement.
 
                     document.removeEventListener('mousemove', dragging);
                     document.removeEventListener('touchmove', dragging);
@@ -419,9 +395,10 @@
 
                     activeFlower = null;
                 }
+                 // --- END DRAG FUNCTIONS ---
 
 
-                // Gắn sự kiện cho nút link
+                // Gắn sự kiện cho nút link (Kept)
                 console.log('Attaching link events');
                 try {
                     document.querySelectorAll('.links a').forEach(button => {
@@ -449,26 +426,13 @@
                         console.error('Error playing jelly sound:', error);
                     });
 
-                    // For touch events, prevent default to avoid synthetic mouse events,
-                    // then manually navigate/open link after the bounce animation if needed.
-                    // The current logic opens after 300ms timeout for touch, which is fine.
-                     if (event.type === 'touchstart') {
-                         // event.preventDefault(); // Keep this to prevent scrolling/zooming while tapping
+                    // Reverted touchstart logic to rely on default click
+                     // if (event.type === 'touchstart') {
+                         // event.preventDefault(); // Prevent default only in dragging
                          // setTimeout(() => {
                          //     window.open(button.href, '_blank');
-                         // }, 300); // Opens after bounce
-                         // Let's remove the manual open for touch events. A simple tap usually triggers click anyway.
-                         // If preventDefault is called, the click event might be prevented.
-                         // Let's only preventDefault for touchmove in dragging.
-                         // For touchstart on button, let the default click event handle opening the link.
-                          // Re-evaluated: event.preventDefault() *is* called in dragStart and touchmove.
-                          // It's NOT called by handleBounce itself.
-                          // So, for a simple tap on a button, preventDefault is not called, click fires, link opens.
-                          // If it was a drag, dragEnd removes listeners.
-                          // The timeout logic in handleBounce for touchstart seems redundant if click event is firing.
-                          // Let's remove the special touchstart timeout logic in handleBounce.
-                          // Let the browser handle link opening on click.
-                     }
+                         // }, 300);
+                     // }
                 }
             });
         } catch (error) {
