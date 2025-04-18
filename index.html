@@ -12,59 +12,106 @@
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
-        /* ===== ANIMATION CARTOON NETWORK MỚI CHO H1 ===== */
-        @keyframes cnPop {
+        /* ===== ANIMATION MỚI: Chữ vào từ 2 bên ===== */
+        @keyframes comeInLeftBounce {
             0% {
-                /* Bắt đầu rất nhỏ, xoay ngược, và trong suốt */
-                transform: scale(0.1) rotate(-270deg);
+                transform: translateX(-100vw); /* Bắt đầu ngoài màn hình trái */
                 opacity: 0;
             }
             60% {
-                /* Phóng to hơn kích thước cuối, xoay quá đà một chút */
-                transform: scale(1.15) rotate(10deg);
+                transform: translateX(15px); /* Vào giữa + overshoot sang phải */
                 opacity: 1;
             }
-            80% {
-                /* Giật lại nhỏ hơn một chút, xoay ngược lại nhẹ */
-                transform: scale(0.95) rotate(-5deg);
+            75% {
+                transform: translateX(-8px); /* Nảy lại sang trái */
+            }
+            90% {
+                transform: translateX(4px); /* Nảy nhẹ lại sang phải */
             }
             100% {
-                /* Ổn định tại kích thước và góc cuối cùng */
-                transform: scale(1) rotate(0deg);
+                transform: translateX(0); /* Vị trí cuối */
                 opacity: 1;
             }
         }
-        /* ===== KẾT THÚC ANIMATION CN ===== */
+
+        @keyframes comeInRightBounce {
+            0% {
+                transform: translateX(100vw); /* Bắt đầu ngoài màn hình phải */
+                opacity: 0;
+            }
+            60% {
+                transform: translateX(-15px); /* Vào giữa + overshoot sang trái */
+                opacity: 1;
+            }
+            75% {
+                transform: translateX(8px); /* Nảy lại sang phải */
+            }
+            90% {
+                transform: translateX(-4px); /* Nảy nhẹ lại sang trái */
+            }
+            100% {
+                transform: translateX(0); /* Vị trí cuối */
+                opacity: 1;
+            }
+        }
+        /* ===== KẾT THÚC ANIMATION MỚI ===== */
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
-        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
+        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; /* Quan trọng: ẩn thanh cuộn ngang do chữ đi từ ngoài vào */ }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
+            /* Giữ lại các style cho gradient và font */
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text;
             background-clip: text;
-            color: transparent;
+            color: transparent; /* Quan trọng để background-clip hoạt động */
             font-weight: 700;
             margin-bottom: 25px;
-            display: inline-block;
-            will-change: transform, opacity;
-            opacity: 0; /* Bắt đầu ẩn */
-            /* ===== ÁP DỤNG ANIMATION CN ===== */
-            /* Đổi tên, giảm thời gian, đổi cubic-bezier cho phù hợp */
-            animation: cnPop 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            animation-delay: 0.3s;
+            display: inline-block; /* Để thẻ h1 ôm vừa nội dung */
+            /* Bỏ animation và opacity khỏi thẻ h1 */
+            /* animation: ... ; */
+            /* opacity: 0; */
+            white-space: nowrap; /* Ngăn các span xuống dòng */
+            font-size: 3em; /* Có thể cần điều chỉnh lại font-size ở đây hoặc trong media query */
         }
+
+        /* Style cho các span chứa chữ */
+        .word-animate {
+            display: inline-block; /* Để transform hoạt động */
+            opacity: 0; /* Bắt đầu ẩn */
+            will-change: transform, opacity;
+            color: inherit; /* Kế thừa màu transparent từ h1 */
+        }
+
+        .word-left {
+            /* Áp dụng animation vào từ bên trái */
+            animation: comeInLeftBounce 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+        }
+
+        .word-right {
+             /* Áp dụng animation vào từ bên phải */
+             /* Cần cùng duration, timing-function và delay với word-left */
+            animation: comeInRightBounce 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+        }
+
 
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
         .links a { display: inline-block; margin: 8px 6px; padding: 12px 28px; background-image: linear-gradient(to right, var(--button-pink), var(--button-blue)); color: white; text-decoration: none; border-radius: 25px; font-weight: 700; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1; }
         .links a:hover { background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover)); transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
         .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        @media (max-width: 576px) { body { padding: 20px 10px; } h1 { font-size: 2.5em; } p { font-size: 1em; } .links a { padding: 10px 20px; margin: 6px 4px; } .content-wrapper { padding: 20px; } .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; } }
+        @media (max-width: 576px) {
+             body { padding: 20px 10px; }
+             h1 { font-size: 2.5em; } /* Điều chỉnh font-size cho H1 ở đây nếu cần */
+             p { font-size: 1em; }
+             .links a { padding: 10px 20px; margin: 6px 4px; }
+             .content-wrapper { padding: 20px; }
+             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
+        }
     </style>
 </head>
 <body>
@@ -72,7 +119,9 @@
     <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
     <div class="flower-container"></div>
     <div class="content-wrapper">
-        <h1>Coming Soon!</h1>
+        <h1>
+            <span class="word-animate word-left">Coming&nbsp;</span><span class="word-animate word-right">Soon!</span>
+        </h1>
         <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
         <p>Hãy quay lại sớm nhé! Trong lúc chờ đợi, bạn có thể theo dõi tranh của mình qua các kênh bên dưới:</p>
         <div class="links">
@@ -87,8 +136,8 @@
     </div>
 
     <script>
-        // ===== PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC =====
-        // (Không cần thay đổi gì ở đây)
+        // Phần JavaScript giữ nguyên như trước, không cần thay đổi gì ở đây
+        // vì nó không điều khiển animation của H1 nữa.
         console.log('Script started');
 
         try {
@@ -141,7 +190,6 @@
 
                 // Xử lý bounce nút link
                 function handleBounce(event) {
-                   // console.log('Handle bounce:', event.type, 'Target:', event.currentTarget.textContent);
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
                     button.classList.add('bounce');
@@ -172,7 +220,6 @@
                     flower.className = 'flower';
                     flower.innerHTML = '❅';
                     flowerContainer.appendChild(flower);
-
                     const randomLeft = Math.random() * 100;
                     flower.style.left = `${randomLeft}%`;
                     const size = 30 + Math.random() * 30;
@@ -182,15 +229,12 @@
                     flower.style.animationDelay = `-${delay}s`;
                     const opacity = 0.9 - ((size - 30) / 30) * 0.4;
                     flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
-
                     flower.addEventListener('mousedown', dragStart);
                     flower.addEventListener('touchstart', dragStart, { passive: false });
-
                     flower.addEventListener('animationiteration', () => {
                         flower.style.left = `${Math.random() * 100}%`;
                     });
                 }
-
                 function dragStart(event) { if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault(); }
                 function dragging(event) { if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault(); }
                 function dragEnd(event) {
