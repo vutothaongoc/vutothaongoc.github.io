@@ -12,62 +12,31 @@
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
-        /* ===== ANIMATION MỚI CHO CHỮ CÁI ===== */
-        @keyframes comeFromLeft {
+        /* ===== ANIMATION JELLY MỚI (Không rơi) CHO H1 ===== */
+        @keyframes jellyWobble {
             0% {
-                transform: translateX(-80px) scale(0.8); /* Ngoài màn hình bên trái, hơi nhỏ */
-                opacity: 0;
+                transform: scale(1, 1); /* Bắt đầu tại chỗ, kích thước bình thường */
+            }
+            15% {
+                transform: scale(1.25, 0.75); /* Nén mạnh lần 1 */
+            }
+            30% {
+                transform: scale(0.8, 1.2); /* Giãn mạnh lần 1 */
+            }
+            45% {
+                transform: scale(1.15, 0.85); /* Nén nhẹ lần 2 */
             }
             60% {
-                /* Bay vào, vượt qua điểm dừng, nén lại khi va chạm */
-                transform: translateX(10px) scale(1.25, 0.75);
-                opacity: 1;
+                transform: scale(0.9, 1.1); /* Giãn nhẹ lần 2 */
             }
             75% {
-                /* Nảy ngược lại */
-                transform: translateX(-5px) scale(0.9, 1.1);
-            }
-            90% {
-                 /* Nảy nhẹ lần nữa */
-                 transform: translateX(2px) scale(1.05, 0.95);
+                transform: scale(1.05, 0.95); /* Nén rất nhẹ lần 3 */
             }
             100% {
-                /* Ổn định */
-                transform: translateX(0) scale(1, 1);
-                opacity: 1;
+                transform: scale(1, 1); /* Trở về bình thường */
             }
         }
-
-        @keyframes comeFromRight {
-            0% {
-                transform: translateX(80px) scale(0.8); /* Ngoài màn hình bên phải, hơi nhỏ */
-                opacity: 0;
-            }
-            60% {
-                /* Bay vào, vượt qua điểm dừng, nén lại khi va chạm */
-                transform: translateX(-10px) scale(1.25, 0.75);
-                opacity: 1;
-            }
-             75% {
-                /* Nảy ngược lại */
-                transform: translateX(5px) scale(0.9, 1.1);
-            }
-            90% {
-                 /* Nảy nhẹ lần nữa */
-                 transform: translateX(-2px) scale(1.05, 0.95);
-            }
-            100% {
-                /* Ổn định */
-                transform: translateX(0) scale(1, 1);
-                opacity: 1;
-            }
-        }
-
-         @keyframes fadeInSpace { /* Animation riêng cho dấu cách */
-            0% { opacity: 0; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        /* ===== KẾT THÚC ANIMATION CHỮ CÁI ===== */
+        /* ===== KẾT THÚC ANIMATION JELLY ===== */
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
@@ -83,64 +52,20 @@
             color: transparent;
             font-weight: 700;
             margin-bottom: 25px;
-            display: inline-block; /* Giữ inline-block để gradient hoạt động */
-             /* BỎ animation cũ khỏi H1 */
-            /* animation: ... */
-            white-space: nowrap; /* Ngăn các span xuống dòng */
+            display: inline-block;
+            will-change: transform; /* Không cần opacity nữa */
+            /* ===== ÁP DỤNG ANIMATION JELLY TẠI CHỖ ===== */
+            /* Đổi tên, có thể chỉnh lại duration/timing */
+            animation: jellyWobble 1.5s ease-in-out forwards;
+            animation-delay: 0.3s; /* Vẫn giữ delay để không quá đột ngột */
         }
-
-        /* Style cho từng chữ cái */
-        h1 .letter {
-            display: inline-block; /* Quan trọng để transform hoạt động */
-            opacity: 0; /* Bắt đầu ẩn */
-            will-change: transform, opacity;
-            position: relative; /* Giúp căn chỉnh tốt hơn nếu cần */
-            animation-fill-mode: forwards; /* Giữ trạng thái cuối */
-            animation-duration: 1s; /* Thời gian animation cho mỗi chữ */
-            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); /* Timing function tạo hiệu ứng nảy bật */
-        }
-
-        /* --- Áp dụng animation và delay cho từng chữ --- */
-
-        /* Chữ "C" (1) từ trái */
-        h1 .letter:nth-child(1) { animation-name: comeFromLeft; animation-delay: 0.1s; }
-        /* Chữ "o" (2) từ trái */
-        h1 .letter:nth-child(2) { animation-name: comeFromLeft; animation-delay: 0.15s; }
-        /* Chữ "m" (3) từ trái */
-        h1 .letter:nth-child(3) { animation-name: comeFromLeft; animation-delay: 0.2s; }
-        /* Chữ "i" (4) từ trái */
-        h1 .letter:nth-child(4) { animation-name: comeFromLeft; animation-delay: 0.25s; }
-        /* Chữ "n" (5) từ trái */
-        h1 .letter:nth-child(5) { animation-name: comeFromLeft; animation-delay: 0.3s; }
-        /* Chữ "g" (6) từ trái */
-        h1 .letter:nth-child(6) { animation-name: comeFromLeft; animation-delay: 0.35s; }
-
-        /* Dấu cách (7) - Fade in đơn giản */
-        h1 .letter:nth-child(7) {
-            animation-name: fadeInSpace;
-            animation-duration: 0.5s;
-            animation-delay: 0.4s; /* Xuất hiện sau các chữ bên trái */
-            animation-timing-function: ease-out;
-        }
-
-        /* Chữ "S" (8) từ phải */
-        h1 .letter:nth-child(8) { animation-name: comeFromRight; animation-delay: 0.45s; }
-        /* Chữ "o" (9) từ phải */
-        h1 .letter:nth-child(9) { animation-name: comeFromRight; animation-delay: 0.5s; }
-        /* Chữ "o" (10) từ phải */
-        h1 .letter:nth-child(10) { animation-name: comeFromRight; animation-delay: 0.55s; }
-        /* Chữ "n" (11) từ phải */
-        h1 .letter:nth-child(11) { animation-name: comeFromRight; animation-delay: 0.6s; }
-        /* Dấu "!" (12) từ phải */
-        h1 .letter:nth-child(12) { animation-name: comeFromRight; animation-delay: 0.65s; }
-
 
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
         .links a { display: inline-block; margin: 8px 6px; padding: 12px 28px; background-image: linear-gradient(to right, var(--button-pink), var(--button-blue)); color: white; text-decoration: none; border-radius: 25px; font-weight: 700; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1; }
         .links a:hover { background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover)); transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
         .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        @media (max-width: 576px) { body { padding: 20px 10px; } h1 { font-size: 2.5em; /* Có thể cần giảm nếu chữ quá dài */ } p { font-size: 1em; } .links a { padding: 10px 20px; margin: 6px 4px; } .content-wrapper { padding: 20px; } .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; } }
+        @media (max-width: 576px) { body { padding: 20px 10px; } h1 { font-size: 2.5em; } p { font-size: 1em; } .links a { padding: 10px 20px; margin: 6px 4px; } .content-wrapper { padding: 20px; } .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; } }
     </style>
 </head>
 <body>
@@ -148,9 +73,7 @@
     <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
     <div class="flower-container"></div>
     <div class="content-wrapper">
-        <h1>
-            <span class="letter">C</span><span class="letter">o</span><span class="letter">m</span><span class="letter">i</span><span class="letter">n</span><span class="letter">g</span><span class="letter">&nbsp;</span><span class="letter">S</span><span class="letter">o</span><span class="letter">o</span><span class="letter">n</span><span class="letter">!</span>
-        </h1>
+        <h1>Coming Soon!</h1>
         <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
         <p>Hãy quay lại sớm nhé! Trong lúc chờ đợi, bạn có thể theo dõi tranh của mình qua các kênh bên dưới:</p>
         <div class="links">
@@ -165,7 +88,7 @@
     </div>
 
     <script>
-        // ----- JavaScript giữ nguyên như phiên bản trước -----
+        // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
         console.log('Script started');
 
         try {
