@@ -88,6 +88,9 @@
             -webkit-background-clip: text; background-clip: text; color: transparent;
             font-weight: 700; margin-bottom: 25px; display: inline-block;
         }
+        h1.bounce {
+            animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
         .links a {
@@ -144,6 +147,7 @@
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
+                const heading = document.querySelector('h1');
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
@@ -196,6 +200,17 @@
 
                 // Gọi autoplay ngay khi trang tải
                 tryAutoPlay();
+
+                // Áp dụng bounce cho h1
+                console.log('Applying bounce to h1');
+                try {
+                    heading.classList.add('bounce');
+                    setTimeout(() => {
+                        heading.classList.remove('bounce');
+                    }, 300);
+                } catch (error) {
+                    console.error('Lỗi áp dụng bounce cho h1:', error);
+                }
 
                 // Tạo bông tuyết
                 const isMobile = window.innerWidth <= 576;
