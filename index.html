@@ -14,22 +14,12 @@
         /* ===== Animation Bounce mạnh khi Click/Touch ===== */
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
-        /* ===== Xóa animation subtlePulse cũ ===== */
-        /* @keyframes subtlePulse { ... } */
-
         /* ===== Animation Squash nhẹ tự động cho nút link ===== */
         @keyframes subtleSquash {
-            /* Tổng duration 5s, squash nhẹ trong 0.4s đầu (8%) */
-            0%, 8%, 100% { /* Bắt đầu, kết thúc squash, kết thúc chu kỳ */
-                transform: scale(1);
-            }
-            2% { /* Khoảng 0.1s - Nén nhẹ */
-                transform: scale(1.03, 0.98);
-            }
-            5% { /* Khoảng 0.25s - Giãn nhẹ */
-                 transform: scale(0.98, 1.02);
-            }
-            /* Từ 8% đến 100% giữ nguyên scale(1) */
+            /* Hành động diễn ra trong 8% đầu */
+            0%, 8%, 100% { transform: scale(1); }
+            2% { transform: scale(1.03, 0.98); }
+            5% { transform: scale(0.98, 1.02); }
         }
 
         /* ===== Animation H1 ===== */
@@ -83,7 +73,9 @@
             z-index: 1;
             /* Áp dụng animation subtleSquash tự động */
             animation-name: subtleSquash;
-            animation-duration: 5s;
+            /* ===== THAY ĐỔI DUY NHẤT Ở ĐÂY ===== */
+            animation-duration: 3s; /* Đổi từ 5s thành 3s */
+            /* ==================================== */
             animation-timing-function: ease-in-out;
             animation-iteration-count: infinite;
             animation-delay: 0.3s; /* Delay lần đầu để khớp với H1 */
@@ -98,12 +90,11 @@
 
         /* Style khi nút được click/touch (ghi đè animation) */
         .links a.bounce {
-             /* Animation mạnh hơn khi click */
             animation-name: jellyBounce; /* Ghi đè subtleSquash */
-            animation-duration: 0.3s;
+            animation-duration: 0.3s; /* Thời gian bounce mạnh khi click */
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             animation-iteration-count: 1; /* Chạy 1 lần */
-            animation-delay: 0s; /* Chạy ngay khi click, không delay */
+            animation-delay: 0s; /* Chạy ngay khi click */
         }
 
         @media (max-width: 576px) { body { padding: 20px 10px; } h1 { font-size: 2.5em; } p { font-size: 1em; } .links a { padding: 10px 20px; margin: 6px 4px; } .content-wrapper { padding: 20px; } .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; } }
@@ -132,7 +123,6 @@
 
     <script>
         // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
-        // Không cần thay đổi JS cho yêu cầu này
         console.log('Script started');
 
         try {
@@ -146,11 +136,9 @@
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
-                // Thiết lập âm lượng
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                // Thử autoplay nhạc nền
                 function tryAutoPlay() { /* ... giữ nguyên ... */
                     console.log('Trying autoplay');
                     try {
@@ -174,7 +162,6 @@
                  }
                 tryAutoPlay();
 
-                // Lấy tọa độ event
                 function getEventCoords(event) { /* ... giữ nguyên ... */
                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
@@ -183,13 +170,11 @@
                     return { x: event.clientX, y: event.clientY };
                 }
 
-                // Hàm xử lý bounce khi click/touch (Đã sửa ở lần trước)
                 function handleBounce(event) { /* ... giữ nguyên ... */
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
                     event.preventDefault();
                     button.classList.add('bounce');
-                    // Quan trọng: Phải xóa class .bounce sau 300ms để animation subtleSquash có thể chạy lại sau đó
                     setTimeout(() => { button.classList.remove('bounce'); }, 300);
                     jellySound.currentTime = 0;
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
@@ -210,7 +195,6 @@
                     });
                 } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                // LOGIC HOA RƠI VÀ KÉO THẢ (Giữ nguyên)
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
@@ -274,7 +258,6 @@
                     document.removeEventListener('touchend', dragEnd);
                 }
 
-                // Vòng lặp tạo hoa
                 console.log('Starting flower creation');
                 try {
                     for (let i = 0; i < flowerCount; i++) {
@@ -284,7 +267,7 @@
                     console.error('Lỗi tạo bông tuyết:', error);
                 }
 
-            }); // Kết thúc DOMContentLoaded
+            });
         } catch (error) {
             console.error('Lỗi toàn cục trong script:', error);
         }
