@@ -16,13 +16,13 @@
 
         /* ===== Animation Squash nhẹ (dùng cho domino) ===== */
         @keyframes subtleSquash {
-            /* Chỉ co giãn nhẹ */
-            0%, 100% { transform: scale(1); } /* Quay về bình thường ở cuối */
-            30% { transform: scale(1.03, 0.98); } /* Nén nhẹ */
-            65% { transform: scale(0.98, 1.02); } /* Giãn nhẹ */
+            /* Hành động diễn ra nhanh */
+            0%, 100% { transform: scale(1); } /* Cần 100% để quay về trạng thái cuối */
+            30% { transform: scale(1.03, 0.98); } /* Điều chỉnh % để khớp duration 0.4s */
+            70% { transform: scale(0.98, 1.02); }
         }
 
-        /* ===== Animation H1 - Nhẹ nhàng lặp lại ===== */
+        /* ===== Animation H1 (nhẹ nhàng) ===== */
         @keyframes gentleHeadingWobble {
              0%, 12%, 100% { transform: scale(1, 1); }
              0.5% { transform: scale(0.99, 1.01); }
@@ -33,25 +33,25 @@
              10% { transform: scale(1.02, 0.98); }
         }
 
-        :root { /* ... giữ nguyên ... */ }
-        html { /* ... giữ nguyên ... */ }
-        body { /* ... giữ nguyên ... */ }
-        .flower-container { /* ... giữ nguyên ... */ }
-        .flower { /* ... giữ nguyên ... */ }
-        .flower.dragging { /* ... giữ nguyên ... */ }
+        :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
+        html { height: 100%; }
+        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
+        .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
+        .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
+        .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             font-weight: 700; margin-bottom: 25px; display: inline-block;
             will-change: transform;
-            /* Áp dụng animation nhẹ nhàng trực tiếp */
+            /* Animation nhẹ nhàng lặp lại */
             animation: gentleHeadingWobble 10s ease-in-out infinite;
             animation-delay: 0.3s;
         }
 
-        p { /* ... giữ nguyên ... */ }
-        .links { /* ... giữ nguyên ... */ }
+        p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
+        .links { margin-top: 30px; }
 
         /* Style mặc định cho nút link - Bỏ animation tự động */
         .links a {
@@ -60,30 +60,31 @@
             color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
             transition: background-image 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
-            /* KHÔNG còn animation tự động ở đây */
+            /* Xóa animation tự động ở đây */
+            /* animation-name: subtleSquash; ... */
             will-change: transform; /* Vẫn giữ để tối ưu */
         }
 
+        /* Style khi hover */
         .links a:hover {
             background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        /* Class kích hoạt animation subtleSquash qua JS */
-        .links a.do-subtle-squash {
-             animation: subtleSquash 0.4s ease-in-out 1; /* Chạy 1 lần, thời gian ngắn */
-        }
-
-        /* Style khi nút được click/touch (ghi đè animation) */
+        /* Style khi nút được click/touch (bounce mạnh) */
         .links a.bounce {
-            animation-name: jellyBounce; /* Ghi đè subtleSquash nếu đang chạy */
-            animation-duration: 0.3s;
-            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            animation-iteration-count: 1;
+            animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
             animation-delay: 0s;
         }
 
-        @media (max-width: 576px) { /* ... giữ nguyên ... */ }
+        /* ===== Class mới để kích hoạt animation subtleSquash ===== */
+        .links a.do-subtle-squash {
+             animation: subtleSquash 0.4s ease-in-out 1; /* Chạy 1 lần trong 0.4s */
+             /* Không cần delay ở đây, JS sẽ xử lý */
+        }
+
+
+        @media (max-width: 576px) { body { padding: 20px 10px; } h1 { font-size: 2.5em; } p { font-size: 1em; } .links a { padding: 10px 20px; margin: 6px 4px; } .content-wrapper { padding: 20px; } .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; } }
     </style>
 </head>
 <body>
@@ -121,12 +122,13 @@
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
-                // --- JS cho H1 Animation (Đã đơn giản hóa ở lần trước) ---
-                // (Không cần code JS cho H1 nữa)
+                // --- JS cho H1 Animation (Giữ nguyên từ lần đơn giản hóa) ---
+                // Không cần JS cho H1 nữa vì animation nhẹ chạy trực tiếp từ CSS
 
-                // --- JS xử lý các phần khác (Audio, Hoa, Link Bounce) ---
+                // --- Các phần JS khác giữ nguyên ---
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
+
                 function tryAutoPlay() { /* ... giữ nguyên ... */
                     console.log('Trying autoplay');
                     try {
@@ -149,22 +151,21 @@
                     } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
                  }
                 tryAutoPlay();
+
                 function getEventCoords(event) { /* ... giữ nguyên ... */
-                    if (event.type.includes('touch')) {
+                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
                         return { x: touch.clientX, y: touch.clientY };
                     }
                     return { x: event.clientX, y: event.clientY };
-                }
+                 }
+
                 function handleBounce(event) { /* ... giữ nguyên ... */
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
                     event.preventDefault();
-                    // Tạm dừng animation domino nếu đang chạy trên nút này
-                    button.classList.remove('do-subtle-squash');
-                    // Thêm class bounce mạnh
                     button.classList.add('bounce');
-                    // Xóa class bounce mạnh sau khi chạy xong
+                    // Xóa class .bounce sau 0.3s để không ảnh hưởng animation khác
                     setTimeout(() => { button.classList.remove('bounce'); }, 300);
                     jellySound.currentTime = 0;
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
@@ -175,8 +176,9 @@
                             window.location.href = button.href;
                         }
                     }, 300);
-                }
-                 console.log('Attaching link events');
+                 }
+
+                console.log('Attaching link events');
                 try {
                     document.querySelectorAll('.links a').forEach(button => {
                         button.addEventListener('click', handleBounce);
@@ -188,44 +190,37 @@
                 // PHẦN JAVASCRIPT MỚI CHO HIỆU ỨNG DOMINO LINK
                 // ===============================================
                 const links = document.querySelectorAll('.links a');
-                const subtleSquashDuration = 400; // Thời gian chạy animation subtleSquash (0.4s)
-                const staggerDelay = 100; // Thời gian trễ giữa các link (0.1s)
-                const sequenceInterval = 3000; // Thời gian lặp lại cả chuỗi (3s)
+                const intervalTime = 3000; // Lặp lại mỗi 3 giây
+                const initialDelay = 300;  // Khớp với delay của H1 ban đầu
+                const dominoDelay = 100;   // Độ trễ giữa các link (ms)
+                const squashDuration = 400; // Thời gian chạy animation subtleSquash (ms)
 
-                function runDominoSequence() {
-                    console.log('Running domino sequence...');
+                function startDominoSequence() {
+                    console.log('Starting domino sequence at', new Date().toLocaleTimeString());
                     links.forEach((link, index) => {
-                        // Tính toán độ trễ cho từng link
-                        const delay = index * staggerDelay;
-
-                        // Dùng setTimeout để áp dụng class sau độ trễ
+                        // Thêm class để bắt đầu animation sau độ trễ domino
                         setTimeout(() => {
-                            // Chỉ thêm class nếu link không đang thực hiện bounce mạnh
+                            // Chỉ thêm nếu nút không đang thực hiện bounce mạnh khi click
                             if (!link.classList.contains('bounce')) {
                                 link.classList.add('do-subtle-squash');
-
-                                // Tự động xóa class sau khi animation kết thúc
-                                // Dùng sự kiện 'animationend' để đảm bảo xóa đúng lúc
-                                link.addEventListener('animationend', function handleSquashEnd(event) {
-                                    // Đảm bảo đúng là animation subtleSquash kết thúc
-                                    if (event.animationName === 'subtleSquash') {
-                                        link.classList.remove('do-subtle-squash');
-                                        // Xóa listener này đi để tránh bị chồng chất listener
-                                        link.removeEventListener('animationend', handleSquashEnd);
-                                    }
-                                }, { once: true }); // { once: true } tự xóa listener sau khi chạy 1 lần
                             }
-                        }, delay);
+                        }, index * dominoDelay);
+
+                        // Xóa class sau khi animation kết thúc
+                        setTimeout(() => {
+                            link.classList.remove('do-subtle-squash');
+                        }, index * dominoDelay + squashDuration);
                     });
                 }
 
-                // Chạy lần đầu sau 0.3s để khớp với H1
-                setTimeout(runDominoSequence, 300);
-
-                // Lặp lại chuỗi domino mỗi 3 giây
-                setInterval(runDominoSequence, sequenceInterval);
+                // Chạy lần đầu sau delay ban đầu
+                setTimeout(() => {
+                    startDominoSequence();
+                    // Bắt đầu lặp lại bằng setInterval
+                    setInterval(startDominoSequence, intervalTime);
+                }, initialDelay);
                 // ===============================================
-                // KẾT THÚC PHẦN JAVASCRIPT DOMINO
+                // KẾT THÚC PHẦN JAVASCRIPT MỚI
                 // ===============================================
 
 
@@ -257,7 +252,7 @@
                  }
                 function dragStart(event) { /* ... giữ nguyên ... */
                      if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault();
-                }
+                 }
                 function dragging(event) { /* ... giữ nguyên ... */
                     if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault();
                  }
@@ -291,8 +286,9 @@
                     document.removeEventListener('touchmove', dragging);
                     document.removeEventListener('mouseup', dragEnd);
                     document.removeEventListener('touchend', dragEnd);
-                }
+                 }
 
+                // Vòng lặp tạo hoa (Giữ nguyên)
                 console.log('Starting flower creation');
                 try {
                     for (let i = 0; i < flowerCount; i++) {
@@ -302,7 +298,7 @@
                     console.error('Lỗi tạo bông tuyết:', error);
                 }
 
-            });
+            }); // Kết thúc DOMContentLoaded
         } catch (error) {
             console.error('Lỗi toàn cục trong script:', error);
         }
