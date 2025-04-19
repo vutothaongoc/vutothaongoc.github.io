@@ -16,21 +16,26 @@
 
         /* ===== Animation Squash nhẹ tự động cho nút link ===== */
         @keyframes subtleSquash {
-            /* Hành động diễn ra trong 8% đầu */
             0%, 8%, 100% { transform: scale(1); }
             2% { transform: scale(1.03, 0.98); }
             5% { transform: scale(0.98, 1.02); }
         }
 
-        /* ===== Animation H1 ===== */
+        /* ===== Animation H1 (Đã chỉnh sửa Keyframes cho duration 1.2s) ===== */
         @keyframes enhancedJellyWobble {
-            0%, 12%, 100% { transform: scale(1, 1); }
-            0.5% { transform: scale(0.97, 1.03); }
-            2% { transform: scale(1.35, 0.6); }
-            4% { transform: scale(0.7, 1.35); }
-            6% { transform: scale(1.15, 0.8); }
-            8% { transform: scale(0.9, 1.1); }
-            10% { transform: scale(1.05, 0.95); }
+             0% { transform: scale(1, 1); }
+             /* Anticipation (~0.05s) */
+             4% { transform: scale(0.97, 1.03); }
+             /* Squash (~0.2s)*/
+             17% { transform: scale(1.35, 0.6); }
+             /* Stretch (~0.4s)*/
+             33% { transform: scale(0.7, 1.35); }
+             /* Bounce decay */
+             50% { transform: scale(1.15, 0.8); }
+             67% { transform: scale(0.9, 1.1); }
+             83% { transform: scale(1.05, 0.95); }
+             /* Final state (1.2s) */
+             100% { transform: scale(1, 1); }
         }
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
@@ -49,14 +54,20 @@
             margin-bottom: 25px;
             display: inline-block;
             will-change: transform;
-            animation: enhancedJellyWobble 10s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-            animation-delay: 0.3s; /* Delay cho H1 */
+            /* ===== THAY ĐỔI ANIMATION H1 Ở ĐÂY ===== */
+            animation-name: enhancedJellyWobble;
+            animation-duration: 1.2s; /* Đổi về thời gian thực của wobble */
+            animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation-iteration-count: 1; /* Hoặc bỏ hẳn dòng này, vì 1 là mặc định */
+            animation-fill-mode: forwards; /* Giữ trạng thái cuối */
+            animation-delay: 0.3s; /* Giữ delay ban đầu */
+            /* ===================================== */
         }
 
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
 
-        /* Style mặc định cho nút link, bao gồm animation tự động MỚI */
+        /* Style mặc định cho nút link */
         .links a {
             display: inline-block;
             margin: 8px 6px;
@@ -66,35 +77,33 @@
             text-decoration: none;
             border-radius: 25px;
             font-weight: 700;
-            transition: background-image 0.3s ease, box-shadow 0.3s ease; /* Bỏ transform khỏi transition */
+            transition: background-image 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border: none;
             position: relative;
             z-index: 1;
-            /* Áp dụng animation subtleSquash tự động */
+            /* Animation subtleSquash tự động mỗi 3s */
             animation-name: subtleSquash;
-            /* ===== THAY ĐỔI DUY NHẤT Ở ĐÂY ===== */
-            animation-duration: 3s; /* Đổi từ 5s thành 3s */
-            /* ==================================== */
+            animation-duration: 3s;
             animation-timing-function: ease-in-out;
             animation-iteration-count: infinite;
-            animation-delay: 0.3s; /* Delay lần đầu để khớp với H1 */
+            animation-delay: 0.3s;
             will-change: transform;
         }
 
-        /* Style khi hover (vẫn giữ nguyên) */
+        /* Style khi hover */
         .links a:hover {
             background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        /* Style khi nút được click/touch (ghi đè animation) */
+        /* Style khi nút được click/touch */
         .links a.bounce {
-            animation-name: jellyBounce; /* Ghi đè subtleSquash */
-            animation-duration: 0.3s; /* Thời gian bounce mạnh khi click */
+            animation-name: jellyBounce;
+            animation-duration: 0.3s;
             animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            animation-iteration-count: 1; /* Chạy 1 lần */
-            animation-delay: 0s; /* Chạy ngay khi click */
+            animation-iteration-count: 1;
+            animation-delay: 0s;
         }
 
         @media (max-width: 576px) { body { padding: 20px 10px; } h1 { font-size: 2.5em; } p { font-size: 1em; } .links a { padding: 10px 20px; margin: 6px 4px; } .content-wrapper { padding: 20px; } .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; } }
