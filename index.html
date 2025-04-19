@@ -24,26 +24,27 @@
         /* ===== Animation H1 - Phiên bản Ban đầu (Mạnh) ===== */
         @keyframes enhancedJellyWobbleInitial {
             0%, 12%, 100% { transform: scale(1, 1); }
-            0.5% { transform: scale(0.97, 1.03); } /* Anticipation */
-            2% { transform: scale(1.35, 0.6); }   /* Squash mạnh */
-            4% { transform: scale(0.7, 1.35); }   /* Stretch mạnh */
+            0.5% { transform: scale(0.97, 1.03); }
+            2% { transform: scale(1.35, 0.6); }
+            4% { transform: scale(0.7, 1.35); }
             6% { transform: scale(1.15, 0.8); }
             8% { transform: scale(0.9, 1.1); }
             10% { transform: scale(1.05, 0.95); }
         }
 
-        /* ===== Animation H1 - Phiên bản Lặp lại (Nhẹ nhàng) ===== */
+        /* ===== Animation H1 - Phiên bản Lặp lại (Nhẹ nhàng - Tăng nhẹ) ===== */
         @keyframes enhancedJellyWobbleSubsequent {
              /* Wobble nhẹ trong 1.2s (12%) */
              0%, 12%, 100% { transform: scale(1, 1); }
              /* Anticipation rất nhẹ */
-             0.5% { transform: scale(0.99, 1.01); }
-             /* Squash/Stretch nhẹ hơn nhiều */
-             2% { transform: scale(1.05, 0.95); }
-             4% { transform: scale(0.95, 1.05); }
-             6% { transform: scale(1.03, 0.97); }
-             8% { transform: scale(0.97, 1.03); }
-             10% { transform: scale(1.01, 0.99); }
+             0.5% { transform: scale(0.99, 1.01); } /* Giữ nguyên anticipation nhẹ */
+             /* === TĂNG NHẸ ĐỘ CO GIÃN Ở ĐÂY === */
+             2% { transform: scale(1.08, 0.92); } /* Mạnh hơn 1.05 chút */
+             4% { transform: scale(0.92, 1.08); } /* Mạnh hơn 0.95 chút */
+             6% { transform: scale(1.05, 0.95); } /* Mạnh hơn 1.03 chút */
+             8% { transform: scale(0.95, 1.05); } /* Mạnh hơn 0.97 chút */
+             10% { transform: scale(1.02, 0.98); } /* Mạnh hơn 1.01 chút */
+             /* ================================= */
         }
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
@@ -55,35 +56,28 @@
 
         h1 {
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 700;
-            margin-bottom: 25px;
-            display: inline-block;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            font-weight: 700; margin-bottom: 25px; display: inline-block;
             will-change: transform;
-            /* Xóa animation mặc định khỏi H1, sẽ dùng class để áp dụng */
-            /* animation: ... */
+            /* Animation sẽ được thêm bằng class qua JS */
         }
 
         /* Class cho animation H1 ban đầu */
         h1.h1-wobble-initial {
             animation-name: enhancedJellyWobbleInitial;
             animation-duration: 10s;
-            animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Kiểu nảy mạnh */
-            animation-iteration-count: 1; /* Chỉ chạy 1 lần */
+            animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation-iteration-count: 1;
             animation-delay: 0.3s;
         }
 
-        /* Class cho animation H1 lặp lại nhẹ nhàng */
+        /* Class cho animation H1 lặp lại nhẹ nhàng (đã tăng nhẹ) */
         h1.h1-wobble-repeating {
-             animation-name: enhancedJellyWobbleSubsequent;
+             animation-name: enhancedJellyWobbleSubsequent; /* Keyframes đã được sửa ở trên */
              animation-duration: 10s;
-             animation-timing-function: ease-in-out; /* Kiểu nhẹ nhàng */
-             animation-iteration-count: infinite; /* Lặp lại vô hạn */
-             /* Không cần delay ở đây vì nó bắt đầu ngay sau lần đầu kết thúc */
+             animation-timing-function: ease-in-out;
+             animation-iteration-count: infinite;
         }
-
 
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
@@ -95,7 +89,6 @@
             color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
             transition: background-image 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
-            /* Animation subtleSquash tự động */
             animation-name: subtleSquash; animation-duration: 3s; animation-timing-function: ease-in-out;
             animation-iteration-count: infinite; animation-delay: 0.3s;
             will-change: transform;
@@ -138,6 +131,7 @@
     </div>
 
     <script>
+        // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
         console.log('Script started');
 
         try {
@@ -151,45 +145,28 @@
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
-                // ===============================================
-                // PHẦN JAVASCRIPT MỚI CHO H1 ANIMATION
-                // ===============================================
-                const heading = document.querySelector('h1'); // Lấy thẻ H1
-
+                // JS cho H1 Animation (Giữ nguyên)
+                const heading = document.querySelector('h1');
                 if (heading) {
-                    // 1. Thêm class để chạy animation ban đầu
                     heading.classList.add('h1-wobble-initial');
                     console.log('Added initial wobble class to H1.');
-
-                    // 2. Lắng nghe sự kiện kết thúc animation ban đầu
                     const handleFirstWobbleEnd = (event) => {
-                        // Đảm bảo đúng là animation ban đầu kết thúc
                         if (event.animationName === 'enhancedJellyWobbleInitial') {
                             console.log('Initial H1 wobble finished. Switching to repeating wobble.');
-                            // Xóa class ban đầu
                             heading.classList.remove('h1-wobble-initial');
-                            // Thêm class lặp lại
                             heading.classList.add('h1-wobble-repeating');
-                            // Quan trọng: Xóa listener này đi để nó không chạy lại cho các lần lặp sau
                             heading.removeEventListener('animationend', handleFirstWobbleEnd);
                         }
                     };
-
                     heading.addEventListener('animationend', handleFirstWobbleEnd);
                 }
-                // ===============================================
-                // KẾT THÚC PHẦN JAVASCRIPT MỚI
-                // ===============================================
 
-
-                // --- Các phần JS khác giữ nguyên ---
-
-                // Thiết lập âm lượng
+                // Thiết lập âm lượng (Giữ nguyên)
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                // Thử autoplay nhạc nền
-                function tryAutoPlay() { /* ... giữ nguyên ... */
+                // Thử autoplay nhạc nền (Giữ nguyên)
+                function tryAutoPlay() {
                     console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
@@ -212,8 +189,8 @@
                  }
                 tryAutoPlay();
 
-                // Lấy tọa độ event
-                function getEventCoords(event) { /* ... giữ nguyên ... */
+                // Lấy tọa độ event (Giữ nguyên)
+                function getEventCoords(event) {
                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
                         return { x: touch.clientX, y: touch.clientY };
@@ -221,8 +198,8 @@
                     return { x: event.clientX, y: event.clientY };
                 }
 
-                // Hàm xử lý bounce khi click/touch link
-                function handleBounce(event) { /* ... giữ nguyên ... */
+                // Hàm xử lý bounce khi click/touch link (Giữ nguyên)
+                function handleBounce(event) {
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
                     event.preventDefault();
@@ -239,6 +216,7 @@
                     }, 300);
                 }
 
+                // Gắn sự kiện cho link (Giữ nguyên)
                 console.log('Attaching link events');
                 try {
                     document.querySelectorAll('.links a').forEach(button => {
@@ -311,7 +289,7 @@
                     document.removeEventListener('touchend', dragEnd);
                 }
 
-                // Vòng lặp tạo hoa
+                // Vòng lặp tạo hoa (Giữ nguyên)
                 console.log('Starting flower creation');
                 try {
                     for (let i = 0; i < flowerCount; i++) {
@@ -321,7 +299,7 @@
                     console.error('Lỗi tạo bông tuyết:', error);
                 }
 
-            }); // Kết thúc DOMContentLoaded
+            });
         } catch (error) {
             console.error('Lỗi toàn cục trong script:', error);
         }
