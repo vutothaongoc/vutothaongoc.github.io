@@ -6,7 +6,302 @@
     <title>Jazmin's Portfolio - Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=a<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jazmin's Portfolio - Coming Soon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS Animation gốc cho hoa ===== */
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
+
+        /* ===== Animation Bounce mạnh khi Click/Touch ===== */
+        @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
+
+        /* ===== Animation Co giãn nhẹ tự động cho nút link ===== */
+        @keyframes subtleSquash {
+            /* Tổng duration 5s, co giãn nhẹ trong 0.4s đầu (8%) */
+            0%, 8%, 100% { /* Bắt đầu, kết thúc co giãn, kết thúc chu kỳ */
+                transform: scale(1, 1);
+            }
+            2% { /* Khoảng 0.1s */
+                transform: scale(1.04, 0.96); /* Co nhẹ */
+            }
+            5% { /* Khoảng 0.25s */
+                 transform: scale(0.96, 1.04); /* Giãn nhẹ */
+            }
+             /* 8% quay về scale(1,1) và giữ đến 100% */
+        }
+        /* ===== KẾT THÚC subtleSquash ===== */
+
+        /* ===== Animation H1 (Giữ nguyên) ===== */
+        @keyframes enhancedJellyWobble {
+            0%, 12%, 100% { transform: scale(1, 1); }
+            0.5% { transform: scale(0.97, 1.03); }
+            2% { transform: scale(1.35, 0.6); }
+            4% { transform: scale(0.7, 1.35); }
+            6% { transform: scale(1.15, 0.8); }
+            8% { transform: scale(0.9, 1.1); }
+            10% { transform: scale(1.05, 0.95); }
+        }
+
+        :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
+        html { height: 100%; }
+        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
+        .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
+        .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
+        .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
+
+        h1 {
+            background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: inline-block;
+            will-change: transform;
+            animation: enhancedJellyWobble 10s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            animation-delay: 0.3s;
+        }
+
+        p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
+        .links { margin-top: 30px; }
+
+        /* Style mặc định cho nút link, bao gồm animation co giãn nhẹ tự động */
+        .links a {
+            display: inline-block;
+            margin: 8px 6px;
+            padding: 12px 28px;
+            background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 700;
+            transition: background-image 0.3s ease, box-shadow 0.3s ease; /* Bỏ transition transform */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none;
+            position: relative;
+            z-index: 1;
+            /* Áp dụng animation co giãn nhẹ tự động */
+            animation-name: subtleSquash; /* Đổi tên animation */
+            animation-duration: 5s; /* Chu kỳ 5s */
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite; /* Lặp lại vô hạn */
+            animation-delay: 0.3s; /* Delay lần đầu khớp với H1 */
+            will-change: transform;
+        }
+
+        /* Style khi hover */
+        .links a:hover {
+            background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Style khi nút được click/touch (ghi đè animation) */
+        .links a.bounce {
+            animation-name: jellyBounce; /* Animation mạnh hơn */
+            animation-duration: 0.3s;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            animation-iteration-count: 1; /* Chạy 1 lần */
+            /* Không cần delay khi click */
+            animation-delay: 0s;
+        }
+
+        @media (max-width: 576px) { body { padding: 20px 10px; } h1 { font-size: 2.5em; } p { font-size: 1em; } .links a { padding: 10px 20px; margin: 6px 4px; } .content-wrapper { padding: 20px; } .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; } }
+    </style>
+</head>
+<body>
+    <audio id="jellySound" src="jelly.wav" preload="auto"></audio>
+    <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
+
+    <div class="flower-container"></div>
+
+    <div class="content-wrapper">
+        <h1>Coming Soon!</h1>
+        <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
+        <p>Hãy quay lại sớm nhé! Trong lúc chờ đợi, bạn có thể theo dõi tranh của mình qua các kênh bên dưới:</p>
+        <div class="links">
+             <a href="https://www.facebook.com/share/1BJegyhs3k/" target="_blank">Facebook</a>
+             <a href="https://www.twitter.com/vutothaongoc" target="_blank">Twitter</a>
+             <a href="https://www.pixiv.net/users/111399473" target="_blank">Pixiv</a>
+             <a href="https://www.youtube.com/@vutothaongoc" target="_blank">YouTube</a>
+             <a href="https://www.xiaohongshu.com/user/profile/676a2d230000000018014954?xsec_token=YBzTLsti1VFztLN33tTjSk21s1QPuQlM_8zKxsc9I5_0Y=&xsec_source=app_share&xhsshare=CopyLink&appuid=676a2d230000000018014954&apptime=1742699947&share_id=527ea7434d1540ac800dd8cf7f7776c4" target="_blank">Xiaohongshu</a>
+             <a href="https://weibo.com/u/7984182194" target="_blank">Weibo</a>
+             <a href="https://www.instagram.com/vutothaongoc?igsh=MXZieWU2ODd5a2dlbQ==" target="_blank">Instagram</a>
+        </div>
+    </div>
+
+    <script>
+        // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
+        console.log('Script started');
+
+        try {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('DOMContentLoaded triggered');
+
+                const flowerContainer = document.querySelector('.flower-container');
+                const jellySound = document.getElementById('jellySound');
+                const backgroundMusic = document.getElementById('backgroundMusic');
+                let activeFlower = null;
+                let offsetX = 0, offsetY = 0;
+                const offsetYAdjustment = -5;
+
+                // Thiết lập âm lượng
+                jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
+                try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
+
+                // Thử autoplay nhạc nền
+                function tryAutoPlay() { /* ... giữ nguyên ... */
+                    console.log('Trying autoplay');
+                    try {
+                        const bgPromise = backgroundMusic.play();
+                        if (bgPromise !== undefined) {
+                            bgPromise.then(() => { console.log('Background music autoplay succeeded'); }).catch(error => {
+                                console.error('Autoplay bị chặn, cần tương tác:', error);
+                                const playOnInteraction = () => {
+                                    backgroundMusic.play().then(() => { console.log('Background music started after interaction'); }).catch(err => { console.error('Lỗi phát sau tương tác:', err); });
+                                    document.removeEventListener('click', playOnInteraction); document.removeEventListener('touchstart', playOnInteraction);
+                                };
+                                document.addEventListener('click', playOnInteraction, { once: true });
+                                document.addEventListener('touchstart', playOnInteraction, { once: true, passive: false });
+                            });
+                        }
+                        const jellyPromise = jellySound.play();
+                        if (jellyPromise !== undefined) {
+                            jellyPromise.then(() => { jellySound.pause(); jellySound.currentTime = 0; console.log('jellySound initialized'); }).catch(error => { console.log('Lỗi khởi tạo jellySound:', error); });
+                        }
+                    } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
+                 }
+                tryAutoPlay();
+
+                // Lấy tọa độ event
+                function getEventCoords(event) { /* ... giữ nguyên ... */
+                    if (event.type.includes('touch')) {
+                        const touch = event.touches[0] || event.changedTouches[0];
+                        return { x: touch.clientX, y: touch.clientY };
+                    }
+                    return { x: event.clientX, y: event.clientY };
+                }
+
+                // Hàm xử lý bounce khi click/touch (Đã sửa)
+                function handleBounce(event) { /* ... giữ nguyên ... */
+                    const button = event.currentTarget;
+                    if (button.classList.contains('bounce')) return;
+                    event.preventDefault();
+                    // Đặt lại delay của animation click về 0 ngay lập tức
+                    button.style.animationDelay = '0s';
+                    button.classList.add('bounce');
+                    setTimeout(() => {
+                        button.classList.remove('bounce');
+                        // Reset lại delay về giá trị gốc cho animation tự động sau khi click xong
+                        button.style.animationDelay = '0.3s';
+                    }, 300); // Thời gian khớp với animation jellyBounce
+
+                    jellySound.currentTime = 0;
+                    jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
+                    setTimeout(() => {
+                        if (button.target === '_blank') {
+                            window.open(button.href, '_blank');
+                        } else {
+                            window.location.href = button.href;
+                        }
+                    }, 300);
+                }
+
+                console.log('Attaching link events');
+                try {
+                    document.querySelectorAll('.links a').forEach(button => {
+                        button.addEventListener('click', handleBounce);
+                        button.addEventListener('touchstart', handleBounce, { passive: false });
+                    });
+                } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
+
+                // LOGIC HOA RƠI VÀ KÉO THẢ (Giữ nguyên)
+                const isMobile = window.innerWidth <= 576;
+                const flowerCount = isMobile ? 10 : 20;
+                const totalCycleTime = 10;
+                const flowerFallDuration = 10;
+
+                function createFlower(index) { /* ... giữ nguyên ... */
+                     const flower = document.createElement('span');
+                    flower.className = 'flower';
+                    flower.innerHTML = '❅';
+                    flowerContainer.appendChild(flower);
+                    const randomLeft = Math.random() * 100;
+                    flower.style.left = `${randomLeft}%`;
+                    const size = 30 + Math.random() * 30;
+                    flower.style.fontSize = `${size}px`; flower.style.width = `${size}px`; flower.style.height = `${size}px`;
+                    flower.style.animationDuration = `${flowerFallDuration}s`;
+                    const delay = (index * totalCycleTime) / flowerCount;
+                    flower.style.animationDelay = `-${delay}s`;
+                    const opacity = 0.9 - ((size - 30) / 30) * 0.4;
+                    flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
+                    flower.addEventListener('mousedown', dragStart);
+                    flower.addEventListener('touchstart', dragStart, { passive: false });
+                    flower.addEventListener('animationiteration', () => {
+                        flower.style.left = `${Math.random() * 100}%`;
+                    });
+                }
+                function dragStart(event) { /* ... giữ nguyên ... */
+                     if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault();
+                }
+                function dragging(event) { /* ... giữ nguyên ... */
+                    if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault();
+                 }
+                function dragEnd(event) { /* ... giữ nguyên ... */
+                    if (!activeFlower) return;
+                    const flower = activeFlower;
+                    activeFlower = null;
+                    flower.classList.remove('dragging');
+                    const fallTransitionDuration = 1000;
+                    flower.style.transition = `top ${fallTransitionDuration / 1000}s linear, opacity ${fallTransitionDuration / 1000}s linear`;
+                    flower.style.position = 'absolute';
+                    flower.style.top = '110vh';
+                    flower.style.opacity = '0';
+                    setTimeout(() => {
+                        if (!flower.parentNode) return;
+                        flower.style.transition = 'none';
+                        flower.style.position = '';
+                        flower.style.top = '';
+                        flower.style.opacity = '';
+                        flower.style.transform = '';
+                        flower.style.animation = 'none';
+                        flower.style.left = `${Math.random() * 100}%`;
+                        void flower.offsetWidth;
+                        flower.style.animationDuration = `${flowerFallDuration}s`;
+                        flower.style.animationDelay = '0s';
+                        flower.style.animationName = 'fall';
+                        flower.style.animationTimingFunction = 'linear';
+                        flower.style.animationIterationCount = 'infinite';
+                    }, fallTransitionDuration);
+                    document.removeEventListener('mousemove', dragging);
+                    document.removeEventListener('touchmove', dragging);
+                    document.removeEventListener('mouseup', dragEnd);
+                    document.removeEventListener('touchend', dragEnd);
+                }
+
+                // Vòng lặp tạo hoa
+                console.log('Starting flower creation');
+                try {
+                    for (let i = 0; i < flowerCount; i++) {
+                        createFlower(i);
+                    }
+                } catch (error) {
+                    console.error('Lỗi tạo bông tuyết:', error);
+                }
+
+            }); // Kết thúc DOMContentLoaded
+        } catch (error) {
+            console.error('Lỗi toàn cục trong script:', error);
+        }
+    </script>
+</body>
+</html>:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* ===== CSS Animation gốc cho hoa ===== */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
