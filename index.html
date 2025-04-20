@@ -32,16 +32,10 @@
              10% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== XÓA Animation entrance cho ảnh bập bênh ===== */
-        /* @keyframes seesawPopUp { ... } */
-
         /* ===== Animation Wobble TẠI CHỖ cho Ảnh khi Click ===== */
         @keyframes imageClickInPlaceWobble {
-             /* Chỉ dùng scale, giống gentleHeadingWobble nhưng nhanh hơn */
              0%, 100% { transform: scale(1, 1); }
-             /* Anticipation nhẹ */
              7% { transform: scale(0.98, 1.02); }
-             /* Wobble steps */
              25% { transform: scale(1.08, 0.92); }
              50% { transform: scale(0.92, 1.08); }
              70% { transform: scale(1.05, 0.95); }
@@ -96,27 +90,26 @@
              animation: subtleSquash 0.4s ease-in-out 1;
         }
 
-        /* ===== Style cho ảnh (đã bỏ entrance animation) ===== */
+        /* ===== Style cho ảnh ===== */
         #seesaw-image {
             position: fixed;
-            bottom: 15px;
-            right: 15px;
-            /* Kích thước */
+            /* ===== THAY ĐỔI VỊ TRÍ ===== */
+            bottom: 0; /* Đặt sát đáy */
+            right: 0;  /* Đặt sát lề phải */
+            /* ========================== */
             width: 260px;
             height: auto;
             z-index: 1;
             cursor: pointer;
-            opacity: 1; /* Hiển thị ngay */
-            transform-origin: bottom left; /* Có thể bỏ đi */
-            will-change: transform; /* Chỉ cần transform */
-
-            /* ===== Fix hiệu ứng nhấp nháy/tối khi click ===== */
+            opacity: 1;
+            transform-origin: bottom left;
+            will-change: transform;
+            /* Fix highlight */
             -webkit-tap-highlight-color: transparent;
             outline: none;
-             /* Optional: Ngăn chọn hoặc menu ngữ cảnh */
-             user-select: none;
-             -webkit-user-select: none;
-             -webkit-touch-callout: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
         }
 
         /* ===== Style wobble TẠI CHỖ cho ảnh KHI CLICK ===== */
@@ -124,9 +117,6 @@
              animation: imageClickInPlaceWobble 0.7s ease-in-out 1;
              animation-delay: 0s;
         }
-
-        /* ===== Xóa style .bounce cho ảnh ===== */
-        /* #seesaw-image.bounce { ... } */
 
 
         @media (max-width: 576px) {
@@ -138,8 +128,10 @@
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
                  width: 160px;
-                 bottom: 10px;
-                 right: 10px;
+                 /* ===== THAY ĐỔI VỊ TRÍ (Màn hình nhỏ) ===== */
+                 bottom: 0; /* Sát đáy */
+                 right: 0;  /* Sát lề phải */
+                 /* ======================================= */
             }
         }
     </style>
@@ -168,6 +160,7 @@
     <img id="seesaw-image" src="jazmin.png" alt="Jazmin Illustration">
 
     <script>
+        // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
         console.log('Script started');
 
         try {
@@ -234,28 +227,18 @@
                     }, 300);
                  }
 
-                // ===============================================
-                // HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK (ĐÃ SỬA)
-                // ===============================================
-                function handleImageBounce(event) {
+                // HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK
+                function handleImageBounce(event) { /* ... giữ nguyên ... */
                     const image = event.currentTarget;
-                    // Nếu đang chạy animation thì không làm gì cả
-                    if (image.classList.contains('image-wobbling')) return; // Kiểm tra class này
-
+                    if (image.classList.contains('image-wobbling')) return;
                     console.log('Image clicked, applying in-place wobble.');
-
-                    // Thêm class để kích hoạt animation CSS mới
-                    image.classList.add('image-wobbling'); // Thêm class này
-                    // Xóa class sau khi animation kết thúc (khớp với duration của imageClickInPlaceWobble: 0.7s = 700ms)
+                    image.classList.add('image-wobbling');
                     setTimeout(() => {
-                        image.classList.remove('image-wobbling'); // Xóa class này
-                    }, 700); // Thời gian khớp animation imageClickInPlaceWobble
-
-                    // Phát âm thanh
-                    jellySound.currentTime = 0; // Tua về đầu
+                        image.classList.remove('image-wobbling');
+                    }, 700);
+                    jellySound.currentTime = 0;
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                 }
-                // ===============================================
 
                 // Gắn sự kiện cho link (Giữ nguyên)
                 console.log('Attaching link events');
