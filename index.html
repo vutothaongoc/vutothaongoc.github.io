@@ -32,13 +32,8 @@
              10% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== Animation entrance cho ảnh bập bênh (Chạy 1 lần) ===== */
-        @keyframes seesawPopUp {
-            0% { transform: translateY(110%) rotate(70deg); opacity: 0; transform-origin: bottom left; }
-            60% { transform: translateY(0) rotate(-8deg); opacity: 1; }
-            80% { transform: translateY(0) rotate(4deg); }
-            100% { transform: translateY(0) rotate(0deg); opacity: 1; }
-        }
+        /* ===== XÓA Animation entrance cho ảnh bập bênh ===== */
+        /* @keyframes seesawPopUp { ... } */
 
         /* ===== Animation Wobble TẠI CHỖ cho Ảnh khi Click ===== */
         @keyframes imageClickInPlaceWobble {
@@ -101,33 +96,35 @@
              animation: subtleSquash 0.4s ease-in-out 1;
         }
 
-        /* ===== Style cho ảnh bập bênh ===== */
+        /* ===== Style cho ảnh (đã bỏ entrance animation) ===== */
         #seesaw-image {
             position: fixed;
             bottom: 15px;
             right: 15px;
-            /* Kích thước đã chỉnh ở lần trước */
+            /* Kích thước */
             width: 260px;
             height: auto;
             z-index: 1;
-            opacity: 0; /* Bắt đầu ẩn để chạy entrance */
             cursor: pointer;
-            /* *** Bật lại Animation entrance ban đầu *** */
-            animation-name: seesawPopUp;
-            animation-duration: 0.9s;
-            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-            animation-fill-mode: forwards; /* Giữ trạng thái cuối */
-            animation-delay: 0.5s;
-            transform-origin: bottom left; /* Giữ lại */
-            will-change: transform, opacity;
+            opacity: 1; /* Hiển thị ngay */
+            transform-origin: bottom left; /* Có thể bỏ đi */
+            will-change: transform; /* Chỉ cần transform */
+
+            /* ===== Fix hiệu ứng nhấp nháy/tối khi click ===== */
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+             /* Optional: Ngăn chọn hoặc menu ngữ cảnh */
+             user-select: none;
+             -webkit-user-select: none;
+             -webkit-touch-callout: none;
         }
 
         /* ===== Style wobble TẠI CHỖ cho ảnh KHI CLICK ===== */
         #seesaw-image.image-wobbling {
-             animation: imageClickInPlaceWobble 0.7s ease-in-out 1; /* Animation mới */
+             animation: imageClickInPlaceWobble 0.7s ease-in-out 1;
              animation-delay: 0s;
-             /* Không cần ghi đè transform-origin vì animation này chỉ scale */
         }
+
         /* ===== Xóa style .bounce cho ảnh ===== */
         /* #seesaw-image.bounce { ... } */
 
@@ -140,7 +137,6 @@
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
-                 /* Kích thước đã chỉnh ở lần trước */
                  width: 160px;
                  bottom: 10px;
                  right: 10px;
@@ -239,20 +235,20 @@
                  }
 
                 // ===============================================
-                // HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK (ĐÃ SỬA LẠI)
+                // HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK (ĐÃ SỬA)
                 // ===============================================
                 function handleImageBounce(event) {
                     const image = event.currentTarget;
                     // Nếu đang chạy animation thì không làm gì cả
-                    if (image.classList.contains('image-wobbling')) return; // Kiểm tra class mới
+                    if (image.classList.contains('image-wobbling')) return; // Kiểm tra class này
 
                     console.log('Image clicked, applying in-place wobble.');
 
-                    // Thêm class để kích hoạt animation wobble tại chỗ
-                    image.classList.add('image-wobbling'); // Thêm class mới
+                    // Thêm class để kích hoạt animation CSS mới
+                    image.classList.add('image-wobbling'); // Thêm class này
                     // Xóa class sau khi animation kết thúc (khớp với duration của imageClickInPlaceWobble: 0.7s = 700ms)
                     setTimeout(() => {
-                        image.classList.remove('image-wobbling'); // Xóa class mới
+                        image.classList.remove('image-wobbling'); // Xóa class này
                     }, 700); // Thời gian khớp animation imageClickInPlaceWobble
 
                     // Phát âm thanh
