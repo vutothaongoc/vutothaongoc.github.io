@@ -11,7 +11,7 @@
         /* ===== CSS Animation gốc cho hoa ===== */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
 
-        /* ===== Animation Bounce mạnh khi Click/Touch (Dùng cho cả link và ảnh) ===== */
+        /* ===== Animation Bounce mạnh khi Click/Touch LINK ===== */
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
         /* ===== Animation Squash nhẹ tự động cho nút link ===== */
@@ -32,12 +32,26 @@
              10% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== Animation mới cho ảnh bập bênh ===== */
+        /* ===== Animation mới cho ảnh bập bênh (Entrance) ===== */
         @keyframes seesawPopUp {
             0% { transform: translateY(110%) rotate(70deg); opacity: 0; transform-origin: bottom left; }
             60% { transform: translateY(0) rotate(-8deg); opacity: 1; }
             80% { transform: translateY(0) rotate(4deg); }
             100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        }
+
+        /* ===== Animation mới: Wobble nhẹ cho Ảnh khi Click ===== */
+        @keyframes imageClickWobble {
+             /* Gentle wobble over ~0.7s */
+             0%, 100% { transform: scale(1, 1); }
+             /* Anticipation (very quick) */
+             7% { transform: scale(0.99, 1.01); }
+             /* Wobble steps */
+             25% { transform: scale(1.08, 0.92); }
+             50% { transform: scale(0.92, 1.08); }
+             70% { transform: scale(1.05, 0.95); }
+             85% { transform: scale(0.95, 1.05); }
+             95% { transform: scale(1.02, 0.98); }
         }
 
 
@@ -76,13 +90,13 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        /* Style khi nút link được click/touch */
+        /* Style khi nút LINK được click/touch */
         .links a.bounce {
             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
             animation-delay: 0s;
         }
 
-        /* Class để kích hoạt animation subtleSquash (dùng bởi JS) */
+        /* Class để kích hoạt animation subtleSquash cho LINK (dùng bởi JS) */
         .links a.do-subtle-squash {
              animation: subtleSquash 0.4s ease-in-out 1;
         }
@@ -92,13 +106,14 @@
             position: fixed;
             bottom: 15px;
             right: 15px;
-            /* ===== GIẢM KÍCH THƯỚC LẠI ===== */
-            width: 240px; /* Giảm từ 300px xuống 240px */
-            /* ============================== */
+            /* ===== TĂNG KÍCH THƯỚC LÊN 1 XÍU ===== */
+            width: 260px; /* Tăng từ 240px lên 260px */
+            /* =================================== */
             height: auto;
             z-index: 1;
             opacity: 0;
-            cursor: pointer; /* Thêm con trỏ để cho biết có thể click */
+            cursor: pointer;
+            /* Animation entrance ban đầu */
             animation-name: seesawPopUp;
             animation-duration: 0.9s;
             animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -107,11 +122,13 @@
             will-change: transform, opacity;
         }
 
-        /* ===== Style bounce cho ảnh khi click ===== */
-        #seesaw-image.bounce {
-             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
-             animation-delay: 0s; /* Chạy ngay lập tức */
+        /* ===== Style wobble nhẹ cho ảnh KHI CLICK ===== */
+        #seesaw-image.image-wobbling { /* Đổi tên class */
+             animation: imageClickWobble 0.7s ease-in-out 1; /* Animation mới, duration mới */
+             animation-delay: 0s;
         }
+        /* ===== Xóa style .bounce cho ảnh ===== */
+        /* #seesaw-image.bounce { ... } */
 
 
         @media (max-width: 576px) {
@@ -122,9 +139,9 @@
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
-                 /* ===== GIẢM KÍCH THƯỚC LẠI (Màn hình nhỏ) ===== */
-                 width: 150px; /* Giảm từ 180px xuống 150px */
-                 /* =========================================== */
+                 /* ===== TĂNG KÍCH THƯỚC LÊN 1 XÍU (Màn hình nhỏ) ===== */
+                 width: 160px; /* Tăng từ 150px lên 160px */
+                 /* ============================================== */
                  bottom: 10px;
                  right: 10px;
             }
@@ -164,7 +181,7 @@
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
-                const seesawImage = document.getElementById('seesaw-image'); // Lấy phần tử ảnh
+                const seesawImage = document.getElementById('seesaw-image');
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
@@ -222,31 +239,29 @@
                  }
 
                 // ===============================================
-                // HÀM MỚI: Xử lý bounce cho ẢNH
+                // HÀM Xử lý wobble nhẹ cho ẢNH KHI CLICK (ĐÃ SỬA)
                 // ===============================================
                 function handleImageBounce(event) {
                     const image = event.currentTarget;
-                    // Nếu đang bounce thì không làm gì cả
-                    if (image.classList.contains('bounce')) return;
+                    // Nếu đang chạy animation thì không làm gì cả
+                    if (image.classList.contains('image-wobbling')) return; // Kiểm tra class mới
 
-                    console.log('Image clicked, applying bounce.');
+                    console.log('Image clicked, applying gentle wobble.');
 
-                    // Thêm class để kích hoạt animation CSS
-                    image.classList.add('bounce');
-                    // Xóa class sau khi animation kết thúc (khớp với duration của jellyBounce: 0.3s = 300ms)
+                    // Thêm class để kích hoạt animation CSS mới
+                    image.classList.add('image-wobbling'); // Thêm class mới
+                    // Xóa class sau khi animation kết thúc (khớp với duration của imageClickWobble: 0.7s = 700ms)
                     setTimeout(() => {
-                        image.classList.remove('bounce');
-                    }, 300);
+                        image.classList.remove('image-wobbling'); // Xóa class mới
+                    }, 700); // Thời gian khớp animation imageClickWobble
 
                     // Phát âm thanh
                     jellySound.currentTime = 0; // Tua về đầu
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
-
-                    // Không cần preventDefault hay mở link cho ảnh
                 }
                 // ===============================================
 
-                // Gắn sự kiện cho link
+                // Gắn sự kiện cho link (Giữ nguyên)
                 console.log('Attaching link events');
                 try {
                     document.querySelectorAll('.links a').forEach(button => {
@@ -255,16 +270,13 @@
                     });
                 } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                // ===============================================
-                // GẮN SỰ KIỆN CLICK CHO ẢNH
-                // ===============================================
+                // GẮN SỰ KIỆN CLICK CHO ẢNH (Giữ nguyên)
                 if (seesawImage) {
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
                 } else {
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
-                // ===============================================
 
                 // JS cho hiệu ứng DOMINO LINK (Giữ nguyên)
                 const links = document.querySelectorAll('.links a');
