@@ -40,23 +40,18 @@
             100% { transform: translateY(0) rotate(0deg); opacity: 1; }
         }
 
-        /* ===== Xóa Keyframes Wobble nhẹ cho ảnh khi click ===== */
-        /* @keyframes imageClickWobble { ... } */
+        /* ===== Xóa Keyframes Wobble mạnh cho ảnh khi click ===== */
+        /* @keyframes imageClickStrongWobble { ... } */
 
-        /* ===== Animation mới: Wobble MẠNH cho Ảnh khi Click (Giống H1 ban đầu) ===== */
-        @keyframes imageClickStrongWobble {
-             /* Chạy trong 1.2s */
+        /* ===== Animation Wobble nhẹ cho Ảnh khi Click ===== */
+         @keyframes imageClickWobble { /* Giữ lại phiên bản nhẹ này */
              0%, 100% { transform: scale(1, 1); }
-             /* Anticipation (tương đương 0.05s) */
-             4% { transform: scale(0.97, 1.03); }
-             /* Squash mạnh (tương đương 0.2s) */
-             17% { transform: scale(1.35, 0.6); }
-             /* Stretch mạnh (tương đương 0.4s) */
-             33% { transform: scale(0.7, 1.35); }
-             /* Bounce giảm dần */
-             50% { transform: scale(1.15, 0.8); }
-             67% { transform: scale(0.9, 1.1); }
-             83% { transform: scale(1.05, 0.95); }
+             7% { transform: scale(0.99, 1.01); }
+             25% { transform: scale(1.08, 0.92); }
+             50% { transform: scale(0.92, 1.08); }
+             70% { transform: scale(1.05, 0.95); }
+             85% { transform: scale(0.95, 1.05); }
+             95% { transform: scale(1.02, 0.98); }
         }
 
 
@@ -72,7 +67,6 @@
             -webkit-background-clip: text; background-clip: text; color: transparent;
             font-weight: 700; margin-bottom: 25px; display: inline-block;
             will-change: transform;
-            /* Animation nhẹ nhàng lặp lại trực tiếp */
             animation: gentleHeadingWobble 10s ease-in-out infinite;
             animation-delay: 0.3s;
         }
@@ -118,7 +112,7 @@
             z-index: 1;
             opacity: 0;
             cursor: pointer;
-            /* Animation entrance ban đầu */
+            /* Animation entrance ban đầu (chỉ chạy 1 lần) */
             animation-name: seesawPopUp;
             animation-duration: 0.9s;
             animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -127,14 +121,15 @@
             will-change: transform, opacity;
         }
 
-        /* ===== XÓA Style wobble nhẹ cho ảnh khi click ===== */
-        /* #seesaw-image.image-wobbling { ... } */
+        /* ===== Xóa Style wobble mạnh cho ảnh khi click ===== */
+        /* #seesaw-image.image-strong-wobbling { ... } */
 
-        /* ===== Style wobble MẠNH cho ảnh KHI CLICK ===== */
-        #seesaw-image.image-strong-wobbling { /* Đổi tên class */
-             animation: imageClickStrongWobble 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 1; /* Animation mới, duration mới, cubic-bezier giống H1 ban đầu */
+        /* ===== Style wobble NHẸ cho ảnh KHI CLICK ===== */
+        #seesaw-image.image-wobbling { /* Quay lại dùng class này */
+             animation: imageClickWobble 0.7s ease-in-out 1; /* Quay lại dùng animation nhẹ */
              animation-delay: 0s;
         }
+
 
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
@@ -194,7 +189,7 @@
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
                 function tryAutoPlay() { /* ... giữ nguyên ... */
-                    console.log('Trying autoplay');
+                     console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
                         if (bgPromise !== undefined) {
@@ -243,21 +238,21 @@
                  }
 
                 // ===============================================
-                // HÀM Xử lý wobble MẠNH cho ẢNH KHI CLICK (ĐÃ SỬA)
+                // HÀM Xử lý wobble NHẸ cho ẢNH KHI CLICK (ĐÃ SỬA LẠI)
                 // ===============================================
                 function handleImageBounce(event) {
                     const image = event.currentTarget;
                     // Nếu đang chạy animation thì không làm gì cả
-                    if (image.classList.contains('image-strong-wobbling')) return; // Kiểm tra class mới
+                    if (image.classList.contains('image-wobbling')) return; // Quay lại dùng class này
 
-                    console.log('Image clicked, applying strong wobble.');
+                    console.log('Image clicked, applying gentle wobble.');
 
-                    // Thêm class để kích hoạt animation CSS mới
-                    image.classList.add('image-strong-wobbling'); // Thêm class mới
-                    // Xóa class sau khi animation kết thúc (khớp với duration của imageClickStrongWobble: 1.2s = 1200ms)
+                    // Thêm class để kích hoạt animation wobble nhẹ
+                    image.classList.add('image-wobbling'); // Quay lại dùng class này
+                    // Xóa class sau khi animation kết thúc (khớp với duration của imageClickWobble: 0.7s = 700ms)
                     setTimeout(() => {
-                        image.classList.remove('image-strong-wobbling'); // Xóa class mới
-                    }, 1200); // Thời gian khớp animation imageClickStrongWobble
+                        image.classList.remove('image-wobbling'); // Xóa class này
+                    }, 700); // Thời gian khớp animation imageClickWobble
 
                     // Phát âm thanh
                     jellySound.currentTime = 0; // Tua về đầu
@@ -290,7 +285,7 @@
                 const squashDuration = 400;
 
                 function startDominoSequence() { /* ... giữ nguyên ... */
-                    console.log('Starting domino sequence at', new Date().toLocaleTimeString());
+                     console.log('Starting domino sequence at', new Date().toLocaleTimeString());
                     links.forEach((link, index) => {
                         setTimeout(() => {
                             if (!link.classList.contains('bounce')) {
