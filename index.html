@@ -34,29 +34,17 @@
 
         /* ===== Animation mới cho ảnh bập bênh ===== */
         @keyframes seesawPopUp {
-            0% {
-                transform: translateY(110%) rotate(70deg); /* Bắt đầu ở dưới, nghiêng nhiều */
-                opacity: 0;
-                transform-origin: bottom left; /* Điểm xoay */
-            }
-            60% {
-                transform: translateY(0) rotate(-8deg); /* Vọt lên, xoay quá */
-                opacity: 1;
-            }
-            80% {
-                transform: translateY(0) rotate(4deg); /* Nảy lại */
-            }
-            100% {
-                transform: translateY(0) rotate(0deg); /* Ổn định */
-                opacity: 1;
-            }
+            0% { transform: translateY(110%) rotate(70deg); opacity: 0; transform-origin: bottom left; }
+            60% { transform: translateY(0) rotate(-8deg); opacity: 1; }
+            80% { transform: translateY(0) rotate(4deg); }
+            100% { transform: translateY(0) rotate(0deg); opacity: 1; }
         }
 
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
-        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; /* Quan trọng để không có scroll ngang do ảnh bị đẩy ra */ }
-        .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; } /* Hoa rơi ở trên ảnh */
+        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
+        .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
@@ -72,14 +60,12 @@
         p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
 
-        /* Style mặc định cho nút link */
         .links a {
             display: inline-block; margin: 8px 6px; padding: 12px 28px;
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
             color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
             transition: background-image 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
-            /* Animation subtleSquash tự động */
             animation: subtleSquash 3s ease-in-out infinite;
             animation-delay: 0.3s;
             will-change: transform;
@@ -90,13 +76,11 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        /* Style khi nút được click/touch */
         .links a.bounce {
             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
             animation-delay: 0s;
         }
 
-        /* Class để kích hoạt animation subtleSquash (dùng bởi JS) */
         .links a.do-subtle-squash {
              animation: subtleSquash 0.4s ease-in-out 1;
         }
@@ -104,18 +88,19 @@
         /* ===== Style cho ảnh bập bênh ===== */
         #seesaw-image {
             position: fixed;
-            bottom: 15px; /* Khoảng cách với đáy */
-            right: 15px;  /* Khoảng cách với cạnh phải */
-            width: 120px; /* Điều chỉnh kích thước ảnh nếu cần */
-            height: auto; /* Giữ tỷ lệ */
-            z-index: 1; /* Nằm trên background, dưới hoa */
-            opacity: 0; /* Bắt đầu ẩn */
-            /* Áp dụng animation */
+            bottom: 15px;
+            right: 15px;
+            /* ===== THAY ĐỔI KÍCH THƯỚC Ở ĐÂY ===== */
+            width: 180px; /* Tăng từ 120px lên 180px (hoặc giá trị bạn muốn) */
+            /* ==================================== */
+            height: auto;
+            z-index: 1;
+            opacity: 0;
             animation-name: seesawPopUp;
-            animation-duration: 0.9s; /* Thời gian animation */
-            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); /* Kiểu nảy bật */
-            animation-fill-mode: forwards; /* Giữ trạng thái cuối */
-            animation-delay: 0.5s; /* Chạy sau H1 và link 1 chút */
+            animation-duration: 0.9s;
+            animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation-fill-mode: forwards;
+            animation-delay: 0.5s;
             will-change: transform, opacity;
         }
 
@@ -127,11 +112,12 @@
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
-             /* Điều chỉnh ảnh cho màn hình nhỏ nếu cần */
             #seesaw-image {
-                width: 90px;
-                bottom: 10px;
-                right: 10px;
+                 /* ===== THAY ĐỔI KÍCH THƯỚC Ở ĐÂY (Màn hình nhỏ) ===== */
+                 width: 120px; /* Tăng từ 90px lên 120px (hoặc giá trị bạn muốn) */
+                 /* =============================================== */
+                 bottom: 10px;
+                 right: 10px;
             }
         }
     </style>
@@ -161,7 +147,6 @@
 
     <script>
         // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
-        // Bao gồm cả phần hiệu ứng domino cho link
         console.log('Script started');
 
         try {
