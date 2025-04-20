@@ -21,7 +21,7 @@
             5% { transform: scale(0.98, 1.02); }
         }
 
-        /* ===== Animation H1 (nhẹ nhàng, lặp lại) ===== */
+        /* ===== Animation H1 (nhẹ nhàng) ===== */
         @keyframes gentleHeadingWobble {
              0%, 12%, 100% { transform: scale(1, 1); }
              0.5% { transform: scale(0.99, 1.01); }
@@ -32,7 +32,7 @@
              10% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== Animation mới cho ảnh bập bênh (Entrance) ===== */
+        /* ===== Animation entrance cho ảnh bập bênh ===== */
         @keyframes seesawPopUp {
             0% { transform: translateY(110%) rotate(70deg); opacity: 0; transform-origin: bottom left; }
             60% { transform: translateY(0) rotate(-8deg); opacity: 1; }
@@ -40,18 +40,14 @@
             100% { transform: translateY(0) rotate(0deg); opacity: 1; }
         }
 
-        /* ===== Xóa Keyframes Wobble mạnh cho ảnh khi click ===== */
+        /* ===== Xóa Keyframes cũ không dùng ===== */
         /* @keyframes imageClickStrongWobble { ... } */
 
-        /* ===== Animation Wobble nhẹ cho Ảnh khi Click ===== */
-         @keyframes imageClickWobble { /* Giữ lại phiên bản nhẹ này */
-             0%, 100% { transform: scale(1, 1); }
-             7% { transform: scale(0.99, 1.01); }
-             25% { transform: scale(1.08, 0.92); }
-             50% { transform: scale(0.92, 1.08); }
-             70% { transform: scale(1.05, 0.95); }
-             85% { transform: scale(0.95, 1.05); }
-             95% { transform: scale(1.02, 0.98); }
+        /* ===== Animation mới: Bounce tại chỗ đơn giản cho Ảnh khi Click ===== */
+        @keyframes imageClickBounce {
+             0%, 100% { transform: scale(1); }
+             50% { transform: scale(1.1, 0.9); } /* Nén/Giãn nhẹ */
+             75% { transform: scale(0.95, 1.05); } /* Nảy lại chút */
         }
 
 
@@ -112,21 +108,24 @@
             z-index: 1;
             opacity: 0;
             cursor: pointer;
-            /* Animation entrance ban đầu (chỉ chạy 1 lần) */
+            /* Animation entrance ban đầu (Không thay đổi) */
             animation-name: seesawPopUp;
             animation-duration: 0.9s;
             animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
             animation-fill-mode: forwards;
             animation-delay: 0.5s;
             will-change: transform, opacity;
+            /* Không đặt transform-origin ở đây để nó dùng mặc định (center)
+               trừ khi bị seesawPopUp ghi đè tạm thời */
         }
 
-        /* ===== Xóa Style wobble mạnh cho ảnh khi click ===== */
+        /* ===== XÓA rule cũ cho class .image-strong-wobbling ===== */
         /* #seesaw-image.image-strong-wobbling { ... } */
 
-        /* ===== Style wobble NHẸ cho ảnh KHI CLICK ===== */
-        #seesaw-image.image-wobbling { /* Quay lại dùng class này */
-             animation: imageClickWobble 0.7s ease-in-out 1; /* Quay lại dùng animation nhẹ */
+        /* ===== Style bounce đơn giản cho ẢNH KHI CLICK (Dùng class .bounce) ===== */
+        #seesaw-image.bounce {
+             transform-origin: 50% 50%; /* Đặt tâm xoay/scale về giữa KHI bounce */
+             animation: imageClickBounce 0.4s ease-out 1; /* Animation mới, duration mới */
              animation-delay: 0s;
         }
 
@@ -189,7 +188,7 @@
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
                 function tryAutoPlay() { /* ... giữ nguyên ... */
-                     console.log('Trying autoplay');
+                    console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
                         if (bgPromise !== undefined) {
@@ -238,21 +237,21 @@
                  }
 
                 // ===============================================
-                // HÀM Xử lý wobble NHẸ cho ẢNH KHI CLICK (ĐÃ SỬA LẠI)
+                // HÀM Xử lý bounce đơn giản cho ẢNH KHI CLICK (ĐÃ SỬA)
                 // ===============================================
                 function handleImageBounce(event) {
                     const image = event.currentTarget;
-                    // Nếu đang chạy animation thì không làm gì cả
-                    if (image.classList.contains('image-wobbling')) return; // Quay lại dùng class này
+                    // Nếu đang bounce thì không làm gì cả
+                    if (image.classList.contains('bounce')) return; // Dùng lại class .bounce
 
-                    console.log('Image clicked, applying gentle wobble.');
+                    console.log('Image clicked, applying simple bounce.');
 
-                    // Thêm class để kích hoạt animation wobble nhẹ
-                    image.classList.add('image-wobbling'); // Quay lại dùng class này
-                    // Xóa class sau khi animation kết thúc (khớp với duration của imageClickWobble: 0.7s = 700ms)
+                    // Thêm class để kích hoạt animation CSS mới
+                    image.classList.add('bounce'); // Dùng lại class .bounce
+                    // Xóa class sau khi animation kết thúc (khớp với duration của imageClickBounce: 0.4s = 400ms)
                     setTimeout(() => {
-                        image.classList.remove('image-wobbling'); // Xóa class này
-                    }, 700); // Thời gian khớp animation imageClickWobble
+                        image.classList.remove('bounce'); // Xóa class .bounce
+                    }, 400); // Thời gian khớp animation imageClickBounce
 
                     // Phát âm thanh
                     jellySound.currentTime = 0; // Tua về đầu
@@ -285,7 +284,7 @@
                 const squashDuration = 400;
 
                 function startDominoSequence() { /* ... giữ nguyên ... */
-                     console.log('Starting domino sequence at', new Date().toLocaleTimeString());
+                    console.log('Starting domino sequence at', new Date().toLocaleTimeString());
                     links.forEach((link, index) => {
                         setTimeout(() => {
                             if (!link.classList.contains('bounce')) {
@@ -295,7 +294,7 @@
                         setTimeout(() => {
                             link.classList.remove('do-subtle-squash');
                         }, index * dominoDelay + squashDuration);
-                    });
+                     });
                  }
                 setTimeout(() => {
                     startDominoSequence();
