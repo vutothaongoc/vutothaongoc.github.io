@@ -43,18 +43,21 @@
              95% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== Animation Wobble nhẹ tự động cho Ảnh (Phiên bản nhẹ nhất) ===== */
+        /* ===== Animation Wobble nhẹ tự động cho Ảnh (Phiên bản trước khi làm nhẹ hơn nữa) ===== */
         @keyframes imageAutoJellyWobble {
+             /* Wobble nhẹ trong 0.6s */
              0%, 100% { transform: scale(1, 1); }
-             7% { transform: scale(0.995, 1.005); }
-             25% { transform: scale(1.02, 0.98); }
-             50% { transform: scale(0.98, 1.02); }
-             70% { transform: scale(1.01, 0.99); }
-             85% { transform: scale(0.99, 1.01); }
-             95% { transform: scale(1.005, 0.995); }
+             /* Anticipation nhẹ */
+             7% { transform: scale(0.99, 1.01); }
+             /* Wobble steps nhẹ */
+             25% { transform: scale(1.04, 0.96); }
+             50% { transform: scale(0.96, 1.04); }
+             70% { transform: scale(1.025, 0.975); }
+             85% { transform: scale(0.975, 1.025); }
+             95% { transform: scale(1.01, 0.99); }
         }
 
-        /* ===== XÓA Animation Fade In ===== */
+        /* ===== Xóa Animation FadeIn ===== */
         /* @keyframes fadeIn { ... } */
 
 
@@ -102,7 +105,7 @@
               animation: subtleSquash 0.4s ease-in-out 1;
          }
 
-        /* ===== Style cho ảnh (Hiện ngay lập tức) ===== */
+        /* ===== Style cho ảnh (quay lại opacity 1, bỏ transition) ===== */
         #seesaw-image {
             position: fixed;
             bottom: 0;
@@ -111,21 +114,20 @@
             height: auto;
             z-index: 1;
             cursor: pointer;
-            opacity: 1; /* Hiện ngay từ đầu */
+            opacity: 1; /* Hiển thị ngay */
             transform-origin: bottom left;
             will-change: transform; /* Chỉ cần transform */
+            /* transition: opacity 1s ease-in; */ /* Bỏ transition */
             /* Fix highlight */
             -webkit-tap-highlight-color: transparent;
             outline: none;
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
-             /* Bỏ transition và animation entrance */
         }
 
-        /* ===== XÓA Class Fade-in ===== */
+        /* ===== Xóa Class fade-in ===== */
         /* #seesaw-image.image-entering { ... } */
-
 
         /* ===== Style wobble TẠI CHỖ cho ảnh KHI CLICK ===== */
         #seesaw-image.image-wobbling {
@@ -135,7 +137,7 @@
 
          /* ===== Class cho hiệu ứng wobble nhẹ tự động của ảnh ===== */
         #seesaw-image.auto-jelly-wobbling {
-             animation: imageAutoJellyWobble 0.6s ease-in-out 1;
+             animation: imageAutoJellyWobble 0.6s ease-in-out 1; /* Dùng keyframes đã được làm nhẹ */
         }
 
 
@@ -320,9 +322,9 @@
                 }
 
                 // PHẦN JAVASCRIPT CHO WOBBLE NHẸ TỰ ĐỘNG CỦA ẢNH
-                const imageAutoInterval = 5000;
-                const imageAutoWobbleDuration = 600;
-                const imageInitialAutoDelay = 5000;
+                const imageAutoInterval = 5000; // Lặp lại mỗi 5 giây
+                const imageAutoWobbleDuration = 600; // Thời gian chạy animation auto wobble (ms) - khớp CSS
+                const imageInitialAutoDelay = 5000;  // Delay cho lần wobble đầu tiên (5 giây)
 
                 function triggerImageAutoWobble() { /* ... giữ nguyên như trước ... */
                     if (seesawImage &&
