@@ -14,7 +14,7 @@
         /* ===== Animation Bounce mạnh khi Click/Touch LINK ===== */
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
-        /* ===== Animation Squash nhẹ tự động cho nút link ===== */
+        /* ===== Animation Squash nhẹ (dùng cho domino link) ===== */
         @keyframes subtleSquash {
             0%, 100% { transform: scale(1); }
             30% { transform: scale(1.03, 0.98); }
@@ -43,17 +43,21 @@
              95% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== Animation Wobble nhẹ tự động cho Ảnh (NHẸ HƠN NỮA) ===== */
+        /* ===== Animation Wobble nhẹ tự động cho Ảnh ===== */
         @keyframes imageAutoJellyWobble {
              0%, 100% { transform: scale(1, 1); }
-             /* Anticipation siêu nhẹ */
              7% { transform: scale(0.995, 1.005); }
-             /* Wobble steps nhẹ hơn nữa */
-             25% { transform: scale(1.02, 0.98); } /* Giảm từ 1.04 */
-             50% { transform: scale(0.98, 1.02); } /* Giảm từ 0.96 */
-             70% { transform: scale(1.01, 0.99); } /* Giảm từ 1.025 */
-             85% { transform: scale(0.99, 1.01); } /* Giảm từ 0.975 */
-             95% { transform: scale(1.005, 0.995); } /* Giảm từ 1.01 */
+             25% { transform: scale(1.02, 0.98); }
+             50% { transform: scale(0.98, 1.02); }
+             70% { transform: scale(1.01, 0.99); }
+             85% { transform: scale(0.99, 1.01); }
+             95% { transform: scale(1.005, 0.995); }
+        }
+
+        /* ===== Animation mới: Fade In cho ảnh ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
 
@@ -96,12 +100,12 @@
             animation-delay: 0s;
         }
 
-        /* Class để kích hoạt animation subtleSquash cho LINK (dùng bởi JS domino) */
+        /* Class để kích hoạt animation subtleSquash cho LINK */
          .links a.do-subtle-squash {
               animation: subtleSquash 0.4s ease-in-out 1;
          }
 
-        /* ===== Style cho ảnh (Thêm Fade In) ===== */
+        /* ===== Style cho ảnh ===== */
         #seesaw-image {
             position: fixed;
             bottom: 0;
@@ -110,17 +114,26 @@
             height: auto;
             z-index: 1;
             cursor: pointer;
-            opacity: 0; /* Bắt đầu ẩn để fade in */
+            opacity: 0; /* Bắt đầu ẩn */
             transform-origin: bottom left;
-            will-change: transform, opacity; /* Thêm opacity */
+            will-change: transform, opacity; /* Cần cả 2 */
             /* Fix highlight */
             -webkit-tap-highlight-color: transparent;
             outline: none;
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
-            /* Thêm transition cho hiệu ứng fade-in */
-            transition: opacity 1s ease-in; /* Thời gian 1s, kiểu ease-in */
+             /* Bỏ transition đi */
+             /* transition: opacity 1s ease-in; */
+        }
+
+        /* ===== Class để kích hoạt Fade In ban đầu cho ảnh ===== */
+        #seesaw-image.image-fading-in {
+            animation-name: fadeIn;
+            animation-duration: 1s;
+            animation-timing-function: ease-in;
+            animation-fill-mode: forwards; /* Giữ opacity 1 */
+            animation-delay: 0.5s; /* Delay xuất hiện */
         }
 
         /* ===== Style wobble TẠI CHỖ cho ảnh KHI CLICK ===== */
@@ -131,7 +144,7 @@
 
          /* ===== Class cho hiệu ứng wobble nhẹ tự động của ảnh ===== */
         #seesaw-image.auto-jelly-wobbling {
-             animation: imageAutoJellyWobble 0.6s ease-in-out 1; /* Keyframes đã sửa nhẹ hơn */
+             animation: imageAutoJellyWobble 0.6s ease-in-out 1;
         }
 
 
@@ -221,14 +234,26 @@
                  }
                 tryAutoPlay();
 
-                 // ===== THÊM CODE ĐỂ KÍCH HOẠT FADE-IN CHO ẢNH =====
+                 // ===== KÍCH HOẠT FADE-IN BAN ĐẦU CHO ẢNH =====
                  if (seesawImage) {
-                     const fadeInDelay = 500; // Delay 0.5 giây (bằng delay cũ của entrance animation)
-                     setTimeout(() => {
-                         console.log('Fading in image...');
-                         seesawImage.style.opacity = 1; // Kích hoạt transition trong CSS
-                     }, fadeInDelay);
+                     console.log('Adding fade-in class to image...');
+                     seesawImage.classList.add('image-fading-in');
+
+                     // (Optional) Clean up class after animation finishes
+                     // seesawImage.addEventListener('animationend', function handleFadeEnd(event) {
+                     //     if (event.animationName === 'fadeIn') {
+                     //         seesawImage.classList.remove('image-fading-in');
+                     //         seesawImage.removeEventListener('animationend', handleFadeEnd);
+                     //     }
+                     // }, { once: true });
                  }
+                 // ===== XÓA setTimeout cũ thay đổi opacity =====
+                 /*
+                 const fadeInDelay = 500;
+                 setTimeout(() => {
+                     if(seesawImage) seesawImage.style.opacity = 1;
+                 }, fadeInDelay);
+                 */
                  // ====================================================
 
 
