@@ -14,7 +14,7 @@
         /* ===== Animation Bounce mạnh khi Click/Touch LINK ===== */
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
-        /* ===== Animation Squash nhẹ (dùng cho domino link) ===== */
+        /* ===== Animation Squash nhẹ tự động cho nút link ===== */
         @keyframes subtleSquash {
             0%, 100% { transform: scale(1); }
             30% { transform: scale(1.03, 0.98); }
@@ -54,7 +54,7 @@
              95% { transform: scale(1.005, 0.995); }
         }
 
-        /* ===== Animation mới: Fade In cho ảnh ===== */
+        /* ===== Animation mới: Fade In cho ảnh khi vào trang ===== */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -100,7 +100,7 @@
             animation-delay: 0s;
         }
 
-        /* Class để kích hoạt animation subtleSquash cho LINK */
+        /* Class để kích hoạt animation subtleSquash cho LINK (dùng bởi JS domino) */
          .links a.do-subtle-squash {
               animation: subtleSquash 0.4s ease-in-out 1;
          }
@@ -116,25 +116,22 @@
             cursor: pointer;
             opacity: 0; /* Bắt đầu ẩn */
             transform-origin: bottom left;
-            will-change: transform, opacity; /* Cần cả 2 */
+            will-change: transform, opacity; /* Giữ opacity vì animation fade-in */
             /* Fix highlight */
             -webkit-tap-highlight-color: transparent;
             outline: none;
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
-             /* Bỏ transition đi */
+             /* Bỏ transition opacity ở đây */
              /* transition: opacity 1s ease-in; */
         }
 
-        /* ===== Class để kích hoạt Fade In ban đầu cho ảnh ===== */
-        #seesaw-image.image-fading-in {
-            animation-name: fadeIn;
-            animation-duration: 1s;
-            animation-timing-function: ease-in;
-            animation-fill-mode: forwards; /* Giữ opacity 1 */
-            animation-delay: 0.5s; /* Delay xuất hiện */
+        /* ===== Class mới để kích hoạt Fade-in cho ảnh ===== */
+        #seesaw-image.image-entering {
+            animation: fadeIn 1s ease-in 0.5s forwards; /* Chạy 1 lần, giữ lại opacity 1 */
         }
+
 
         /* ===== Style wobble TẠI CHỖ cho ảnh KHI CLICK ===== */
         #seesaw-image.image-wobbling {
@@ -234,27 +231,13 @@
                  }
                 tryAutoPlay();
 
-                 // ===== KÍCH HOẠT FADE-IN BAN ĐẦU CHO ẢNH =====
+                 // ===== THÊM CLASS ĐỂ KÍCH HOẠT FADE-IN CHO ẢNH (1 lần) =====
                  if (seesawImage) {
-                     console.log('Adding fade-in class to image...');
-                     seesawImage.classList.add('image-fading-in');
-
-                     // (Optional) Clean up class after animation finishes
-                     // seesawImage.addEventListener('animationend', function handleFadeEnd(event) {
-                     //     if (event.animationName === 'fadeIn') {
-                     //         seesawImage.classList.remove('image-fading-in');
-                     //         seesawImage.removeEventListener('animationend', handleFadeEnd);
-                     //     }
-                     // }, { once: true });
+                     console.log('Adding fade-in class to image');
+                     seesawImage.classList.add('image-entering');
+                     // Không cần setTimeout nữa vì delay và forwards đã có trong CSS
                  }
-                 // ===== XÓA setTimeout cũ thay đổi opacity =====
-                 /*
-                 const fadeInDelay = 500;
-                 setTimeout(() => {
-                     if(seesawImage) seesawImage.style.opacity = 1;
-                 }, fadeInDelay);
-                 */
-                 // ====================================================
+                 // ========================================================
 
 
                 // Lấy tọa độ event
@@ -347,23 +330,20 @@
                 const imageAutoWobbleDuration = 600; // Thời gian chạy animation auto wobble (ms) - khớp CSS
                 const imageInitialAutoDelay = 5000;  // Delay cho lần wobble đầu tiên (5 giây)
 
-                function triggerImageAutoWobble() { // Hàm để chạy wobble tự động
+                function triggerImageAutoWobble() { /* ... giữ nguyên như trước ... */
                     if (seesawImage &&
-                        !seesawImage.classList.contains('image-wobbling') && // Không chạy nếu đang wobble do click
-                        !seesawImage.classList.contains('auto-jelly-wobbling')) // Không chạy nếu đang wobble tự động
+                        !seesawImage.classList.contains('image-wobbling') &&
+                        !seesawImage.classList.contains('auto-jelly-wobbling'))
                     {
-                        // console.log('Triggering auto jelly wobble on image');
-                        seesawImage.classList.add('auto-jelly-wobbling'); // Thêm class wobble tự động
+                        seesawImage.classList.add('auto-jelly-wobbling');
                         setTimeout(() => {
-                            seesawImage.classList.remove('auto-jelly-wobbling'); // Xóa class wobble tự động
-                        }, imageAutoWobbleDuration); // Thời gian khớp animation imageAutoJellyWobble
+                            seesawImage.classList.remove('auto-jelly-wobbling');
+                        }, imageAutoWobbleDuration);
                     }
                 }
 
                 if (seesawImage) {
-                    // Chạy lần đầu sau delay
                     setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
-                    // Lặp lại bằng setInterval
                     setInterval(triggerImageAutoWobble, imageAutoInterval);
                 }
 
