@@ -43,15 +43,22 @@
              95% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== Animation Wobble nhẹ tự động cho Ảnh ===== */
-        @keyframes imageAutoJellyWobble {
+        /* ===== Animation mới: Wobble RẤT NHẸ tự động cho Ảnh ===== */
+        @keyframes imageAutoGentleWobble { /* Đổi tên */
+             /* Wobble rất nhẹ trong ~0.6s */
              0%, 100% { transform: scale(1, 1); }
-             7% { transform: scale(0.99, 1.01); }
-             25% { transform: scale(1.04, 0.96); }
-             50% { transform: scale(0.96, 1.04); }
-             70% { transform: scale(1.025, 0.975); }
-             85% { transform: scale(0.975, 1.025); }
-             95% { transform: scale(1.01, 0.99); }
+             /* Bỏ anticipation */
+             /* Các bước scale rất nhỏ */
+             25% { transform: scale(1.02, 0.98); } /* Max lệch 0.02 */
+             50% { transform: scale(0.98, 1.02); } /* Max lệch 0.02 */
+             75% { transform: scale(1.01, 0.99); }
+             90% { transform: scale(0.99, 1.01); }
+        }
+
+        /* ===== Animation mới: Fade In cho Ảnh ===== */
+        @keyframes fadeInImage {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
 
@@ -95,16 +102,9 @@
         }
 
         /* Class để kích hoạt animation subtleSquash cho LINK (dùng bởi JS domino) */
-        .links a.do-subtle-squash,
-        #seesaw-image.do-subtle-squash { /* <--- CHỖ NÀY LÀ SAI SÓT TỪ LẦN TRƯỚC, SẼ SỬA LẠI */
-             animation: subtleSquash 0.4s ease-in-out 1;
-        }
-         /* === SỬA LẠI CHO ĐÚNG === */
-         .links a.do-subtle-squash { /* Chỉ áp dụng cho link */
+         .links a.do-subtle-squash {
               animation: subtleSquash 0.4s ease-in-out 1;
          }
-         /* ====================== */
-
 
         /* ===== Style cho ảnh ===== */
         #seesaw-image {
@@ -115,14 +115,21 @@
             height: auto;
             z-index: 1;
             cursor: pointer;
-            opacity: 1;
+            opacity: 0; /* Bắt đầu ẩn để chạy fade-in */
             transform-origin: bottom left;
-            will-change: transform;
+            will-change: transform, opacity; /* Thêm opacity */
+            /* Fix highlight */
             -webkit-tap-highlight-color: transparent;
             outline: none;
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
+            /* Áp dụng animation Fade-in */
+            animation-name: fadeInImage;
+            animation-duration: 1s; /* Thời gian fade-in */
+            animation-timing-function: ease-out;
+            animation-fill-mode: forwards; /* Giữ opacity = 1 sau khi chạy */
+            animation-delay: 0.5s; /* Delay fade-in */
         }
 
         /* ===== Style wobble TẠI CHỖ cho ảnh KHI CLICK ===== */
@@ -131,9 +138,9 @@
              animation-delay: 0s;
         }
 
-         /* ===== Class cho hiệu ứng wobble nhẹ tự động của ảnh ===== */
-        #seesaw-image.auto-jelly-wobbling {
-             animation: imageAutoJellyWobble 0.6s ease-in-out 1;
+         /* ===== Class mới cho hiệu ứng wobble nhẹ tự động của ảnh ===== */
+        #seesaw-image.auto-gentle-wobbling { /* Đổi tên class */
+             animation: imageAutoGentleWobble 0.6s ease-in-out 1; /* Đổi tên keyframes */
         }
 
 
@@ -251,9 +258,10 @@
                  }
 
                 // HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK
-                function handleImageBounce(event) { /* ... giữ nguyên ... */
+                function handleImageBounce(event) {
                     const image = event.currentTarget;
-                    if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) return;
+                    // Kiểm tra cả class wobble click và class wobble tự động
+                    if (image.classList.contains('image-wobbling') || image.classList.contains('auto-gentle-wobbling')) return; // Sửa tên class kiểm tra
                     console.log('Image clicked, applying in-place wobble.');
                     image.classList.add('image-wobbling');
                     setTimeout(() => {
@@ -281,7 +289,7 @@
                 }
 
                 // JS cho hiệu ứng DOMINO LINK
-                const linkIntervalTime = 3000; // Đổi tên biến cho rõ
+                const linkIntervalTime = 3000;
                 const linkInitialDelay = 300;
                 const linkDominoDelay = 100;
                 const linkSquashDuration = 400;
@@ -308,30 +316,37 @@
                     console.warn('No links found for domino effect.');
                 }
 
-                // ===== PHẦN JAVASCRIPT CHO WOBBLE NHẸ TỰ ĐỘNG CỦA ẢNH =====
-                // ===== THAY ĐỔI DUY NHẤT Ở ĐÂY =====
-                const imageAutoInterval = 5000; // Lặp lại mỗi 5 giây (đổi từ 10000)
-                // ==================================
-                const imageAutoWobbleDuration = 600;
-                const imageInitialAutoDelay = 5000;
+                // ===============================================
+                // PHẦN JAVASCRIPT CHO WOBBLE RẤT NHẸ TỰ ĐỘNG CỦA ẢNH (ĐÃ SỬA)
+                // ===============================================
+                const imageAutoInterval = 5000;    // Lặp lại mỗi 5 giây
+                const imageAutoWobbleDuration = 600; // Thời gian chạy animation auto wobble (ms) - 0.6s
+                const imageInitialAutoDelay = 5000;  // Delay cho lần wobble đầu tiên (5 giây)
 
-                function triggerImageAutoWobble() { /* ... giữ nguyên như trước ... */
+                function triggerImageAutoGentleWobble() { // Đổi tên hàm
+                    // Chỉ chạy nếu ảnh tồn tại và không đang chạy animation wobble do click
+                    // và cũng không đang chạy chính animation wobble tự động này
                     if (seesawImage &&
                         !seesawImage.classList.contains('image-wobbling') &&
-                        !seesawImage.classList.contains('auto-jelly-wobbling'))
+                        !seesawImage.classList.contains('auto-gentle-wobbling')) // Kiểm tra class mới
                     {
-                        seesawImage.classList.add('auto-jelly-wobbling');
+                        // console.log('Triggering auto gentle wobble on image');
+                        seesawImage.classList.add('auto-gentle-wobbling'); // Thêm class mới
                         setTimeout(() => {
-                            seesawImage.classList.remove('auto-jelly-wobbling');
-                        }, imageAutoWobbleDuration);
+                            seesawImage.classList.remove('auto-gentle-wobbling'); // Xóa class mới
+                        }, imageAutoWobbleDuration); // Thời gian khớp animation imageAutoGentleWobble
                     }
                 }
 
+                // Chạy lần đầu sau delay
                 if (seesawImage) {
-                    setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
-                    setInterval(triggerImageAutoWobble, imageAutoInterval); // Sử dụng biến đã đổi
+                    setTimeout(triggerImageAutoGentleWobble, imageInitialAutoDelay); // Gọi hàm mới
+                    // Lặp lại bằng setInterval
+                    setInterval(triggerImageAutoGentleWobble, imageAutoInterval); // Gọi hàm mới
                 }
-                // ===== KẾT THÚC PHẦN JAVASCRIPT MỚI =====
+                // ===============================================
+                // KẾT THÚC PHẦN JAVASCRIPT MỚI
+                // ===============================================
 
 
                 // LOGIC HOA RƠI VÀ KÉO THẢ (Giữ nguyên)
