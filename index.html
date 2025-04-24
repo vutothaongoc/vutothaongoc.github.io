@@ -14,7 +14,7 @@
         /* ===== Animation Bounce mạnh khi Click/Touch LINK ===== */
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
-        /* ===== Animation Squash nhẹ (dùng cho domino link VÀ auto image) ===== */
+        /* ===== Animation Squash nhẹ (chỉ dùng cho domino link) ===== */
         @keyframes subtleSquash {
             0%, 100% { transform: scale(1); }
             30% { transform: scale(1.03, 0.98); }
@@ -32,7 +32,7 @@
              10% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== Animation Wobble TẠI CHỖ cho Ảnh khi Click ===== */
+        /* ===== Animation Wobble TẠI CHỖ cho Ảnh khi CLICK (Mạnh hơn) ===== */
         @keyframes imageClickInPlaceWobble {
              0%, 100% { transform: scale(1, 1); }
              7% { transform: scale(0.98, 1.02); }
@@ -43,8 +43,19 @@
              95% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== XÓA Keyframes Pulse nhẹ tự động cho Ảnh ===== */
-        /* @keyframes imageSubtlePulse { ... } */
+        /* ===== Animation mới: Wobble nhẹ tự động cho Ảnh ===== */
+        @keyframes imageAutoJellyWobble {
+             /* Giống imageClickInPlaceWobble nhưng scale nhẹ hơn */
+             0%, 100% { transform: scale(1, 1); }
+             /* Anticipation nhẹ */
+             7% { transform: scale(0.99, 1.01); }
+             /* Wobble steps nhẹ */
+             25% { transform: scale(1.04, 0.96); }
+             50% { transform: scale(0.96, 1.04); }
+             70% { transform: scale(1.025, 0.975); }
+             85% { transform: scale(0.975, 1.025); }
+             95% { transform: scale(1.01, 0.99); }
+        }
 
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
@@ -86,9 +97,9 @@
             animation-delay: 0s;
         }
 
-        /* Class để kích hoạt animation subtleSquash (cho cả link và ảnh) */
-        .links a.do-subtle-squash,
-        #seesaw-image.do-subtle-squash { /* Thêm #seesaw-image vào đây */
+        /* Class để kích hoạt animation subtleSquash cho LINK (dùng bởi JS domino) */
+        /* Chỉ áp dụng cho link, không áp dụng cho ảnh nữa */
+        .links a.do-subtle-squash {
              animation: subtleSquash 0.4s ease-in-out 1;
         }
 
@@ -117,8 +128,10 @@
              animation-delay: 0s;
         }
 
-        /* ===== Xóa class pulse nhẹ tự động của ảnh ===== */
-        /* #seesaw-image.subtle-pulsing { ... } */
+         /* ===== Class mới cho hiệu ứng wobble nhẹ tự động của ảnh ===== */
+        #seesaw-image.auto-jelly-wobbling {
+             animation: imageAutoJellyWobble 0.6s ease-in-out 1; /* Duration 0.6s */
+        }
 
 
         @media (max-width: 576px) {
@@ -185,7 +198,7 @@
 
                 // Thử autoplay nhạc nền
                 function tryAutoPlay() { /* ... giữ nguyên ... */
-                    console.log('Trying autoplay');
+                     console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
                         if (bgPromise !== undefined) {
@@ -209,7 +222,7 @@
 
                 // Lấy tọa độ event
                 function getEventCoords(event) { /* ... giữ nguyên ... */
-                     if (event.type.includes('touch')) {
+                      if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
                         return { x: touch.clientX, y: touch.clientY };
                     }
@@ -234,16 +247,16 @@
                     }, 300);
                  }
 
-                // HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK
-                function handleImageBounce(event) { /* ... giữ nguyên ... */
+                // HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK (Kiểm tra class auto wobble)
+                function handleImageBounce(event) {
                     const image = event.currentTarget;
-                    // Sửa lại: Kiểm tra class wobble click và cả class squash tự động
-                    if (image.classList.contains('image-wobbling') || image.classList.contains('do-subtle-squash')) return;
+                    // Kiểm tra cả class wobble click và class wobble tự động
+                    if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) return;
                     console.log('Image clicked, applying in-place wobble.');
                     image.classList.add('image-wobbling');
                     setTimeout(() => {
                         image.classList.remove('image-wobbling');
-                    }, 700);
+                    }, 700); // Khớp duration imageClickInPlaceWobble
                     jellySound.currentTime = 0;
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                  }
@@ -269,9 +282,9 @@
                 const intervalTime = 3000;
                 const initialDelay = 300;
                 const dominoDelay = 100;
-                const linkSquashDuration = 400; // Đổi tên biến cho rõ ràng
+                const linkSquashDuration = 400;
 
-                function startDominoSequence() {
+                function startDominoSequence() { /* ... giữ nguyên ... */
                      // console.log('Starting link domino sequence at', new Date().toLocaleTimeString());
                      links.forEach((link, index) => {
                          if (!link.classList.contains('bounce') && !link.classList.contains('do-subtle-squash')) {
@@ -295,32 +308,32 @@
                 }
 
                 // ===============================================
-                // PHẦN JAVASCRIPT CHO SQUASH NHẸ TỰ ĐỘNG CỦA ẢNH (ĐÃ SỬA)
+                // PHẦN JAVASCRIPT CHO WOBBLE NHẸ TỰ ĐỘNG CỦA ẢNH (ĐÃ SỬA)
                 // ===============================================
-                const imageAutoInterval = 10000; // Lặp lại mỗi 10 giây
-                const imageAutoDuration = 400;  // Thời gian chạy animation subtleSquash (ms) - khớp với link
-                const imageInitialAutoDelay = 5000; // Delay cho lần đầu tiên (5 giây)
+                const imageAutoInterval = 10000;    // Lặp lại mỗi 10 giây
+                const imageAutoWobbleDuration = 600; // Thời gian chạy animation auto wobble (ms) - 0.6s
+                const imageInitialAutoDelay = 5000;  // Delay cho lần wobble đầu tiên (5 giây)
 
-                function triggerImageAutoSquash() { // Đổi tên hàm
+                function triggerImageAutoWobble() { // Đổi tên hàm
                     // Chỉ chạy nếu ảnh tồn tại và không đang chạy animation wobble do click
-                    // và cũng không đang chạy chính animation squash tự động này
+                    // và cũng không đang chạy chính animation wobble tự động này
                     if (seesawImage &&
                         !seesawImage.classList.contains('image-wobbling') &&
-                        !seesawImage.classList.contains('do-subtle-squash'))
+                        !seesawImage.classList.contains('auto-jelly-wobbling')) // Kiểm tra class mới
                     {
-                        // console.log('Triggering auto subtle squash on image');
-                        seesawImage.classList.add('do-subtle-squash'); // Thêm class này
+                        // console.log('Triggering auto jelly wobble on image');
+                        seesawImage.classList.add('auto-jelly-wobbling'); // Thêm class mới
                         setTimeout(() => {
-                            seesawImage.classList.remove('do-subtle-squash'); // Xóa class này
-                        }, imageAutoDuration); // Thời gian khớp animation subtleSquash
+                            seesawImage.classList.remove('auto-jelly-wobbling'); // Xóa class mới
+                        }, imageAutoWobbleDuration); // Thời gian khớp animation imageAutoJellyWobble
                     }
                 }
 
                 // Chạy lần đầu sau delay
                 if (seesawImage) { // Kiểm tra ảnh tồn tại trước khi đặt timer
-                    setTimeout(triggerImageAutoSquash, imageInitialAutoDelay);
+                    setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
                     // Lặp lại bằng setInterval
-                    setInterval(triggerImageAutoSquash, imageAutoInterval);
+                    setInterval(triggerImageAutoWobble, imageAutoInterval);
                 }
                 // ===============================================
                 // KẾT THÚC PHẦN JAVASCRIPT MỚI
