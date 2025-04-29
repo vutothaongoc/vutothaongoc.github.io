@@ -98,8 +98,8 @@
 
         #seesaw-image {
             position: fixed;
-            bottom: 10px; /* Nâng lên một chút */
-            right: 10px; /* Dịch vào một chút */
+            bottom: 10px;
+            right: 10px;
             width: 290px;
             height: auto;
             z-index: 1;
@@ -123,28 +123,28 @@
              animation: imageAutoJellyWobble 0.6s ease-in-out 1;
         }
 
-        /* ===== Style Nút Bật/Tắt Nhạc ===== */
+        /* ===== Style Nút Bật/Tắt Nhạc (ĐÃ CẬP NHẬT MÀU) ===== */
         #music-toggle-button {
             position: fixed;
-            bottom: 20px; /* Khoảng cách từ dưới */
-            left: 20px;  /* Khoảng cách từ trái */
-            z-index: 3; /* Đảm bảo nút nổi lên trên hoa và ảnh */
-            background-color: rgba(95, 99, 148, 0.7); /* Màu nền hơi trong suốt */
-            color: white;      /* Màu cho ký tự bên trong nút */
+            bottom: 20px;
+            left: 20px;
+            z-index: 3;
+            /* background-color: rgba(95, 99, 148, 0.7); */ /* Bỏ màu nền cũ */
+            background-image: linear-gradient(to bottom, #FBC7D4, #A083D9); /* Ombre Hồng -> Tím */
+            color: white;
             border: none;
-            border-radius: 50%; /* Làm tròn nút */
-            width: 50px;       /* Kích thước cố định */
-            height: 50px;      /* Kích thước cố định */
-            font-size: 26px;   /* Kích thước ký tự ♫ và ○, điều chỉnh nếu cần */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 26px;
             cursor: pointer;
-            display: flex;     /* Căn giữa ký tự */
+            display: flex;
             justify-content: center;
             align-items: center;
-            line-height: 1;    /* Giúp căn giữa ký tự tốt hơn */
+            line-height: 1;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: background-color 0.3s ease, transform 0.1s ease;
+            transition: background-image 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease; /* Thêm transition cho background và shadow */
             outline: none;
-            /* Fix highlight on mobile */
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             -webkit-user-select: none;
@@ -152,16 +152,18 @@
         }
 
         #music-toggle-button:hover {
-            background-color: rgba(115, 119, 168, 0.9); /* Sáng hơn khi hover */
+            /* background-color: rgba(115, 119, 168, 0.9); */ /* Bỏ màu hover cũ */
+            background-image: linear-gradient(to bottom, #FFD1E0, #AB92E0); /* Ombre Hồng -> Tím (sáng hơn chút khi hover) */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.25); /* Tăng shadow khi hover */
         }
 
         #music-toggle-button:active {
-            transform: scale(0.95); /* Hiệu ứng nhấn nhẹ */
+            transform: scale(0.95);
         }
 
 
         @media (max-width: 576px) {
-            body { padding: 20px 10px; padding-bottom: 70px; /* Đảm bảo đủ chỗ dưới */ }
+            body { padding: 20px 10px; padding-bottom: 70px; }
             h1 { font-size: 2.5em; }
             p { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
@@ -169,14 +171,13 @@
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
                  width: 180px;
-                 bottom: 5px; /* Điều chỉnh lại để không quá gần nút nhạc */
+                 bottom: 5px;
                  right: 5px;
             }
-             /* Điều chỉnh nút nhạc cho màn hình nhỏ */
             #music-toggle-button {
                 width: 40px;
                 height: 40px;
-                font-size: 22px; /* Giảm kích thước ký tự trên mobile */
+                font-size: 22px;
                 bottom: 15px;
                 left: 15px;
             }
@@ -210,6 +211,8 @@
 
     <script>
         // ----- PHẦN JAVASCRIPT -----
+        // (JavaScript giữ nguyên như phiên bản trước, không cần thay đổi
+        //  vì màu sắc nút được kiểm soát hoàn toàn bởi CSS)
         console.log('Script started');
 
         try {
@@ -250,10 +253,8 @@
                 // Thử autoplay nhạc nền và cập nhật nút
                 function tryAutoPlay() {
                     console.log('Trying autoplay');
-                    // Kiểm tra lại các phần tử cần thiết
                     if (!backgroundMusic || !musicToggleButton) {
                         console.error("Audio or toggle button element missing for autoplay.");
-                        // Đảm bảo nút hiển thị trạng thái tắt nếu có lỗi
                         if (musicToggleButton) musicToggleButton.textContent = '○';
                         return;
                     }
@@ -262,19 +263,18 @@
                         if (bgPromise !== undefined) {
                             bgPromise.then(() => {
                                 console.log('Background music autoplay succeeded');
-                                musicToggleButton.textContent = '♫'; // << ON
+                                musicToggleButton.textContent = '♫';
                             }).catch(error => {
                                 console.error('Autoplay bị chặn, cần tương tác:', error);
-                                musicToggleButton.textContent = '○'; // << OFF
+                                musicToggleButton.textContent = '○';
                                 const playOnInteraction = () => {
-                                    // Kiểm tra lại trước khi play
                                     if (!backgroundMusic) return;
                                     backgroundMusic.play().then(() => {
                                         console.log('Background music started after interaction');
-                                        if (musicToggleButton) musicToggleButton.textContent = '♫'; // << ON
+                                        if (musicToggleButton) musicToggleButton.textContent = '♫';
                                     }).catch(err => {
                                         console.error('Lỗi phát sau tương tác:', err);
-                                        if (musicToggleButton) musicToggleButton.textContent = '○'; // << OFF/ERROR
+                                        if (musicToggleButton) musicToggleButton.textContent = '○';
                                     });
                                     document.removeEventListener('click', playOnInteraction);
                                     document.removeEventListener('touchstart', playOnInteraction);
@@ -283,14 +283,12 @@
                                 document.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
                             });
                         } else {
-                             // Fallback cho trình duyệt không trả về promise
                              if (!backgroundMusic.paused) {
-                                 musicToggleButton.textContent = '♫'; // << ON
+                                 musicToggleButton.textContent = '♫';
                              } else {
-                                musicToggleButton.textContent = '○'; // << OFF
+                                musicToggleButton.textContent = '○';
                              }
                         }
-                        // Khởi tạo jellySound (chạy thử và dừng lại)
                         if (jellySound) {
                            const jellyPromise = jellySound.play();
                             if (jellyPromise !== undefined) {
@@ -299,10 +297,10 @@
                         }
                     } catch (error) {
                         console.error('Lỗi khởi tạo âm thanh:', error);
-                        if (musicToggleButton) musicToggleButton.textContent = '○'; // << OFF/ERROR
+                        if (musicToggleButton) musicToggleButton.textContent = '○';
                     }
                 }
-                tryAutoPlay(); // Gọi hàm thử autoplay
+                tryAutoPlay();
 
                 // Lấy tọa độ event
                 function getEventCoords(event) {
@@ -320,12 +318,10 @@
                      event.preventDefault();
                      button.classList.add('bounce');
                      setTimeout(() => { button.classList.remove('bounce'); }, 300);
-
                      if (jellySound) {
                          jellySound.currentTime = 0;
                          jellySound.play().catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                      }
-
                      setTimeout(() => {
                          if (button.target === '_blank') {
                              window.open(button.href, '_blank');
@@ -344,7 +340,6 @@
                      setTimeout(() => {
                          image.classList.remove('image-wobbling');
                      }, 700);
-
                      if (jellySound) {
                         jellySound.currentTime = 0;
                         jellySound.play().catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
@@ -368,38 +363,33 @@
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
 
-                // --- HÀM VÀ SỰ KIỆN CHO NÚT NHẠC (ĐÃ CẬP NHẬT KÝ TỰ) ---
+                // --- HÀM VÀ SỰ KIỆN CHO NÚT NHẠC ---
                 function toggleMusic() {
-                    // Kiểm tra lại các phần tử cần thiết
                     if (!backgroundMusic || !musicToggleButton) {
                         console.error("Missing elements for toggleMusic");
                         return;
                     }
-
                     if (backgroundMusic.paused) {
                         backgroundMusic.play()
                             .then(() => {
-                                musicToggleButton.textContent = '♫'; // << ON
+                                musicToggleButton.textContent = '♫'; // ON
                                 console.log("Music Resumed");
                             })
                             .catch(error => {
                                 console.error("Error playing music:", error);
-                                musicToggleButton.textContent = '○'; // << OFF/ERROR
+                                musicToggleButton.textContent = '○'; // OFF/ERROR
                             });
                     } else {
                         backgroundMusic.pause();
-                        musicToggleButton.textContent = '○'; // << OFF
+                        musicToggleButton.textContent = '○'; // OFF
                         console.log("Music Paused");
                     }
-
-                    // Phát âm thanh hiệu ứng (tùy chọn)
                     if (jellySound) {
                        jellySound.currentTime = 0;
                        jellySound.play().catch(e => console.warn("Couldn't play jelly sound on toggle:", e));
                     }
                 }
 
-                // Chỉ gắn listener nếu nút tồn tại
                 if (musicToggleButton) {
                     musicToggleButton.addEventListener('click', toggleMusic);
                     console.log("Music toggle button event listener added.");
@@ -468,7 +458,7 @@
                      const flower = document.createElement('span');
                      flower.className = 'flower';
                      flower.innerHTML = '❅';
-                     if (!flowerContainer) return; // Thoát nếu container không tồn tại
+                     if (!flowerContainer) return;
                      flowerContainer.appendChild(flower);
                      const randomLeft = Math.random() * 100;
                      flower.style.left = `${randomLeft}%`;
@@ -490,23 +480,19 @@
                 function dragStart(event) {
                      if (event.type === 'mousedown' && event.button !== 0) return;
                      if (!event.target.classList.contains('flower')) return;
-
                      activeFlower = event.target;
                      const coords = getEventCoords(event);
                      activeFlower.classList.add('dragging');
                      activeFlower.style.animation = 'none';
-
                      const rect = activeFlower.getBoundingClientRect();
                      offsetX = coords.x - rect.left;
                      offsetY = coords.y - rect.top;
-
                      activeFlower.style.position = 'absolute';
                      activeFlower.style.left = `${coords.x - offsetX}px`;
                      activeFlower.style.top = `${coords.y - offsetY}px`;
                      activeFlower.style.transform = 'none';
                      activeFlower.style.opacity = '0.9';
-                     activeFlower.style.cursor = 'grabbing'; // Đổi cursor khi kéo
-
+                     activeFlower.style.cursor = 'grabbing';
                      document.addEventListener('mousemove', dragging);
                      document.addEventListener('touchmove', dragging, { passive: false });
                      document.addEventListener('mouseup', dragEnd);
@@ -518,39 +504,29 @@
                      const coords = getEventCoords(event);
                      let newX = coords.x - offsetX;
                      let newY = coords.y - offsetY;
-
                      const vw = document.documentElement.clientWidth;
                      const vh = document.documentElement.clientHeight;
                      const flowerSize = activeFlower.offsetWidth;
-
                      newX = Math.max(0, Math.min(newX, vw - flowerSize));
                      newY = Math.max(0, Math.min(newY, vh - flowerSize));
-
                      activeFlower.style.left = `${newX}px`;
                      activeFlower.style.top = `${newY}px`;
                      if (event.type === 'touchmove') event.preventDefault();
                 }
                 function dragEnd(event) {
                      if (!activeFlower) return;
-
                      const flower = activeFlower;
                      activeFlower = null;
-
                      flower.classList.remove('dragging');
                      flower.style.cursor = 'grab';
-                     flower.style.opacity = ''; // Reset opacity
-
-                     // Tùy chọn: Làm hoa rơi xuống từ vị trí thả
-                     const fallTransitionDuration = 1; // Giây
+                     flower.style.opacity = '';
+                     const fallTransitionDuration = 1;
                      const currentTop = parseFloat(flower.style.top) || 0;
-                     const remainingDistance = Math.max(0, document.documentElement.clientHeight - currentTop); // Đảm bảo không âm
-                     // Thời gian rơi tỷ lệ với khoảng cách còn lại, tránh trường hợp rơi quá nhanh/chậm
-                     const remainingDuration = Math.max(0.2, (remainingDistance / document.documentElement.clientHeight) * fallTransitionDuration) ; // Tối thiểu 0.2s
-
+                     const remainingDistance = Math.max(0, document.documentElement.clientHeight - currentTop);
+                     const remainingDuration = Math.max(0.2, (remainingDistance / document.documentElement.clientHeight) * fallTransitionDuration) ;
                      flower.style.transition = `top ${remainingDuration}s linear, opacity ${remainingDuration}s linear`;
                      flower.style.top = '110vh';
                      flower.style.opacity = '0.1';
-
                      setTimeout(() => {
                          if (!flower.parentNode) return;
                          flower.style.transition = 'none';
@@ -559,19 +535,12 @@
                          flower.style.left = `${Math.random() * 100}%`;
                          flower.style.opacity = '';
                          flower.style.transform = '';
-
                          void flower.offsetWidth;
-
-                         // Lấy lại animation duration gốc
                          const originalDuration = `${flowerFallDuration}s`;
                          flower.style.animation = `fall ${originalDuration} linear infinite`;
-                         // Đặt lại delay ngẫu nhiên
                          const newDelay = Math.random() * totalCycleTime;
                          flower.style.animationDelay = `-${newDelay}s`;
-
-                     }, remainingDuration * 1000 + 50); // Thêm 50ms buffer
-
-
+                     }, remainingDuration * 1000 + 50);
                      document.removeEventListener('mousemove', dragging);
                      document.removeEventListener('touchmove', dragging);
                      document.removeEventListener('mouseup', dragEnd);
