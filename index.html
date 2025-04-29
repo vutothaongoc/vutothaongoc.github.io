@@ -87,6 +87,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
+        /* Style bounce cho LINK */
         .links a.bounce {
             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
             animation-delay: 0s;
@@ -123,13 +124,12 @@
              animation: imageAutoJellyWobble 0.6s ease-in-out 1;
         }
 
-        /* ===== Style Nút Bật/Tắt Nhạc (ĐÃ CẬP NHẬT MÀU) ===== */
+        /* ===== Style Nút Bật/Tắt Nhạc ===== */
         #music-toggle-button {
             position: fixed;
             bottom: 20px;
             left: 20px;
             z-index: 3;
-            /* background-color: rgba(95, 99, 148, 0.7); */ /* Bỏ màu nền cũ */
             background-image: linear-gradient(to bottom, #FBC7D4, #A083D9); /* Ombre Hồng -> Tím */
             color: white;
             border: none;
@@ -143,22 +143,29 @@
             align-items: center;
             line-height: 1;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: background-image 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease; /* Thêm transition cho background và shadow */
+            transition: background-image 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
             outline: none;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
+            will-change: transform; /* THÊM: Tối ưu animation transform */
         }
 
         #music-toggle-button:hover {
-            /* background-color: rgba(115, 119, 168, 0.9); */ /* Bỏ màu hover cũ */
-            background-image: linear-gradient(to bottom, #FFD1E0, #AB92E0); /* Ombre Hồng -> Tím (sáng hơn chút khi hover) */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.25); /* Tăng shadow khi hover */
+            background-image: linear-gradient(to bottom, #FFD1E0, #AB92E0); /* Ombre sáng hơn khi hover */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.25);
         }
 
         #music-toggle-button:active {
-            transform: scale(0.95);
+            transform: scale(0.95); /* Giữ hiệu ứng nhấn mặc định */
+        }
+
+        /* ===== Animation Bounce cho Nút Nhạc KHI CÓ CLASS .bounce ===== */
+        /* THÊM QUY TẮC NÀY */
+        #music-toggle-button.bounce {
+            animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
+            animation-delay: 0s;
         }
 
 
@@ -211,8 +218,6 @@
 
     <script>
         // ----- PHẦN JAVASCRIPT -----
-        // (JavaScript giữ nguyên như phiên bản trước, không cần thay đổi
-        //  vì màu sắc nút được kiểm soát hoàn toàn bởi CSS)
         console.log('Script started');
 
         try {
@@ -363,12 +368,24 @@
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
 
-                // --- HÀM VÀ SỰ KIỆN CHO NÚT NHẠC ---
+                // --- HÀM VÀ SỰ KIỆN CHO NÚT NHẠC (ĐÃ THÊM BOUNCE) ---
                 function toggleMusic() {
                     if (!backgroundMusic || !musicToggleButton) {
                         console.error("Missing elements for toggleMusic");
                         return;
                     }
+
+                    // --- THÊM HIỆU ỨNG BOUNCE ---
+                    if (musicToggleButton.classList.contains('bounce')) return;
+                    musicToggleButton.classList.add('bounce');
+                    setTimeout(() => {
+                        if (musicToggleButton) {
+                            musicToggleButton.classList.remove('bounce');
+                        }
+                    }, 300);
+                    // ----------------------------
+
+                    // --- LOGIC BẬT/TẮT NHẠC ---
                     if (backgroundMusic.paused) {
                         backgroundMusic.play()
                             .then(() => {
@@ -384,10 +401,14 @@
                         musicToggleButton.textContent = '○'; // OFF
                         console.log("Music Paused");
                     }
+                    // ---------------------------
+
+                    // --- PHÁT ÂM THANH JELLY ---
                     if (jellySound) {
                        jellySound.currentTime = 0;
                        jellySound.play().catch(e => console.warn("Couldn't play jelly sound on toggle:", e));
                     }
+                    // ---------------------------
                 }
 
                 if (musicToggleButton) {
