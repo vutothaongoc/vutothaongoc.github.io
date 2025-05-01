@@ -6,7 +6,7 @@
     <title>Jazmin's Portfolio - Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Italianno&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* CSS Animations (fall, jellyBounce, subtleSquash, gentleHeadingWobble, imageClickInPlaceWobble, imageAutoJellyWobble) giữ nguyên như trước */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
@@ -24,15 +24,15 @@
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
-            /* ===== THAY ĐỔI FONT H1 ===== */
-            font-family: 'Italianno', cursive; /* Đổi sang Italianno */
-            font-weight: 400; /* Chỉ có weight 400 */
-            font-size: 7.2em; /* Font này có vẻ cần to hơn nữa */
-            line-height: 1;
-            /* ============================ */
+            /* ===== ĐỔI FONT H1 VỀ NUNITO ===== */
+            font-family: 'Nunito', sans-serif; /* Đổi về Nunito */
+            font-weight: 700; /* Đặt lại weight 700 */
+            font-size: 4em; /* Chỉnh lại size */
+            line-height: 1.2; /* Chỉnh lại line-height */
+            margin-bottom: 10px; /* Tăng khoảng cách dưới */
+            /* ================================ */
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            margin-bottom: -5px;
             display: inline-block;
             will-change: transform;
             animation: gentleHeadingWobble 10s ease-in-out infinite;
@@ -44,7 +44,7 @@
             font-size: 1.1em;
             font-weight: 400;
             color: var(--text-color);
-            margin-top: -5px;
+            margin-top: 0px; /* Bỏ margin âm */
             margin-bottom: 20px;
             letter-spacing: normal;
             opacity: 0.75;
@@ -103,12 +103,12 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 6em; /* Chỉnh size H1 trên mobile */
-                margin-bottom: -8px;
+                font-size: 3.2em; /* Chỉnh size H1 trên mobile */
+                margin-bottom: 5px; /* Chỉnh lại */
              }
             .subtitle {
                 font-size: 1em;
-                margin-top: -2px;
+                margin-top: 0px;
                 margin-bottom: 15px;
                 opacity: 0.75;
             }
