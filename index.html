@@ -20,16 +20,16 @@
         @keyframes fadeInSlowly { 0% { opacity: 0; } 100% { opacity: 1; } }
 
         /* ===== SỬA LẠI KEYFRAMES CHO SUBTITLE ===== */
-        /* Chạy từ phải qua trái */
-        @keyframes revealFromRight {
+        /* Chạy từ trái qua phải */
+        @keyframes revealFromLeft {
             0% {
-                /* Bắt đầu: Che hết bên phải, làm hiện chữ */
-                clip-path: inset(0 100% 0 0); /* Che từ bên phải */
+                /* Bắt đầu: Che hết bên trái, làm hiện chữ */
+                clip-path: inset(0 0 0 100%); /* Che từ bên trái */
                 opacity: 1;
             }
             100% {
                 /* Kết thúc: Hiện toàn bộ chữ */
-                clip-path: inset(0 0 0 0);
+                clip-path: inset(0 0 0 0%);
                 opacity: 1;
             }
         }
@@ -67,8 +67,8 @@
             will-change: clip-path, opacity; /* Tối ưu animation */
 
             /* Áp dụng animation reveal đã sửa */
-            /* Tên | Thời gian (chậm hơn) | Timing | Delay (sớm hơn) | Giữ trạng thái cuối */
-            animation: revealFromRight 2.5s ease-out 1s forwards;
+            /* Tên | Thời gian (chậm hơn nữa) | Timing | Delay | Giữ trạng thái cuối */
+            animation: revealFromLeft 4s ease-out 1s forwards;
         }
         /* ===== KẾT THÚC THAY ĐỔI CSS CHO SUBTITLE ===== */
 
