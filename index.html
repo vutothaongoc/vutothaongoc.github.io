@@ -26,10 +26,10 @@
         h1 {
             font-family: 'Puppies Play', cursive;
             font-weight: 400;
-            font-size: 5.8em;
-            /* ===== GIẢM LINE HEIGHT ===== */
-            line-height: 1.1; /* Giảm từ 1.2 */
+            /* ===== TĂNG FONT SIZE H1 ===== */
+            font-size: 6.2em; /* Tăng từ 5.8em */
             /* =========================== */
+            line-height: 1.1;
             margin-bottom: 0px;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -41,13 +41,14 @@
 
         .subtitle {
             font-family: 'Puppies Play', cursive;
-            font-size: 1.5em;
+             /* ===== TĂNG FONT SIZE SUBTITLE ===== */
+            font-size: 1.7em; /* Tăng từ 1.5em */
+             /* ===== KÉO LÊN GẦN H1 HƠN ===== */
+            margin-top: -15px; /* Tăng giá trị âm */
+            /* ============================== */
             font-weight: 400;
             color: var(--text-color);
-            /* ===== TĂNG MARGIN ÂM, GIẢM LINE HEIGHT ===== */
-            margin-top: -10px; /* Tăng giá trị âm để kéo lên */
-            line-height: 1.1; /* Giảm từ 1.2 */
-            /* ========================================= */
+            line-height: 1.1;
             margin-bottom: 20px;
             letter-spacing: normal;
             opacity: 0.75;
@@ -106,14 +107,19 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 4.8em;
+                /* ===== TĂNG FONT SIZE H1 (Mobile) ===== */
+                font-size: 5.2em; /* Tăng từ 4.8em */
+                /* ==================================== */
                 margin-bottom: 0px;
-                line-height: 1.1; /* Giảm line height mobile */
+                line-height: 1.1;
              }
             .subtitle {
-                font-size: 1.2em;
-                margin-top: -8px; /* Tăng margin âm mobile */
-                line-height: 1.1; /* Giảm line height mobile */
+                 /* ===== TĂNG FONT SIZE SUBTITLE (Mobile) ===== */
+                font-size: 1.4em; /* Tăng từ 1.2em */
+                 /* ===== KÉO LÊN GẦN H1 HƠN (Mobile) ===== */
+                margin-top: -12px; /* Tăng giá trị âm */
+                /* ====================================== */
+                line-height: 1.1;
                 margin-bottom: 15px;
                 opacity: 0.75;
             }
