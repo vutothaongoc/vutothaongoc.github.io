@@ -24,14 +24,12 @@
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
-            /* ===== THAY ĐỔI FONT H1 ===== */
-            font-family: 'Comic Relief', cursive; /* Đổi sang Comic Relief */
-            font-weight: 400; /* Chỉ có weight 400 */
-            font-size: 4.5em; /* Điều chỉnh kích thước */
-            /* ============================ */
+            font-family: 'Comic Relief', cursive;
+            font-weight: 400;
+            font-size: 4.5em;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            margin-bottom: 5px;
+            margin-bottom: 0px; /* Giảm nữa cho subtitle gần hơn */
             display: inline-block;
             will-change: transform;
             animation: gentleHeadingWobble 10s ease-in-out infinite;
@@ -39,18 +37,19 @@
             line-height: 1.1;
         }
 
+        /* ===== Style cho Subtitle (ĐÃ SỬA) ===== */
         .subtitle {
-            font-size: 1.5em;
-            font-weight: 400; /* Giữ weight thường */
+            font-family: 'Comic Relief', cursive; /* Đổi font giống H1 */
+            font-size: 1.1em; /* Đổi size giống thẻ p */
+            font-weight: 400;
             color: var(--text-color);
-            margin-top: -5px;
-            margin-bottom: 25px;
-            letter-spacing: 0.5px; /* Giảm giãn cách chút */
-            font-family: 'Nunito', sans-serif; /* Giữ font Nunito */
+            margin-top: 0px; /* Chỉnh lại margin top */
+            margin-bottom: 20px; /* Giảm khoảng cách dưới */
+            letter-spacing: normal; /* Bỏ giãn cách chữ */
         }
 
         p:not(.subtitle) {
-            font-size: 1.1em;
+            font-size: 1.1em; /* Size chữ đoạn văn thường */
             line-height: 1.7;
             margin-bottom: 15px;
             color: var(--text-color);
@@ -102,15 +101,15 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 3.5em; /* Chỉnh size H1 trên mobile */
-                margin-bottom: 0px;
+                font-size: 3.5em;
+                margin-bottom: -2px; /* Chỉnh lại */
              }
             .subtitle {
-                font-size: 1.2em;
-                margin-top: -3px;
-                margin-bottom: 20px;
+                font-size: 1em; /* Size giống p trên mobile */
+                margin-top: -2px;
+                margin-bottom: 15px;
             }
-            p:not(.subtitle) { font-size: 1em; }
+            p:not(.subtitle) { font-size: 1em; } /* Size chữ đoạn văn thường trên mobile */
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
