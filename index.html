@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Puppies+Play&display=swap" rel="stylesheet">
     <style>
-        /* CSS Animations (fall, jellyBounce, subtleSquash, gentleHeadingWobble, imageClickInPlaceWobble, imageAutoJellyWobble) giữ nguyên như trước */
+        /* CSS Animations giữ nguyên */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
         @keyframes subtleSquash { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.03, 0.98); } 70% { transform: scale(0.98, 1.02); } }
@@ -27,12 +27,11 @@
             font-family: 'Puppies Play', cursive;
             font-weight: 400;
             /* ===== TĂNG FONT SIZE H1 ===== */
-            font-size: 5.6em; /* Tăng từ 5.3em */
-            /* =========================== */
-            line-height: 1.2;
-            /* ===== GIẢM MARGIN BOTTOM ===== */
+            font-size: 5.8em; /* Tăng từ 5.3em */
+            /* ===== GIẢM KHOẢNG CÁCH DƯỚI ===== */
             margin-bottom: 0px; /* Giảm từ 5px */
-            /* =========================== */
+            /* =============================== */
+            line-height: 1.2;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             display: inline-block;
@@ -43,12 +42,13 @@
 
         .subtitle {
             font-family: 'Puppies Play', cursive;
-            /* ===== TĂNG FONT SIZE SUBTITLE ===== */
-            font-size: 1.4em; /* Tăng từ 1.3em */
-            /* ================================ */
+             /* ===== TĂNG FONT SIZE SUBTITLE ===== */
+            font-size: 1.5em; /* Tăng từ 1.3em */
+             /* ===== KÉO LÊN GẦN H1 ===== */
+            margin-top: -5px; /* Giữ nguyên hoặc giảm thêm nếu muốn */
+            /* ========================== */
             font-weight: 400;
             color: var(--text-color);
-            margin-top: 0px; /* Giữ nguyên để sát H1 */
             margin-bottom: 20px;
             letter-spacing: normal;
             opacity: 0.75;
@@ -109,15 +109,15 @@
             body { padding: 20px 10px; }
             h1 {
                 /* ===== TĂNG FONT SIZE H1 (Mobile) ===== */
-                font-size: 4.5em; /* Tăng từ 4.3em */
-                /* ==================================== */
-                margin-bottom: 0px; /* Giữ nguyên */
+                font-size: 4.8em; /* Tăng từ 4.3em */
+                 /* ==================================== */
+                margin-bottom: 0px; /* Giữ nguyên 0 */
              }
             .subtitle {
-                /* ===== TĂNG FONT SIZE SUBTITLE (Mobile) ===== */
+                 /* ===== TĂNG FONT SIZE SUBTITLE (Mobile) ===== */
                 font-size: 1.2em; /* Tăng từ 1.1em */
-                /* ======================================== */
-                margin-top: 0px;
+                 /* =========================================== */
+                margin-top: -3px; /* Giữ nguyên */
                 margin-bottom: 15px;
                 opacity: 0.75;
                 line-height: 1.2;
