@@ -24,15 +24,15 @@
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
-            /* ===== THAY ĐỔI FONT H1 ===== */
-            font-family: 'Alex Brush', cursive; /* Đổi sang Alex Brush */
-            font-weight: 400; /* Chỉ có weight 400 */
-            font-size: 7em; /* Tăng size nhiều hơn cho font mảnh */
+            font-family: 'Alex Brush', cursive;
+            font-weight: 400;
+            /* ===== GIẢM FONT SIZE H1 ===== */
+            font-size: 6.5em; /* Giảm từ 7em */
+            /* =========================== */
             line-height: 1;
-            /* ============================ */
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            margin-bottom: -5px; /* Giữ hoặc chỉnh lại */
+            margin-bottom: -5px;
             display: inline-block;
             will-change: transform;
             animation: gentleHeadingWobble 10s ease-in-out infinite;
@@ -103,7 +103,9 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 5.5em; /* Chỉnh size H1 trên mobile */
+                /* ===== GIẢM FONT SIZE H1 (Mobile) ===== */
+                font-size: 5.2em; /* Giảm từ 5.5em */
+                /* ==================================== */
                 margin-bottom: -8px;
              }
             .subtitle {
