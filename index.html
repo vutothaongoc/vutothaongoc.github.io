@@ -19,19 +19,7 @@
         @keyframes slideDown { 0% { transform: translateY(-50vh); } 100% { transform: translateY(0); } }
         @keyframes fadeInSlowly { 0% { opacity: 0; } 100% { opacity: 1; } }
         @keyframes revealFromRight { 0% { clip-path: inset(0 100% 0 0); opacity: 1; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
-
-        /* ===== KEYFRAMES MỚI CHO LINK ===== */
-        @keyframes slideUpFadeIn {
-            0% {
-                transform: translateY(50px); /* Bắt đầu từ vị trí thấp hơn */
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1; /* Opacity cuối cùng mặc định của link */
-            }
-        }
-        /* ===== KẾT THÚC KEYFRAMES MỚI ===== */
+        @keyframes slideUpFadeIn { 0% { transform: translateY(50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
@@ -67,30 +55,27 @@
 
         p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
-        /* ===== THAY ĐỔI CSS CHO LINK Ở ĐÂY ===== */
+        /* ===== THAY ĐỔI FONT-WEIGHT CỦA LINK Ở ĐÂY ===== */
         .links a {
             display: inline-block; margin: 8px 6px; padding: 12px 28px;
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
-            color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
-            transition: background-image 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Thêm transition cho transform */
+            color: white; text-decoration: none; border-radius: 25px;
+            font-weight: 400; /* Đổi từ 700 thành 400 */
+            transition: background-image 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
             font-family: 'Nunito', sans-serif;
-            /* Trạng thái ban đầu cho animation entrance */
             opacity: 0;
-            transform: translateY(50px); /* Ẩn dưới */
+            transform: translateY(50px);
             will-change: transform, opacity;
         }
-        /* Class kích hoạt animation entrance cho link */
         .links a.link-entering {
-            /* Tên | Thời gian | Timing | Delay (set bằng JS) | Fill Mode */
             animation: slideUpFadeIn 0.8s ease-out forwards;
         }
-        /* ===== KẾT THÚC THAY ĐỔI CSS CHO LINK ===== */
+        /* ===== KẾT THÚC THAY ĐỔI FONT-WEIGHT ===== */
 
         .links a:hover {
              background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-             /* Hiệu ứng hover nhẹ nhàng */
              transform: translateY(-2px);
         }
         .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1; animation-delay: 0s; }
@@ -117,7 +102,7 @@
             h1 { font-size: 5em; }
             .subtitle { font-size: 1.8em; margin-top: -20px; }
             p:not(.subtitle) { font-size: 1em; }
-            .links a { padding: 10px 20px; margin: 6px 4px; }
+            .links a { padding: 10px 20px; margin: 6px 4px; } /* Giữ padding/margin cho mobile */
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
                 bottom: 0;
@@ -148,29 +133,24 @@
     <img id="seesaw-image" src="jazmin.png" alt="Jazmin Illustration">
 
     <script>
-        // ----- PHẦN JAVASCRIPT -----
+        // ----- PHẦN JAVASCRIPT (Giữ nguyên không đổi) -----
         console.log('Script started');
         try {
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('DOMContentLoaded triggered');
 
-                // --- 1. Lấy các phần tử DOM ---
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
                 const seesawImage = document.getElementById('seesaw-image');
-                const links = document.querySelectorAll('.links a'); // Lấy link MXH
-
-                // --- 2. Biến cho hoa rơi kéo thả ---
+                const links = document.querySelectorAll('.links a');
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
-                // --- 3. Thiết lập âm lượng và tải audio ---
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                // --- 4. Hàm thử autoplay nhạc nền ---
                 function tryAutoPlay() { /* ... giữ nguyên ... */
                     console.log('Trying autoplay');
                     try {
@@ -194,7 +174,6 @@
                 }
                 tryAutoPlay();
 
-                // --- 5. Hàm lấy tọa độ event ---
                 function getEventCoords(event) { /* ... giữ nguyên ... */
                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
@@ -203,10 +182,8 @@
                     return { x: event.clientX, y: event.clientY };
                 }
 
-                // --- 6. Hàm xử lý bounce cho LINK khi click/touch ---
-                function handleBounce(event) { /* ... giữ nguyên ... */
+                function handleBounce(event) { /* ... giữ nguyên, đã có check .link-entering ... */
                     const button = event.currentTarget;
-                     // Ngăn bounce nếu đang chạy entrance
                     if (button.classList.contains('bounce') || button.classList.contains('link-entering')) return;
                     event.preventDefault();
                     button.classList.add('bounce');
@@ -222,7 +199,6 @@
                     }, 300);
                 }
 
-                // --- 7. HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK ---
                 function handleImageBounce(event) { /* ... giữ nguyên ... */
                     const image = event.currentTarget;
                     if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) {
@@ -236,17 +212,15 @@
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                 }
 
-                // --- 8. Gắn sự kiện click/touch cho link ---
                 console.log('Attaching link events');
-                try {
+                try { /* ... giữ nguyên ... */
                     links.forEach(button => {
                         button.addEventListener('click', handleBounce);
                         button.addEventListener('touchstart', handleBounce, { passive: false });
                     });
                  } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                // --- 9. Xử lý ảnh (Entrance, Click, Auto Wobble) ---
-                if (seesawImage) { /* ... giữ nguyên ... */
+                if (seesawImage) { /* ... giữ nguyên xử lý entrance, click, wobble tự động ... */
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
                     console.log('Adding entrance animation class to image');
@@ -292,56 +266,45 @@
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
 
-                // --- 10. XỬ LÝ HIỆU ỨNG ENTRANCE VÀ DOMINO CHO LINK ---
+                // --- Xử lý hiệu ứng entrance và domino cho link (giữ nguyên) ---
                 if (links.length > 0) {
                     console.log('Setting up entrance animation for links.');
-                    const linkEntranceBaseDelay = 1.0; // Bắt đầu sau 1 giây
-                    const linkEntranceDominoDelay = 0.1; // Delay giữa các link
-                    const linkEntranceDuration = 0.8; // Thời gian chạy animation entrance của link (giây)
+                    const linkEntranceBaseDelay = 1.0;
+                    const linkEntranceDominoDelay = 0.1;
+                    const linkEntranceDuration = 0.8;
 
                     links.forEach((link, index) => {
                         const delay = linkEntranceBaseDelay + index * linkEntranceDominoDelay;
                         link.style.animationDelay = delay + 's';
                         link.classList.add('link-entering');
 
-                        // Thêm listener để dọn dẹp sau khi animation kết thúc
                         link.addEventListener('animationend', function handleLinkEntranceEnd(event) {
-                            // Chỉ xử lý khi đúng animation slideUpFadeIn kết thúc
                             if (event.animationName === 'slideUpFadeIn') {
-                                link.style.opacity = '1'; // Đặt lại opacity
-                                link.style.transform = 'none'; // Reset transform
-                                link.classList.remove('link-entering'); // Xóa class
-                                link.style.animationDelay = ''; // Xóa delay inline
-                                // Xóa listener này để tránh chạy lại
+                                link.style.opacity = '1';
+                                link.style.transform = 'none';
+                                link.classList.remove('link-entering');
+                                link.style.animationDelay = '';
                                 link.removeEventListener('animationend', handleLinkEntranceEnd);
-                                // console.log(`Link ${index} entrance finished.`);
                             }
                         });
                     });
 
-                    // --- 10.1 Xử lý hiệu ứng Domino Squash (chỉ bắt đầu sau khi link cuối cùng xuất hiện) ---
-                    const linkIntervalTime = 3000; // Thời gian lặp lại của domino squash
-                    // const linkInitialDelay = 300; // Bỏ delay này
-                    const linkDominoDelay = 100; // Delay giữa các squash trong 1 chuỗi
-                    const linkSquashDuration = 400; // Thời gian chạy animation squash
-
-                    // Tính thời gian kết thúc animation của link cuối cùng
+                    // --- Xử lý hiệu ứng Domino Squash (giữ nguyên) ---
+                    const linkIntervalTime = 3000;
+                    const linkDominoDelay = 100;
+                    const linkSquashDuration = 400;
                     const lastLinkIndex = links.length - 1;
                     const lastLinkEntranceEndTime = linkEntranceBaseDelay + lastLinkIndex * linkEntranceDominoDelay + linkEntranceDuration;
-                    const autoSquashStartDelay = lastLinkEntranceEndTime * 1000 + 500; // Chờ thêm 0.5s sau khi link cuối vào xong
+                    const autoSquashStartDelay = lastLinkEntranceEndTime * 1000 + 500;
 
                     console.log(`Scheduling auto squash to start after ${autoSquashStartDelay}ms`);
 
-                    // Hàm thực hiện chuỗi squash (sửa đổi để kiểm tra class entrance)
                     function startDominoSequence() {
-                        // console.log('Attempting domino squash sequence');
                         links.forEach((link, index) => {
-                            // Ngăn squash nếu đang bounce HOẶC đang chạy entrance
                             if (!link.classList.contains('bounce') &&
                                 !link.classList.contains('do-subtle-squash') &&
                                 !link.classList.contains('link-entering')) {
                                 setTimeout(() => {
-                                    // console.log(`Applying squash to link ${index}`)
                                     link.classList.add('do-subtle-squash');
                                 }, index * linkDominoDelay);
                                 setTimeout(() => {
@@ -351,11 +314,10 @@
                         });
                     }
 
-                    // Chỉ bắt đầu vòng lặp squash sau khi tất cả link đã xuất hiện
                     setTimeout(() => {
                         console.log('Starting auto squash interval.');
-                        startDominoSequence(); // Chạy lần đầu
-                        setInterval(startDominoSequence, linkIntervalTime); // Lặp lại
+                        startDominoSequence();
+                        setInterval(startDominoSequence, linkIntervalTime);
                     }, autoSquashStartDelay);
 
                 } else {
@@ -363,7 +325,7 @@
                 }
 
 
-                // --- 11. LOGIC HOA RƠI VÀ KÉO THẢ + TẠO HOA ---
+                // --- Hoa rơi giữ nguyên ---
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
