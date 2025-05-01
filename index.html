@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Puppies+Play&display=swap" rel="stylesheet">
     <style>
-        /* CSS Animations giữ nguyên */
+        /* CSS Animations hoa, link bounce, link squash, H1 wobble giữ nguyên */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
         @keyframes subtleSquash { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.03, 0.98); } 70% { transform: scale(0.98, 1.02); } }
@@ -16,26 +16,33 @@
         @keyframes imageClickInPlaceWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.98, 1.02); } 25% { transform: scale(1.08, 0.92); } 50% { transform: scale(0.92, 1.08); } 70% { transform: scale(1.05, 0.95); } 85% { transform: scale(0.95, 1.05); } 95% { transform: scale(1.02, 0.98); } }
         @keyframes imageAutoJellyWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.995, 1.005); } 25% { transform: scale(1.02, 0.98); } 50% { transform: scale(0.98, 1.02); } 70% { transform: scale(1.01, 0.99); } 85% { transform: scale(0.99, 1.01); } 95% { transform: scale(1.005, 0.995); } }
 
+        /* ===== Animation MỚI: Entrance cho ảnh ===== */
+        @keyframes slideFadeUnblurIn {
+            0% {
+                transform: translateX(110%); /* Bắt đầu ngoài màn hình bên phải */
+                opacity: 0;
+                filter: blur(6px); /* Hơi nhòe */
+            }
+            30% {
+                 opacity: 0.5; /* Hiện dần đến 50% */
+                 filter: blur(3px);
+            }
+            100% {
+                transform: translateX(0); /* Về vị trí cuối */
+                opacity: 1;
+                filter: blur(0px); /* Rõ nét */
+            }
+        }
+
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
-        body {
-            text-align: center;
-            font-family: 'Nunito', sans-serif;
-            padding: 15px 20px 40px 20px; /* Giữ padding top 15px */
-            color: var(--text-color);
-            background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            min-height: 100%;
-            position: relative;
-            overflow-x: hidden;
-        }
+        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 15px 20px 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         .content-wrapper {
-             padding-top: 15px; /* Giữ padding top */
+             padding-top: 15px;
         }
 
         h1 {
@@ -56,7 +63,7 @@
         .subtitle {
             font-family: 'Puppies Play', cursive;
             font-size: 2.2em;
-            margin-top: -27px;
+            margin-top: -25px;
             font-weight: 400;
             color: var(--text-color);
             line-height: 1.1;
@@ -97,25 +104,34 @@
               animation: subtleSquash 0.4s ease-in-out 1;
          }
 
-        /* ===== Style cho ảnh ===== */
+        /* ===== Style cho ảnh (Trạng thái ban đầu cho entrance) ===== */
         #seesaw-image {
             position: fixed;
             bottom: 0;
             right: 0;
-            /* ===== ĐẶT KÍCH THƯỚC CHUNG ===== */
-            width: 240px; /* Kích thước trung bình */
-            /* ============================== */
+            width: 290px;
             height: auto;
             z-index: 1;
             cursor: pointer;
-            opacity: 1;
-            transform-origin: bottom left;
-            will-change: transform;
+            opacity: 0; /* Bắt đầu ẩn */
+            transform: translateX(110%); /* Bắt đầu ngoài màn hình */
+            filter: blur(8px); /* Bắt đầu nhòe */
+            transform-origin: bottom left; /* Giữ nguyên nếu muốn xoay */
+            will-change: transform, opacity, filter; /* Thêm filter */
+            /* Fix highlight */
             -webkit-tap-highlight-color: transparent;
             outline: none;
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
+            /* Bỏ animation cũ nếu có */
+            /* animation: ... */
+        }
+
+        /* ===== Class mới để kích hoạt Entrance cho ảnh ===== */
+        #seesaw-image.image-entering {
+            animation: slideFadeUnblurIn 1.2s ease-out 0.5s forwards;
+            /* Duration 1.2s, ease-out (chậm dần), delay 0.5s, giữ trạng thái cuối */
         }
 
         /* ===== Style wobble TẠI CHỖ cho ảnh KHI CLICK ===== */
@@ -132,10 +148,10 @@
 
         @media (max-width: 576px) {
             body {
-                 padding: 15px 10px 20px 10px; /* Giữ padding top 15px mobile */
+                 padding: 15px 10px 20px 10px;
             }
              .content-wrapper {
-                 padding-top: 0; /* Bỏ padding top wrapper mobile nếu body đã có */
+                 padding-top: 0;
              }
             h1 {
                 font-size: 6.5em;
@@ -145,7 +161,7 @@
              }
             .subtitle {
                 font-size: 1.8em;
-                margin-top: -25px; /* Giảm margin âm mobile */
+                margin-top: -25px;
                 line-height: 1.1;
                 margin-bottom: 15px;
                 opacity: 0.75;
@@ -155,11 +171,15 @@
             /* .content-wrapper { padding: 20px; } */
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
-                 /* Bỏ width ở đây để kế thừa từ rule chính */
-                 /* width: 240px; */
+                 width: 180px;
                  bottom: 0;
                  right: 0;
+                 /* Trạng thái ban đầu cũng cần đặt ở đây nếu muốn giống desktop */
+                 /* opacity: 0; */ /* Kế thừa từ trên */
+                 /* transform: translateX(110%); */ /* Kế thừa từ trên */
+                 /* filter: blur(8px); */ /* Kế thừa từ trên */
             }
+            /* Không cần ghi đè class .image-entering trong media query */
         }
     </style>
 </head>
@@ -185,7 +205,7 @@
     <img id="seesaw-image" src="jazmin.png" alt="Jazmin Illustration">
 
     <script>
-        // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
+        // ----- PHẦN JAVASCRIPT -----
         console.log('Script started');
         try {
             document.addEventListener('DOMContentLoaded', () => {
@@ -193,14 +213,15 @@
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
-                const seesawImage = document.getElementById('seesaw-image');
+                const seesawImage = document.getElementById('seesaw-image'); // Lấy ảnh
                 const links = document.querySelectorAll('.links a');
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
-                function tryAutoPlay() {
+
+                function tryAutoPlay() { /* ... giữ nguyên ... */
                     console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
@@ -222,14 +243,27 @@
                     } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
                  }
                 tryAutoPlay();
-                function getEventCoords(event) {
+
+                // ===== KÍCH HOẠT ANIMATION ENTRANCE CHO ẢNH =====
+                if (seesawImage) {
+                    console.log('Adding entrance animation class to image');
+                    // Thêm class để chạy animation entrance định nghĩa trong CSS
+                    seesawImage.classList.add('image-entering');
+                    // Không cần xóa class này vì đã có forwards
+                } else {
+                     console.error('Seesaw image element (#seesaw-image) not found!');
+                }
+                // ================================================
+
+                function getEventCoords(event) { /* ... giữ nguyên ... */
                       if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
                         return { x: touch.clientX, y: touch.clientY };
                     }
                     return { x: event.clientX, y: event.clientY };
                  }
-                function handleBounce(event) {
+
+                function handleBounce(event) { /* ... giữ nguyên ... */
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
                     event.preventDefault();
@@ -245,8 +279,10 @@
                         }
                     }, 300);
                  }
-                function handleImageBounce(event) {
+
+                function handleImageBounce(event) { /* ... giữ nguyên ... */
                     const image = event.currentTarget;
+                    // Kiểm tra cả class wobble click và class wobble tự động
                     if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) return;
                     console.log('Image clicked, applying in-place wobble.');
                     image.classList.add('image-wobbling');
@@ -256,6 +292,7 @@
                     jellySound.currentTime = 0;
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                  }
+
                 console.log('Attaching link events');
                 try {
                     document.querySelectorAll('.links a').forEach(button => {
@@ -263,17 +300,22 @@
                         button.addEventListener('touchstart', handleBounce, { passive: false });
                     });
                 } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
+
+                // GẮN SỰ KIỆN CLICK CHO ẢNH (Giữ nguyên)
                 if (seesawImage) {
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
                 } else {
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
+
+                // JS cho hiệu ứng DOMINO LINK (Giữ nguyên)
                 const linkIntervalTime = 3000;
                 const linkInitialDelay = 300;
                 const linkDominoDelay = 100;
                 const linkSquashDuration = 400;
-                function startDominoSequence() {
+
+                function startDominoSequence() { /* ... giữ nguyên ... */
                      links.forEach((link, index) => {
                          if (!link.classList.contains('bounce') && !link.classList.contains('do-subtle-squash')) {
                             setTimeout(() => {
@@ -294,10 +336,13 @@
                 } else {
                     console.warn('No links found for domino effect.');
                 }
+
+                // PHẦN JAVASCRIPT CHO WOBBLE NHẸ TỰ ĐỘNG CỦA ẢNH (Giữ nguyên)
                 const imageAutoInterval = 5000;
                 const imageAutoWobbleDuration = 600;
                 const imageInitialAutoDelay = 5000;
-                function triggerImageAutoWobble() {
+
+                function triggerImageAutoWobble() { /* ... giữ nguyên ... */
                     if (seesawImage &&
                         !seesawImage.classList.contains('image-wobbling') &&
                         !seesawImage.classList.contains('auto-jelly-wobbling'))
@@ -308,15 +353,20 @@
                         }, imageAutoWobbleDuration);
                     }
                 }
+
                 if (seesawImage) {
                     setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
                     setInterval(triggerImageAutoWobble, imageAutoInterval);
                 }
+
+
+                // LOGIC HOA RƠI VÀ KÉO THẢ (Giữ nguyên)
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
                 const flowerFallDuration = 10;
-                function createFlower(index) {
+
+                function createFlower(index) { /* ... giữ nguyên ... */
                     const flower = document.createElement('span');
                     flower.className = 'flower';
                     flower.innerHTML = '❅';
@@ -336,13 +386,13 @@
                         flower.style.left = `${Math.random() * 100}%`;
                     });
                  }
-                function dragStart(event) {
+                function dragStart(event) { /* ... giữ nguyên ... */
                      if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault();
                  }
-                function dragging(event) {
+                function dragging(event) { /* ... giữ nguyên ... */
                     if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault();
                  }
-                function dragEnd(event) {
+                function dragEnd(event) { /* ... giữ nguyên ... */
                     if (!activeFlower) return;
                     const flower = activeFlower;
                     activeFlower = null;
