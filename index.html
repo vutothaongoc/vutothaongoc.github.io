@@ -6,7 +6,7 @@
     <title>Jazmin's Portfolio - Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Relief&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
     <style>
         /* CSS Animations (fall, jellyBounce, subtleSquash, gentleHeadingWobble, imageClickInPlaceWobble, imageAutoJellyWobble) giữ nguyên như trước */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
@@ -24,32 +24,35 @@
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
-            font-family: 'Comic Relief', cursive; /* Font H1 vẫn là Comic Relief */
-            font-weight: 400;
-            font-size: 4.5em;
+            /* ===== THAY ĐỔI FONT H1 ===== */
+            font-family: 'Parisienne', cursive; /* Đổi sang Parisienne */
+            font-weight: 400; /* Chỉ có weight 400 */
+            font-size: 6.5em; /* Tăng size đáng kể cho font script */
+            /* ============================ */
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            margin-bottom: 0px;
+            margin-bottom: -5px; /* Điều chỉnh margin cho font mới */
             display: inline-block;
             will-change: transform;
             animation: gentleHeadingWobble 10s ease-in-out infinite;
             animation-delay: 0.3s;
-            line-height: 1.1;
+            line-height: 1; /* Giảm line-height cho script */
         }
 
-        /* ===== Style cho Subtitle (ĐÃ SỬA LẠI FONT) ===== */
+        /* ===== Style cho Subtitle (ĐÃ SỬA) ===== */
         .subtitle {
-            font-family: 'Nunito', sans-serif; /* Đổi lại font Nunito như cũ */
-            font-size: 1.1em; /* Giữ size giống thẻ p */
+            font-family: 'Nunito', sans-serif; /* Giữ font Nunito */
+            font-size: 1.1em;
             font-weight: 400;
             color: var(--text-color);
-            margin-top: 0px;
+            margin-top: -5px; /* Chỉnh lại */
             margin-bottom: 20px;
             letter-spacing: normal;
+            opacity: 0.75; /* Làm màu nhạt đi */
         }
 
         p:not(.subtitle) {
-            font-size: 1.1em; /* Size chữ đoạn văn thường */
+            font-size: 1.1em;
             line-height: 1.7;
             margin-bottom: 15px;
             color: var(--text-color);
@@ -63,7 +66,7 @@
             transition: background-image 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
             will-change: transform;
-            font-family: 'Nunito', sans-serif; /* Nút link vẫn dùng Nunito */
+            font-family: 'Nunito', sans-serif;
         }
 
         .links a:hover {
@@ -101,13 +104,14 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 3.5em;
-                margin-bottom: -2px;
+                font-size: 5em; /* Chỉnh size H1 trên mobile */
+                margin-bottom: -8px;
              }
             .subtitle {
-                font-size: 1em; /* Giữ size giống p trên mobile */
-                margin-top: -2px;
-                margin-bottom: 15px; /* Chỉnh lại margin bottom mobile */
+                font-size: 1em;
+                margin-top: 0px;
+                margin-bottom: 15px;
+                opacity: 0.75; /* Đồng bộ opacity */
             }
             p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
@@ -129,8 +133,7 @@
 
     <div class="content-wrapper">
         <h1>Jazmin</h1>
-        <p class="subtitle">Vũ Tô Thảo Ngọc</p>
-        <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
+        <p class="subtitle">Vũ Tô Thảo Ngọc</p> <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
         <p>Hãy quay lại sớm nhé! Trong lúc chờ đợi, bạn có thể theo dõi tranh của mình qua các kênh bên dưới:</p>
         <div class="links">
              <a href="https://www.facebook.com/share/1BJegyhs3k/" target="_blank">Facebook</a>
