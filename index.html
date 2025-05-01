@@ -23,7 +23,7 @@
         @keyframes revealFromLeft {
             0% {
                 clip-path: inset(0 0 0 100%); /* Che từ bên trái */
-                opacity: 1;
+                opacity: 1; /* Làm hiện khi animation bắt đầu */
             }
             100% {
                 clip-path: inset(0 0 0 0%);   /* Hiện hoàn toàn */
@@ -54,22 +54,21 @@
                 gentleHeadingWobble 10s ease-in-out 3.5s infinite;
         }
 
-        /* ===== THAY ĐỔI CSS CHO SUBTITLE (CÁCH JS) ===== */
+        /* ===== THAY ĐỔI CSS CHO SUBTITLE Ở ĐÂY ===== */
         .subtitle {
             font-family: 'Puppies Play', cursive; font-size: 2.2em; margin-top: -27px;
             font-weight: 400; color: var(--text-color); line-height: 1.1;
             margin-bottom: 20px; letter-spacing: normal;
             opacity: 0; /* Ẩn ban đầu */
-            clip-path: inset(0 0 0 100%); /* Trạng thái bắt đầu của clip-path */
             will-change: clip-path, opacity; /* Tối ưu animation */
             /* Bỏ animation trực tiếp ở đây */
+            /* animation: revealFromLeft 6s ease-out 0s forwards; */
         }
-        /* Class mới để kích hoạt animation */
+        /* Áp dụng animation khi class .reveal-start được thêm vào */
         .subtitle.reveal-start {
-             animation: revealFromLeft 6s ease-out 0s forwards; /* Hoặc bỏ 0s */
+             animation: revealFromLeft 6s ease-out 0s forwards; /* Thời gian 6s, delay 0s */
         }
         /* ===== KẾT THÚC THAY ĐỔI CSS CHO SUBTITLE ===== */
-
 
         p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
@@ -143,18 +142,25 @@
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('DOMContentLoaded triggered');
 
+                // --- 1. Lấy các phần tử DOM ---
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
                 const seesawImage = document.getElementById('seesaw-image');
                 const links = document.querySelectorAll('.links a');
+                // ===== THÊM LẤY PHẦN TỬ SUBTITLE =====
+                const subtitleElement = document.querySelector('.subtitle');
+
+                // --- 2. Biến cho hoa rơi kéo thả ---
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
+                // --- 3. Thiết lập âm lượng và tải audio ---
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
+                // --- 4. Hàm thử autoplay nhạc nền ---
                 function tryAutoPlay() { /* ... giữ nguyên ... */
                     console.log('Trying autoplay');
                     try {
@@ -178,6 +184,7 @@
                 }
                 tryAutoPlay();
 
+                // --- 5. Hàm lấy tọa độ event ---
                 function getEventCoords(event) { /* ... giữ nguyên ... */
                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
@@ -186,6 +193,7 @@
                     return { x: event.clientX, y: event.clientY };
                 }
 
+                // --- 6. Hàm xử lý bounce cho LINK khi click/touch ---
                 function handleBounce(event) { /* ... giữ nguyên ... */
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
@@ -203,6 +211,7 @@
                     }, 300);
                 }
 
+                // --- 7. HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK ---
                 function handleImageBounce(event) { /* ... giữ nguyên ... */
                     const image = event.currentTarget;
                     if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) {
@@ -216,6 +225,7 @@
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                 }
 
+                // --- 8. Gắn sự kiện cho link ---
                 console.log('Attaching link events');
                 try { /* ... giữ nguyên ... */
                     links.forEach(button => {
@@ -224,6 +234,16 @@
                     });
                  } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
+                 // ===== KÍCH HOẠT ANIMATION CHO SUBTITLE =====
+                 if (subtitleElement) {
+                    console.log('Adding reveal-start class to subtitle');
+                    subtitleElement.classList.add('reveal-start');
+                 } else {
+                    console.error('Subtitle element (.subtitle) not found!');
+                 }
+                 // ===== KẾT THÚC KÍCH HOẠT ANIMATION =====
+
+                // --- 9. Xử lý ảnh (Entrance, Click, Auto Wobble) ---
                 if (seesawImage) { /* ... giữ nguyên xử lý entrance, click, wobble tự động ... */
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
@@ -270,7 +290,7 @@
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
 
-                // --- Domino link giữ nguyên ---
+                // --- 10. JS cho hiệu ứng DOMINO LINK ---
                 const linkIntervalTime = 3000;
                 const linkInitialDelay = 300;
                 const linkDominoDelay = 100;
@@ -297,7 +317,7 @@
                     console.warn('No links found for domino effect.');
                 }
 
-                // --- Hoa rơi giữ nguyên ---
+                // --- 11. LOGIC HOA RƠI VÀ KÉO THẢ + TẠO HOA ---
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
@@ -395,17 +415,6 @@
                  } catch (error) {
                     console.error('Lỗi trong vòng lặp tạo hoa:', error);
                 }
-
-                 // ===== THÊM ĐOẠN JS KÍCH HOẠT ANIMATION SUBTITLE =====
-                const subtitleElement = document.querySelector('.subtitle');
-                if (subtitleElement) {
-                    // Dùng setTimeout rất nhỏ để đảm bảo mọi thứ sẵn sàng
-                    setTimeout(() => {
-                        console.log('Adding reveal class to subtitle via JS');
-                        subtitleElement.classList.add('reveal-start');
-                    }, 10); // Chờ 10ms rồi mới thêm class kích hoạt animation
-                }
-                // ===== KẾT THÚC ĐOẠN THÊM =====
 
             }); // Kết thúc DOMContentLoaded
         } catch (error) {
