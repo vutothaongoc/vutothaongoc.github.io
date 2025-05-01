@@ -6,7 +6,7 @@
     <title>Jazmin's Portfolio - Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* CSS Animations (fall, jellyBounce, subtleSquash, gentleHeadingWobble, imageClickInPlaceWobble, imageAutoJellyWobble) giữ nguyên như trước */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
@@ -25,9 +25,9 @@
 
         h1 {
             /* ===== THAY ĐỔI FONT H1 ===== */
-            font-family: 'Playfair Display', serif; /* Đổi sang Playfair Display */
-            font-weight: 700; /* Đặt lại font-weight đậm */
-            font-size: 4.2em; /* Điều chỉnh kích thước cho phù hợp */
+            font-family: 'Caveat', cursive; /* Đổi sang Caveat */
+            font-weight: 700; /* Giữ weight đậm */
+            font-size: 5em; /* Tăng kích thước cho font viết tay */
             /* ============================ */
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -36,13 +36,14 @@
             will-change: transform;
             animation: gentleHeadingWobble 10s ease-in-out infinite;
             animation-delay: 0.3s;
+            line-height: 1.1; /* Có thể cần chỉnh line-height cho font viết tay */
         }
 
         .subtitle {
             font-size: 1.5em;
             font-weight: 400;
             color: var(--text-color);
-            margin-top: -5px;
+            margin-top: -8px; /* Chỉnh lại margin cho khớp Caveat */
             margin-bottom: 25px;
             letter-spacing: 1px;
             font-family: 'Nunito', sans-serif;
@@ -101,12 +102,12 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 3.3em; /* Chỉnh size H1 trên mobile */
+                font-size: 4em; /* Chỉnh size H1 trên mobile */
                 margin-bottom: 0px;
              }
             .subtitle {
                 font-size: 1.2em;
-                margin-top: -3px;
+                margin-top: -5px;
                 margin-bottom: 20px;
             }
             p:not(.subtitle) { font-size: 1em; }
@@ -167,7 +168,7 @@
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
                 function tryAutoPlay() { /* ... giữ nguyên ... */
-                     console.log('Trying autoplay');
+                    console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
                         if (bgPromise !== undefined) {
