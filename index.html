@@ -16,16 +16,23 @@
         @keyframes imageClickInPlaceWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.98, 1.02); } 25% { transform: scale(1.08, 0.92); } 50% { transform: scale(0.92, 1.08); } 70% { transform: scale(1.05, 0.95); } 85% { transform: scale(0.95, 1.05); } 95% { transform: scale(1.02, 0.98); } }
         @keyframes imageAutoJellyWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.995, 1.005); } 25% { transform: scale(1.02, 0.98); } 50% { transform: scale(0.98, 1.02); } 70% { transform: scale(1.01, 0.99); } 85% { transform: scale(0.99, 1.01); } 95% { transform: scale(1.005, 0.995); } }
         @keyframes slideFadeUnblurIn { 0% { transform: translateX(110%); opacity: 0; } 30% { opacity: 0.5; } 100% { transform: translateX(0); opacity: 1; } }
+        @keyframes slideDown { 0% { transform: translateY(-50vh); } 100% { transform: translateY(0); } }
+        @keyframes fadeInSlowly { 0% { opacity: 0; } 100% { opacity: 1; } }
 
-        /* Keyframes mới cho H1 (Tách ra) */
-        @keyframes slideDown {
-            0% { transform: translateY(-50vh); }
-            100% { transform: translateY(0); }
+        /* ===== KEYFRAMES MỚI CHO SUBTITLE ===== */
+        @keyframes revealRightToLeft {
+            0% {
+                /* Bắt đầu: Che hết từ bên phải, làm hiện chữ */
+                clip-path: inset(0 0 0 100%);
+                opacity: 1;
+            }
+            100% {
+                /* Kết thúc: Hiện toàn bộ chữ */
+                clip-path: inset(0 0 0 0%);
+                opacity: 1;
+            }
         }
-        @keyframes fadeInSlowly {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
+        /* ===== KẾT THÚC KEYFRAMES MỚI ===== */
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
@@ -50,11 +57,21 @@
                 gentleHeadingWobble 10s ease-in-out 3.5s infinite;
         }
 
+        /* ===== THAY ĐỔI CSS CHO SUBTITLE Ở ĐÂY ===== */
         .subtitle {
             font-family: 'Puppies Play', cursive; font-size: 2.2em; margin-top: -27px;
             font-weight: 400; color: var(--text-color); line-height: 1.1;
-            margin-bottom: 20px; letter-spacing: normal; opacity: 0.75;
+            margin-bottom: 20px; letter-spacing: normal;
+            /* opacity: 0.75; -- Thay bằng opacity 0 ban đầu */
+            opacity: 0; /* Ẩn ban đầu */
+            will-change: clip-path, opacity; /* Tối ưu animation */
+
+            /* Áp dụng animation reveal */
+            /* Tên | Thời gian | Timing | Delay | Giữ trạng thái cuối */
+            animation: revealRightToLeft 1s ease-out 2s forwards;
         }
+        /* ===== KẾT THÚC THAY ĐỔI CSS CHO SUBTITLE ===== */
+
         p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
         .links a {
@@ -69,7 +86,6 @@
         .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1; animation-delay: 0s; }
         .links a.do-subtle-squash { animation: subtleSquash 0.4s ease-in-out 1; }
 
-        /* ===== THAY ĐỔI KÍCH THƯỚC ẢNH Ở ĐÂY ===== */
         #seesaw-image {
             position: fixed; bottom: 0; right: 0;
             width: 250px; /* Kích thước cố định mới */
@@ -89,11 +105,11 @@
             body { padding: 15px 10px 20px 10px; }
             .content-wrapper { padding-top: 0; }
             h1 { font-size: 5em; }
+            /* Điều chỉnh lại margin cho subtitle nếu cần sau khi thêm animation */
             .subtitle { font-size: 1.8em; margin-top: -20px; }
             p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
-            /* Ảnh sẽ kế thừa width: 250px từ quy tắc chung */
             #seesaw-image {
                 bottom: 0;
                 right: 0;
