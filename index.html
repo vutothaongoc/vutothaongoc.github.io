@@ -26,9 +26,7 @@
         h1 {
             font-family: 'Allura', cursive;
             font-weight: 400;
-            /* ===== TĂNG FONT SIZE H1 ===== */
-            font-size: 7.5em; /* Tăng từ 6.8em */
-            /* ========================== */
+            font-size: 7.5em;
             line-height: 1;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -37,6 +35,9 @@
             will-change: transform;
             animation: gentleHeadingWobble 10s ease-in-out infinite;
             animation-delay: 0.3s;
+            /* ===== THÊM LETTER SPACING ÂM ===== */
+            letter-spacing: -3px;
+            /* ================================ */
         }
 
         .subtitle {
@@ -103,10 +104,11 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                /* ===== TĂNG FONT SIZE H1 (Mobile) ===== */
-                font-size: 6em; /* Tăng từ 5.5em */
-                /* ==================================== */
+                font-size: 6em;
                 margin-bottom: -8px;
+                 /* ===== LETTER SPACING ÂM (Mobile) ===== */
+                 letter-spacing: -2px; /* Giảm bớt cho màn hình nhỏ */
+                 /* ===================================== */
              }
             .subtitle {
                 font-size: 1em;
