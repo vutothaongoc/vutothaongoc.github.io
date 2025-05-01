@@ -23,7 +23,7 @@
             100% { transform: translateX(0); opacity: 1; }
         }
 
-        /* ===== KEYFRAMES MỚI CHO H1 ===== */
+        /* Keyframes mới cho H1 */
         @keyframes slideDownFadeIn {
             0% {
                 transform: translateY(-50vh); /* Bắt đầu từ phía trên */
@@ -43,24 +43,23 @@
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
         .content-wrapper { padding-top: 15px; }
 
-        /* ===== THAY ĐỔI CSS CHO H1 Ở ĐÂY ===== */
+        /* CSS cho H1 */
         h1 {
             font-family: 'Puppies Play', cursive; font-weight: 400; font-size: 7.5em;
             line-height: 1.1; margin-bottom: 0px; margin-top: 0;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             display: inline-block;
-            will-change: transform, opacity; /* Tối ưu hiệu năng animation */
-            opacity: 0; /* Ẩn ban đầu để chờ animation */
+            will-change: transform, opacity;
+            opacity: 0;
 
             /* Áp dụng tuần tự 2 animation: */
-            /* 1. slideDownFadeIn: Chạy 1 lần, 1.2 giây, ease-out, delay 0.3 giây, giữ trạng thái cuối */
+            /* 1. slideDownFadeIn: Chạy 1 lần, 1.2 giây, ease-out (bắt đầu nhanh, cuối chậm), delay 0.3 giây, giữ trạng thái cuối */
             /* 2. gentleHeadingWobble: Chạy vô hạn, 10 giây, ease-in-out, bắt đầu sau 1.5 giây (1.2s + 0.3s) */
             animation:
                 slideDownFadeIn 1.2s ease-out 0.3s forwards,
                 gentleHeadingWobble 10s ease-in-out 1.5s infinite;
         }
-        /* ===== KẾT THÚC THAY ĐỔI CSS CHO H1 ===== */
 
         .subtitle {
             font-family: 'Puppies Play', cursive; font-size: 2.2em; margin-top: -27px;
@@ -88,16 +87,19 @@
             -webkit-tap-highlight-color: transparent; outline: none;
             user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
         }
-        #seesaw-image.image-entering { animation: slideFadeUnblurIn 1.2s ease-out 0.5s forwards; } /* Giữ nguyên cho ảnh */
+        /* CSS cho ảnh khi xuất hiện */
+        #seesaw-image.image-entering {
+            /* Animation: chạy 1 lần, 1.2 giây, ease-out (bắt đầu nhanh, cuối chậm), delay 0.5 giây, giữ trạng thái cuối */
+            animation: slideFadeUnblurIn 1.2s ease-out 0.5s forwards;
+        }
         #seesaw-image.image-wobbling { animation: imageClickInPlaceWobble 0.7s ease-in-out 1; animation-delay: 0s; }
         #seesaw-image.auto-jelly-wobbling { animation: imageAutoJellyWobble 0.6s ease-in-out 1; }
 
         @media (max-width: 576px) {
             body { padding: 15px 10px 20px 10px; }
             .content-wrapper { padding-top: 0; }
-            /* Điều chỉnh font-size cho H1 trên mobile nếu cần */
-            h1 { font-size: 5em; /* Giảm nhẹ để tránh quá lớn khi trượt xuống */ }
-            .subtitle { font-size: 1.8em; margin-top: -20px; /* Điều chỉnh lại margin top */ }
+            h1 { font-size: 5em; }
+            .subtitle { font-size: 1.8em; margin-top: -20px; }
             p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
