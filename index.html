@@ -26,12 +26,11 @@
         h1 {
             font-family: 'Puppies Play', cursive;
             font-weight: 400;
-            /* ===== TĂNG FONT SIZE H1 ===== */
-            font-size: 5.8em; /* Tăng từ 5.3em */
-            /* ===== GIẢM KHOẢNG CÁCH DƯỚI ===== */
-            margin-bottom: 0px; /* Giảm từ 5px */
-            /* =============================== */
-            line-height: 1.2;
+            font-size: 5.8em;
+            /* ===== GIẢM LINE HEIGHT ===== */
+            line-height: 1.1; /* Giảm từ 1.2 */
+            /* =========================== */
+            margin-bottom: 0px;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             display: inline-block;
@@ -42,17 +41,16 @@
 
         .subtitle {
             font-family: 'Puppies Play', cursive;
-             /* ===== TĂNG FONT SIZE SUBTITLE ===== */
-            font-size: 1.5em; /* Tăng từ 1.3em */
-             /* ===== KÉO LÊN GẦN H1 ===== */
-            margin-top: -5px; /* Giữ nguyên hoặc giảm thêm nếu muốn */
-            /* ========================== */
+            font-size: 1.5em;
             font-weight: 400;
             color: var(--text-color);
+            /* ===== TĂNG MARGIN ÂM, GIẢM LINE HEIGHT ===== */
+            margin-top: -10px; /* Tăng giá trị âm để kéo lên */
+            line-height: 1.1; /* Giảm từ 1.2 */
+            /* ========================================= */
             margin-bottom: 20px;
             letter-spacing: normal;
             opacity: 0.75;
-            line-height: 1.2;
         }
 
         p:not(.subtitle) {
@@ -108,19 +106,16 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                /* ===== TĂNG FONT SIZE H1 (Mobile) ===== */
-                font-size: 4.8em; /* Tăng từ 4.3em */
-                 /* ==================================== */
-                margin-bottom: 0px; /* Giữ nguyên 0 */
+                font-size: 4.8em;
+                margin-bottom: 0px;
+                line-height: 1.1; /* Giảm line height mobile */
              }
             .subtitle {
-                 /* ===== TĂNG FONT SIZE SUBTITLE (Mobile) ===== */
-                font-size: 1.2em; /* Tăng từ 1.1em */
-                 /* =========================================== */
-                margin-top: -3px; /* Giữ nguyên */
+                font-size: 1.2em;
+                margin-top: -8px; /* Tăng margin âm mobile */
+                line-height: 1.1; /* Giảm line height mobile */
                 margin-bottom: 15px;
                 opacity: 0.75;
-                line-height: 1.2;
             }
             p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
