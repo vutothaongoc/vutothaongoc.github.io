@@ -6,84 +6,46 @@
     <title>Jazmin's Portfolio - Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        /* ===== CSS Animation gốc cho hoa ===== */
+        /* CSS Animations (fall, jellyBounce, subtleSquash, gentleHeadingWobble, imageClickInPlaceWobble, imageAutoJellyWobble) giữ nguyên như trước */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
-
-        /* ===== Animation Bounce mạnh khi Click/Touch LINK ===== */
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
-
-        /* ===== Animation Squash nhẹ tự động cho nút link ===== */
-        @keyframes subtleSquash {
-            0%, 100% { transform: scale(1); }
-            30% { transform: scale(1.03, 0.98); }
-            70% { transform: scale(0.98, 1.02); }
-        }
-
-        /* ===== Animation H1 (nhẹ nhàng, lặp lại) ===== */
-        @keyframes gentleHeadingWobble {
-             0%, 12%, 100% { transform: scale(1, 1); }
-             0.5% { transform: scale(0.99, 1.01); }
-             2% { transform: scale(1.08, 0.92); }
-             4% { transform: scale(0.92, 1.08); }
-             6% { transform: scale(1.05, 0.95); }
-             8% { transform: scale(0.95, 1.05); }
-             10% { transform: scale(1.02, 0.98); }
-        }
-
-        /* ===== Animation Wobble TẠI CHỖ cho Ảnh khi Click ===== */
-        @keyframes imageClickInPlaceWobble {
-             0%, 100% { transform: scale(1, 1); }
-             7% { transform: scale(0.98, 1.02); }
-             25% { transform: scale(1.08, 0.92); }
-             50% { transform: scale(0.92, 1.08); }
-             70% { transform: scale(1.05, 0.95); }
-             85% { transform: scale(0.95, 1.05); }
-             95% { transform: scale(1.02, 0.98); }
-        }
-
-        /* ===== Animation Wobble nhẹ tự động cho Ảnh ===== */
-        @keyframes imageAutoJellyWobble {
-             0%, 100% { transform: scale(1, 1); }
-             7% { transform: scale(0.995, 1.005); }
-             25% { transform: scale(1.02, 0.98); }
-             50% { transform: scale(0.98, 1.02); }
-             70% { transform: scale(1.01, 0.99); }
-             85% { transform: scale(0.99, 1.01); }
-             95% { transform: scale(1.005, 0.995); }
-        }
+        @keyframes subtleSquash { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.03, 0.98); } 70% { transform: scale(0.98, 1.02); } }
+        @keyframes gentleHeadingWobble { 0%, 12%, 100% { transform: scale(1, 1); } 0.5% { transform: scale(0.99, 1.01); } 2% { transform: scale(1.08, 0.92); } 4% { transform: scale(0.92, 1.08); } 6% { transform: scale(1.05, 0.95); } 8% { transform: scale(0.95, 1.05); } 10% { transform: scale(1.02, 0.98); } }
+        @keyframes imageClickInPlaceWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.98, 1.02); } 25% { transform: scale(1.08, 0.92); } 50% { transform: scale(0.92, 1.08); } 70% { transform: scale(1.05, 0.95); } 85% { transform: scale(0.95, 1.05); } 95% { transform: scale(1.02, 0.98); } }
+        @keyframes imageAutoJellyWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.995, 1.005); } 25% { transform: scale(1.02, 0.98); } 50% { transform: scale(0.98, 1.02); } 70% { transform: scale(1.01, 0.99); } 85% { transform: scale(0.99, 1.01); } 95% { transform: scale(1.005, 0.995); } }
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
-        body { text-align: center; font-family: 'Nunito', sans-serif; /* Font mặc định vẫn là Nunito */ padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
+        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
-            /* ===== THÊM FONT MỚI VÀO H1 ===== */
-            font-family: 'Dancing Script', cursive; /* Ưu tiên Dancing Script, nếu lỗi thì dùng cursive */
-            /* ================================ */
+            /* ===== THAY ĐỔI FONT H1 ===== */
+            font-family: 'Pacifico', cursive;
+            font-weight: 400; /* Pacifico chỉ có weight 400 */
+            font-size: 4em; /* Có thể cần giảm size chút vì Pacifico trông to hơn */
+            /* ============================ */
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            font-weight: 700; /* Giữ lại hoặc chỉnh nếu font mới không có weight 700 */
             margin-bottom: 5px;
             display: inline-block;
             will-change: transform;
             animation: gentleHeadingWobble 10s ease-in-out infinite;
             animation-delay: 0.3s;
-            font-size: 4.5em; /* Tăng nhẹ size cho font script dễ nhìn hơn */
         }
 
         .subtitle {
             font-size: 1.5em;
             font-weight: 400;
             color: var(--text-color);
-            margin-top: -10px; /* Điều chỉnh lại chút cho khớp font mới */
+            margin-top: -5px;
             margin-bottom: 25px;
             letter-spacing: 1px;
-            font-family: 'Nunito', sans-serif; /* Giữ font Nunito cho subtitle */
+            font-family: 'Nunito', sans-serif;
         }
 
         p:not(.subtitle) {
@@ -101,7 +63,7 @@
             transition: background-image 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
             will-change: transform;
-            font-family: 'Nunito', sans-serif; /* Đảm bảo nút dùng font Nunito */
+            font-family: 'Nunito', sans-serif;
         }
 
         .links a:hover {
@@ -139,12 +101,12 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 3.5em; /* Chỉnh size H1 trên mobile */
+                font-size: 3.2em; /* Chỉnh size H1 trên mobile */
                 margin-bottom: 0px;
              }
             .subtitle {
                 font-size: 1.2em;
-                margin-top: -5px;
+                margin-top: -3px;
                 margin-bottom: 20px;
             }
             p:not(.subtitle) { font-size: 1em; }
@@ -205,7 +167,7 @@
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
                 function tryAutoPlay() { /* ... giữ nguyên ... */
-                    console.log('Trying autoplay');
+                     console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
                         if (bgPromise !== undefined) {
@@ -326,7 +288,6 @@
                     setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
                     setInterval(triggerImageAutoWobble, imageAutoInterval);
                 }
-
 
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
