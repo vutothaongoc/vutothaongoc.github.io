@@ -35,10 +35,10 @@
             will-change: transform, opacity;
             opacity: 0;
 
-            /* ===== THAY ĐỔI TIMING FUNCTION MẠNH HƠN Ở ĐÂY ===== */
+            /* ===== GIẢM NHẸ TIMING FUNCTION CHO H1 ===== */
             animation:
-                /* 1. slideDownFadeIn: dùng cubic-bezier mạnh hơn */
-                slideDownFadeIn 1.2s cubic-bezier(0.3, 1.5, 0.5, 1) 0.3s forwards,
+                /* 1. slideDownFadeIn: dùng cubic-bezier(0.25, 1.2, 0.4, 1) */
+                slideDownFadeIn 1.2s cubic-bezier(0.25, 1.2, 0.4, 1) 0.3s forwards,
                 /* 2. gentleHeadingWobble: giữ nguyên */
                 gentleHeadingWobble 10s ease-in-out 1.5s infinite;
         }
@@ -69,9 +69,9 @@
             -webkit-tap-highlight-color: transparent; outline: none;
             user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
         }
-        /* ===== THAY ĐỔI TIMING FUNCTION MẠNH HƠN Ở ĐÂY ===== */
+        /* ===== GIỮ NGUYÊN TIMING FUNCTION MẠNH CHO ẢNH ===== */
         #seesaw-image.image-entering {
-            /* dùng cubic-bezier mạnh hơn */
+            /* dùng cubic-bezier(0.3, 1.5, 0.5, 1) */
             animation: slideFadeUnblurIn 1.2s cubic-bezier(0.3, 1.5, 0.5, 1) 0.5s forwards;
         }
         #seesaw-image.image-wobbling { animation: imageClickInPlaceWobble 0.7s ease-in-out 1; animation-delay: 0s; }
