@@ -42,12 +42,18 @@
             -webkit-background-clip: text; background-clip: text; color: transparent;
             display: inline-block;
             will-change: transform, opacity;
+            /* Đặt trạng thái ban đầu */
             opacity: 0;
             transform: translateY(-50vh);
+
+            /* Áp dụng animation tách riêng */
             animation:
+                /* 1. Trượt xuống */
                 slideDown 1.2s cubic-bezier(0.25, 1.2, 0.4, 1) 0.3s forwards,
+                /* 2. Mờ dần */
                 fadeInSlowly 1.2s ease-in 0.3s forwards,
-                gentleHeadingWobble 10s ease-in-out 3.5s infinite; /* Delay wobble H1 là 3.5s */
+                /* 3. Rung rinh */
+                gentleHeadingWobble 10s ease-in-out 3.5s infinite;
         }
 
         .subtitle {
@@ -76,6 +82,7 @@
             -webkit-tap-highlight-color: transparent; outline: none;
             user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
         }
+        /* Giữ nguyên timing function mạnh cho ảnh */
         #seesaw-image.image-entering {
             animation: slideFadeUnblurIn 1.2s cubic-bezier(0.3, 1.5, 0.5, 1) 0.5s forwards;
         }
@@ -139,7 +146,7 @@
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
                 // --- 4. Hàm thử autoplay nhạc nền ---
-                function tryAutoPlay() { /* Giữ nguyên hàm này */
+                function tryAutoPlay() {
                     console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
@@ -159,11 +166,11 @@
                             jellyPromise.then(() => { jellySound.pause(); jellySound.currentTime = 0; console.log('jellySound initialized'); }).catch(error => { console.log('Lỗi khởi tạo jellySound:', error); });
                         }
                     } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
-                }
-                tryAutoPlay();
+                   }
+                tryAutoPlay(); // Gọi hàm
 
                 // --- 5. Hàm lấy tọa độ event ---
-                function getEventCoords(event) { /* Giữ nguyên hàm này */
+                function getEventCoords(event) {
                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
                         return { x: touch.clientX, y: touch.clientY };
@@ -172,7 +179,7 @@
                    }
 
                 // --- 6. Hàm xử lý bounce cho LINK khi click/touch ---
-                function handleBounce(event) { /* Giữ nguyên hàm này */
+                function handleBounce(event) {
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
                     event.preventDefault();
@@ -190,22 +197,22 @@
                    }
 
                 // --- 7. HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK ---
-                function handleImageBounce(event) { /* Giữ nguyên hàm này */
+                function handleImageBounce(event) {
                     const image = event.currentTarget;
                     if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) return;
                     console.log('Image clicked, applying in-place wobble.');
                     image.classList.add('image-wobbling');
                     setTimeout(() => {
                         image.classList.remove('image-wobbling');
-                    }, 700);
+                    }, 700); // Khớp duration imageClickInPlaceWobble
                     jellySound.currentTime = 0;
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                    }
 
                 // --- 8. Gắn sự kiện cho link ---
                 console.log('Attaching link events');
-                try { /* Giữ nguyên */
-                    links.forEach(button => {
+                try {
+                    links.forEach(button => { // Sử dụng biến 'links' đã lấy ở trên
                         button.addEventListener('click', handleBounce);
                         button.addEventListener('touchstart', handleBounce, { passive: false });
                     });
@@ -219,8 +226,10 @@
 
                     // 9.2 Kích hoạt và xử lý Animation Entrance (CHỈ CHẠY 1 LẦN)
                     console.log('Adding entrance animation class to image');
-                    seesawImage.classList.add('image-entering');
-                    const handleEntranceEnd = (event) => { /* Giữ nguyên */
+                    seesawImage.classList.add('image-entering'); // Kích hoạt animation CSS
+
+                    const handleEntranceEnd = (event) => {
+                        // Chỉ xử lý khi đúng animation entrance kết thúc
                         if (event.animationName === 'slideFadeUnblurIn') {
                             console.log('Image Entrance animation finished.');
                             seesawImage.style.opacity = '1';
@@ -233,13 +242,12 @@
                     seesawImage.addEventListener('animationend', handleEntranceEnd);
 
                     // 9.3 Setup Wobble tự động cho ảnh
-                    const imageAutoInterval = 5000; // Thời gian lặp lại wobble
-                    const imageAutoWobbleDuration = 600; // Thời gian chạy 1 lần wobble
-                    /* ===== THAY ĐỔI GIÁ TRỊ Ở ĐÂY ===== */
-                    const imageInitialAutoDelay = 4000; // Delay ban đầu giảm còn 4 giây (4000ms)
-                    /* =================================== */
+                    const imageAutoInterval = 5000;
+                    const imageAutoWobbleDuration = 600;
+                    // ===== THAY ĐỔI DELAY BAN ĐẦU Ở ĐÂY =====
+                    const imageInitialAutoDelay = 4000; // Delay ban đầu (4 giây)
 
-                    function triggerImageAutoWobble() { /* Giữ nguyên hàm này */
+                    function triggerImageAutoWobble() {
                         if (seesawImage &&
                             !seesawImage.classList.contains('image-wobbling') &&
                             !seesawImage.classList.contains('auto-jelly-wobbling') &&
@@ -251,9 +259,9 @@
                             }, imageAutoWobbleDuration);
                         }
                     }
-                    // Chạy lần đầu sau delay mới
+                    // Chạy lần đầu sau delay (đã thay đổi)
                     setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
-                    // Lặp lại bằng setInterval (giữ nguyên interval)
+                    // Lặp lại bằng setInterval
                     setInterval(triggerImageAutoWobble, imageAutoInterval);
 
                 } else {
@@ -261,11 +269,11 @@
                 }
 
                 // --- 10. JS cho hiệu ứng DOMINO LINK ---
-                const linkIntervalTime = 3000; /* Giữ nguyên */
+                const linkIntervalTime = 3000;
                 const linkInitialDelay = 300;
                 const linkDominoDelay = 100;
                 const linkSquashDuration = 400;
-                function startDominoSequence() { /* Giữ nguyên hàm này */
+                function startDominoSequence() {
                     links.forEach((link, index) => {
                         if (!link.classList.contains('bounce') && !link.classList.contains('do-subtle-squash')) {
                             setTimeout(() => {
@@ -277,7 +285,7 @@
                         }
                     });
                    }
-                if (links.length > 0) { /* Giữ nguyên */
+                if (links.length > 0) {
                     console.log('Setting up domino effect for links.');
                     setTimeout(() => {
                         startDominoSequence();
@@ -288,11 +296,12 @@
                 }
 
                 // --- 11. LOGIC HOA RƠI VÀ KÉO THẢ + TẠO HOA ---
-                const isMobile = window.innerWidth <= 576; /* Giữ nguyên */
+                const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
                 const flowerFallDuration = 10;
-                function createFlower(index) { /* Giữ nguyên */
+
+                function createFlower(index) {
                     const flower = document.createElement('span');
                     flower.className = 'flower';
                     flower.innerHTML = '❅';
@@ -313,7 +322,8 @@
                         flower.style.left = `${Math.random() * 100}%`;
                     });
                    }
-                function dragStart(event) { /* Giữ nguyên */
+
+                function dragStart(event) {
                     if (event.type === 'mousedown' && event.button !== 0) return;
                     activeFlower = event.target;
                     const coords = getEventCoords(event);
@@ -332,7 +342,8 @@
                     document.addEventListener('touchend', dragEnd);
                     event.preventDefault();
                    }
-                function dragging(event) { /* Giữ nguyên */
+
+                function dragging(event) {
                     if (!activeFlower) return;
                     const coords = getEventCoords(event);
                     let newX = coords.x - offsetX;
@@ -345,7 +356,8 @@
                     activeFlower.style.top = `${newY}px`;
                     if (event.type === 'touchmove') event.preventDefault();
                    }
-                function dragEnd(event) { /* Giữ nguyên */
+
+                function dragEnd(event) {
                     if (!activeFlower) return;
                     const flower = activeFlower;
                     activeFlower = null;
@@ -379,7 +391,7 @@
 
                 // Vòng lặp tạo hoa
                 console.log('Starting flower creation loop...');
-                try { /* Giữ nguyên */
+                try {
                     for (let i = 0; i < flowerCount; i++) {
                         createFlower(i);
                     }
