@@ -48,26 +48,28 @@
             will-change: transform, opacity;
             opacity: 0;
             transform: translateY(-50vh);
-            /* Animation cho H1 bắt đầu sau 0.3s */
             animation:
                 slideDown 1.2s cubic-bezier(0.25, 1.2, 0.4, 1) 0.3s forwards,
                 fadeInSlowly 1.2s ease-in 0.3s forwards,
                 gentleHeadingWobble 10s ease-in-out 3.5s infinite;
         }
 
-        /* ===== THAY ĐỔI CSS CHO SUBTITLE Ở ĐÂY ===== */
+        /* ===== THAY ĐỔI CSS CHO SUBTITLE (CÁCH JS) ===== */
         .subtitle {
             font-family: 'Puppies Play', cursive; font-size: 2.2em; margin-top: -27px;
             font-weight: 400; color: var(--text-color); line-height: 1.1;
             margin-bottom: 20px; letter-spacing: normal;
             opacity: 0; /* Ẩn ban đầu */
+            clip-path: inset(0 0 0 100%); /* Trạng thái bắt đầu của clip-path */
             will-change: clip-path, opacity; /* Tối ưu animation */
-
-            /* Áp dụng animation reveal đã sửa */
-            /* Tên | Thời gian (6s) | Timing | Delay (0.3s) | Giữ trạng thái cuối */
-            animation: revealFromLeft 6s ease-out 0.3s forwards;
+            /* Bỏ animation trực tiếp ở đây */
+        }
+        /* Class mới để kích hoạt animation */
+        .subtitle.reveal-start {
+             animation: revealFromLeft 6s ease-out 0s forwards; /* Hoặc bỏ 0s */
         }
         /* ===== KẾT THÚC THAY ĐỔI CSS CHO SUBTITLE ===== */
+
 
         p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
@@ -92,10 +94,8 @@
             -webkit-tap-highlight-color: transparent; outline: none;
             user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
         }
-        /* ===== THAY ĐỔI DELAY CHO ẢNH Ở ĐÂY ===== */
         #seesaw-image.image-entering {
-            /* Tên | Thời gian | Timing | Delay (0.3s) | Giữ trạng thái cuối */
-            animation: slideFadeUnblurIn 1.2s cubic-bezier(0.3, 1.5, 0.5, 1) 0.3s forwards;
+            animation: slideFadeUnblurIn 1.2s cubic-bezier(0.3, 1.5, 0.5, 1) 0.5s forwards;
         }
         #seesaw-image.image-wobbling { animation: imageClickInPlaceWobble 0.7s ease-in-out 1; animation-delay: 0s; }
         #seesaw-image.auto-jelly-wobbling { animation: imageAutoJellyWobble 0.6s ease-in-out 1; }
@@ -137,7 +137,7 @@
     <img id="seesaw-image" src="jazmin.png" alt="Jazmin Illustration">
 
     <script>
-        // ----- PHẦN JAVASCRIPT (Giữ nguyên không đổi) -----
+        // ----- PHẦN JAVASCRIPT -----
         console.log('Script started');
         try {
             document.addEventListener('DOMContentLoaded', () => {
@@ -230,7 +230,6 @@
                     console.log('Adding entrance animation class to image');
                     seesawImage.classList.add('image-entering');
                     const handleEntranceEnd = (event) => {
-                        // Kiểm tra animationName chính xác của ảnh
                         if (event.animationName === 'slideFadeUnblurIn') {
                             console.log('Image Entrance animation finished.');
                             seesawImage.style.opacity = '1';
@@ -396,6 +395,17 @@
                  } catch (error) {
                     console.error('Lỗi trong vòng lặp tạo hoa:', error);
                 }
+
+                 // ===== THÊM ĐOẠN JS KÍCH HOẠT ANIMATION SUBTITLE =====
+                const subtitleElement = document.querySelector('.subtitle');
+                if (subtitleElement) {
+                    // Dùng setTimeout rất nhỏ để đảm bảo mọi thứ sẵn sàng
+                    setTimeout(() => {
+                        console.log('Adding reveal class to subtitle via JS');
+                        subtitleElement.classList.add('reveal-start');
+                    }, 10); // Chờ 10ms rồi mới thêm class kích hoạt animation
+                }
+                // ===== KẾT THÚC ĐOẠN THÊM =====
 
             }); // Kết thúc DOMContentLoaded
         } catch (error) {
