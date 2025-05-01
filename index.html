@@ -54,7 +54,7 @@
                 gentleHeadingWobble 10s ease-in-out 3.5s infinite;
         }
 
-        /* ===== THAY ĐỔI CSS CHO SUBTITLE Ở ĐÂY ===== */
+        /* ===== THỬ NGHIỆM TĂNG TỐC ĐỘ ANIMATION SUBTITLE ===== */
         .subtitle {
             font-family: 'Puppies Play', cursive; font-size: 2.2em; margin-top: -27px;
             font-weight: 400; color: var(--text-color); line-height: 1.1;
@@ -62,11 +62,10 @@
             opacity: 0; /* Ẩn ban đầu */
             will-change: clip-path, opacity; /* Tối ưu animation */
 
-            /* Áp dụng animation reveal đã sửa */
-            /* Tên | Thời gian (6s) | Timing | Delay (0s) | Giữ trạng thái cuối */
-            animation: revealFromLeft 6s ease-out 0s forwards; /* hoặc bỏ 0s */
+            /* Tên | Thời gian (1.5s) | Timing | Delay (0s) | Giữ trạng thái cuối */
+            animation: revealFromLeft 1.5s ease-out 0s forwards;
         }
-        /* ===== KẾT THÚC THAY ĐỔI CSS CHO SUBTITLE ===== */
+        /* ===== KẾT THÚC THỬ NGHIỆM ===== */
 
         p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
         .links { margin-top: 30px; }
