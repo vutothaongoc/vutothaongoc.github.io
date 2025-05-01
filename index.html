@@ -17,7 +17,7 @@
         @keyframes imageAutoJellyWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.995, 1.005); } 25% { transform: scale(1.02, 0.98); } 50% { transform: scale(0.98, 1.02); } 70% { transform: scale(1.01, 0.99); } 85% { transform: scale(0.99, 1.01); } 95% { transform: scale(1.005, 0.995); } }
         @keyframes slideFadeUnblurIn { 0% { transform: translateX(110%); opacity: 0; } 30% { opacity: 0.5; } 100% { transform: translateX(0); opacity: 1; } }
 
-        /* ===== KEYFRAMES MỚI CHO H1 (TÁCH RA) ===== */
+        /* Keyframes mới cho H1 (Tách ra) */
         @keyframes slideDown {
             0% { transform: translateY(-50vh); }
             100% { transform: translateY(0); }
@@ -26,7 +26,6 @@
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
-        /* ===== KẾT THÚC KEYFRAMES MỚI ===== */
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
@@ -47,14 +46,14 @@
             opacity: 0;
             transform: translateY(-50vh);
 
-            /* ===== ÁP DỤNG ANIMATION TÁCH RIÊNG ===== */
+            /* ===== THAY ĐỔI DELAY CỦA WOBBLE Ở ĐÂY ===== */
             animation:
                 /* 1. Trượt xuống: Dùng cubic-bezier như trước */
                 slideDown 1.2s cubic-bezier(0.25, 1.2, 0.4, 1) 0.3s forwards,
                 /* 2. Mờ dần: Dùng ease-in để tăng chậm lúc đầu */
                 fadeInSlowly 1.2s ease-in 0.3s forwards,
-                /* 3. Rung rinh: Giữ nguyên delay 4.5s */
-                gentleHeadingWobble 10s ease-in-out 4.5s infinite;
+                /* 3. Rung rinh: Giảm delay xuống 3.5s */
+                gentleHeadingWobble 10s ease-in-out 3.5s infinite;
         }
 
         .subtitle {
