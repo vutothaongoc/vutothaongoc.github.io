@@ -19,13 +19,7 @@
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
-        body {
-            text-align: center; font-family: 'Nunito', sans-serif;
-            padding: 15px 20px 40px 20px; color: var(--text-color);
-            background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
-            background-repeat: no-repeat; background-attachment: fixed;
-            min-height: 100%; position: relative; overflow-x: hidden;
-        }
+        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 15px 20px 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
@@ -42,4 +36,362 @@
         .subtitle {
             font-family: 'Puppies Play', cursive; font-size: 2.2em; margin-top: -27px;
             font-weight: 400; color: var(--text-color); line-height: 1.1;
-            margin-bottom:
+            margin-bottom: 20px; letter-spacing: normal; opacity: 0.75;
+        }
+        p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
+        .links { margin-top: 30px; }
+        .links a {
+            display: inline-block; margin: 8px 6px; padding: 12px 28px;
+            background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
+            color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
+            transition: background-image 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
+            will-change: transform; font-family: 'Nunito', sans-serif;
+        }
+        .links a:hover { background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover)); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
+        .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1; animation-delay: 0s; }
+         .links a.do-subtle-squash { animation: subtleSquash 0.4s ease-in-out 1; }
+
+        #seesaw-image {
+            position: fixed; bottom: 0; right: 0; width: 290px; height: auto;
+            z-index: 1; cursor: pointer; opacity: 0; transform: translateX(110%); filter: blur(8px);
+            transform-origin: bottom left; will-change: transform, opacity, filter;
+            -webkit-tap-highlight-color: transparent; outline: none;
+            user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+        }
+        #seesaw-image.image-entering { animation: slideFadeUnblurIn 1.2s ease-out 0.5s forwards; }
+        #seesaw-image.image-wobbling { animation: imageClickInPlaceWobble 0.7s ease-in-out 1; animation-delay: 0s; }
+        #seesaw-image.auto-jelly-wobbling { animation: imageAutoJellyWobble 0.6s ease-in-out 1; }
+
+        @media (max-width: 576px) {
+            body { padding: 15px 10px 20px 10px; }
+            .content-wrapper { padding-top: 0; }
+            h1 { font-size: 6.5em; margin-top: 0; margin-bottom: 0px; line-height: 1.1; }
+            .subtitle { font-size: 1.8em; margin-top: -25px; line-height: 1.1; margin-bottom: 15px; opacity: 0.75; }
+            p:not(.subtitle) { font-size: 1em; }
+            .links a { padding: 10px 20px; margin: 6px 4px; }
+            .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
+            #seesaw-image { width: 180px; bottom: 0; right: 0; }
+        }
+    </style>
+</head>
+<body>
+    <audio id="jellySound" src="jelly.wav" preload="auto"></audio>
+    <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
+    <div class="flower-container"></div>
+    <div class="content-wrapper">
+        <h1>Jazmin</h1>
+        <p class="subtitle">Vũ Tô Thảo Ngọc</p>
+        <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
+        <p>Hãy quay lại sớm nhé! Trong lúc chờ đợi, bạn có thể theo dõi tranh của mình qua các kênh bên dưới:</p>
+        <div class="links">
+             <a href="https://www.facebook.com/share/1BJegyhs3k/" target="_blank">Facebook</a>
+             <a href="https://www.twitter.com/vutothaongoc" target="_blank">Twitter</a>
+             <a href="https://www.pixiv.net/users/111399473" target="_blank">Pixiv</a>
+             <a href="https://www.youtube.com/@vutothaongoc" target="_blank">YouTube</a>
+             <a href="https://www.xiaohongshu.com/user/profile/676a2d230000000018014954?xsec_token=YBzTLsti1VFztLN33tTjSk21s1QPuQlM_8zKxsc9I5_0Y=&xsec_source=app_share&xhsshare=CopyLink&appuid=676a2d230000000018014954&apptime=1742699947&share_id=527ea7434d1540ac800dd8cf7f7776c4" target="_blank">Xiaohongshu</a>
+             <a href="https://weibo.com/u/7984182194" target="_blank">Weibo</a>
+             <a href="https://www.tiktok.com/@vutothaongoc?_t=ZS-8vnE6CeY9dF&_r=1" target="_blank">TikTok</a>
+        </div>
+    </div>
+    <img id="seesaw-image" src="jazmin.png" alt="Jazmin Illustration">
+
+    <script>
+        // ----- PHẦN JAVASCRIPT (Đã kiểm tra và sắp xếp lại cẩn thận) -----
+        console.log('Script started');
+        try {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('DOMContentLoaded triggered');
+
+                // --- 1. Lấy các phần tử DOM ---
+                const flowerContainer = document.querySelector('.flower-container');
+                const jellySound = document.getElementById('jellySound');
+                const backgroundMusic = document.getElementById('backgroundMusic');
+                const seesawImage = document.getElementById('seesaw-image');
+                const links = document.querySelectorAll('.links a');
+
+                // --- 2. Biến cho hoa rơi kéo thả ---
+                let activeFlower = null;
+                let offsetX = 0, offsetY = 0;
+                const offsetYAdjustment = -5;
+
+                // --- 3. Thiết lập âm lượng và tải audio ---
+                jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
+                try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
+
+                // --- 4. Hàm thử autoplay nhạc nền ---
+                function tryAutoPlay() {
+                    console.log('Trying autoplay');
+                    try {
+                        const bgPromise = backgroundMusic.play();
+                        if (bgPromise !== undefined) {
+                            bgPromise.then(() => { console.log('Background music autoplay succeeded'); }).catch(error => {
+                                console.error('Autoplay bị chặn, cần tương tác:', error);
+                                const playOnInteraction = () => {
+                                    backgroundMusic.play().then(() => { console.log('Background music started after interaction'); }).catch(err => { console.error('Lỗi phát sau tương tác:', err); });
+                                    document.removeEventListener('click', playOnInteraction); document.removeEventListener('touchstart', playOnInteraction);
+                                };
+                                document.addEventListener('click', playOnInteraction, { once: true });
+                                document.addEventListener('touchstart', playOnInteraction, { once: true, passive: false });
+                            });
+                        }
+                        const jellyPromise = jellySound.play();
+                        if (jellyPromise !== undefined) {
+                            jellyPromise.then(() => { jellySound.pause(); jellySound.currentTime = 0; console.log('jellySound initialized'); }).catch(error => { console.log('Lỗi khởi tạo jellySound:', error); });
+                        }
+                    } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
+                 }
+                tryAutoPlay(); // Gọi hàm
+
+                // --- 5. Hàm lấy tọa độ event ---
+                function getEventCoords(event) {
+                      if (event.type.includes('touch')) {
+                        const touch = event.touches[0] || event.changedTouches[0];
+                        return { x: touch.clientX, y: touch.clientY };
+                    }
+                    return { x: event.clientX, y: event.clientY };
+                 }
+
+                // --- 6. Hàm xử lý bounce cho LINK khi click/touch ---
+                function handleBounce(event) {
+                    const button = event.currentTarget;
+                    if (button.classList.contains('bounce')) return;
+                    event.preventDefault();
+                    button.classList.add('bounce');
+                    setTimeout(() => { button.classList.remove('bounce'); }, 300);
+                    jellySound.currentTime = 0;
+                    jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
+                    setTimeout(() => {
+                        if (button.target === '_blank') {
+                            window.open(button.href, '_blank');
+                        } else {
+                            window.location.href = button.href;
+                        }
+                    }, 300);
+                 }
+
+                // --- 7. HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK ---
+                function handleImageBounce(event) {
+                    const image = event.currentTarget;
+                    if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) return;
+                    console.log('Image clicked, applying in-place wobble.');
+                    image.classList.add('image-wobbling');
+                    setTimeout(() => {
+                        image.classList.remove('image-wobbling');
+                    }, 700); // Khớp duration imageClickInPlaceWobble
+                    jellySound.currentTime = 0;
+                    jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
+                 }
+
+                // --- 8. Gắn sự kiện cho link ---
+                console.log('Attaching link events');
+                try {
+                    links.forEach(button => { // Sử dụng biến 'links' đã lấy ở trên
+                        button.addEventListener('click', handleBounce);
+                        button.addEventListener('touchstart', handleBounce, { passive: false });
+                    });
+                } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
+
+                // --- 9. Xử lý ảnh (Entrance, Click, Auto Wobble) ---
+                if (seesawImage) {
+                    // 9.1 Gắn sự kiện click cho ảnh
+                    console.log('Attaching click event to seesaw image');
+                    seesawImage.addEventListener('click', handleImageBounce);
+
+                    // 9.2 Kích hoạt và xử lý Animation Entrance (CHỈ CHẠY 1 LẦN)
+                    console.log('Adding entrance animation class to image');
+                    seesawImage.classList.add('image-entering'); // Kích hoạt animation CSS
+
+                    const handleEntranceEnd = (event) => {
+                        // Chỉ xử lý khi đúng animation entrance kết thúc
+                        if (event.animationName === 'slideFadeUnblurIn') {
+                            console.log('Entrance animation finished.');
+                            // Set style cuối cùng để đảm bảo trạng thái giữ lại
+                            // Quan trọng: Đảm bảo các giá trị này khớp với trạng thái cuối cùng mong muốn
+                            // Nếu không set, nó sẽ quay về style gốc của #seesaw-image (opacity: 0, transform: translateX(110%))
+                            seesawImage.style.opacity = '1';
+                            seesawImage.style.transform = 'translateX(0)'; // Hoặc 'none' nếu không có transform khác
+                            seesawImage.style.filter = 'none';
+
+                            // Xóa class entrance đi để nó không ảnh hưởng các animation sau
+                            seesawImage.classList.remove('image-entering');
+
+                            // Xóa luôn listener này để tránh chạy lại
+                            seesawImage.removeEventListener('animationend', handleEntranceEnd);
+                            console.log('Entrance class and listener removed.');
+                        }
+                    };
+                    // Lắng nghe sự kiện animation kết thúc
+                    seesawImage.addEventListener('animationend', handleEntranceEnd);
+
+                    // 9.3 Setup Wobble tự động cho ảnh
+                    const imageAutoInterval = 5000;
+                    const imageAutoWobbleDuration = 600;
+                    const imageInitialAutoDelay = 5000; // Delay ban đầu
+
+                    function triggerImageAutoWobble() {
+                        if (seesawImage &&
+                            !seesawImage.classList.contains('image-wobbling') && // Đang wobble do click
+                            !seesawImage.classList.contains('auto-jelly-wobbling') && // Đang wobble tự động
+                            !seesawImage.classList.contains('image-entering')) // Đang chạy entrance
+                        {
+                            // console.log('Triggering auto jelly wobble on image');
+                            seesawImage.classList.add('auto-jelly-wobbling');
+                            setTimeout(() => {
+                                seesawImage.classList.remove('auto-jelly-wobbling');
+                            }, imageAutoWobbleDuration);
+                        }
+                    }
+                    // Chạy lần đầu sau delay
+                    setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
+                    // Lặp lại bằng setInterval
+                    setInterval(triggerImageAutoWobble, imageAutoInterval);
+
+                } else {
+                    console.error('Seesaw image element (#seesaw-image) not found!');
+                }
+
+                // --- 10. JS cho hiệu ứng DOMINO LINK ---
+                const linkIntervalTime = 3000;
+                const linkInitialDelay = 300;
+                const linkDominoDelay = 100;
+                const linkSquashDuration = 400;
+                function startDominoSequence() {
+                     links.forEach((link, index) => {
+                         if (!link.classList.contains('bounce') && !link.classList.contains('do-subtle-squash')) {
+                            setTimeout(() => {
+                                link.classList.add('do-subtle-squash');
+                            }, index * linkDominoDelay);
+                            setTimeout(() => {
+                                link.classList.remove('do-subtle-squash');
+                            }, index * linkDominoDelay + linkSquashDuration);
+                         }
+                     });
+                 }
+                if (links.length > 0) {
+                    console.log('Setting up domino effect for links.');
+                    setTimeout(() => {
+                        startDominoSequence();
+                        setInterval(startDominoSequence, linkIntervalTime);
+                    }, linkInitialDelay);
+                } else {
+                    console.warn('No links found for domino effect.');
+                }
+
+                // --- 11. LOGIC HOA RƠI VÀ KÉO THẢ + TẠO HOA ---
+                // (Phần này quan trọng, đảm bảo nó nằm ở đây và chạy đúng)
+                const isMobile = window.innerWidth <= 576;
+                const flowerCount = isMobile ? 10 : 20;
+                const totalCycleTime = 10;
+                const flowerFallDuration = 10;
+
+                // Các hàm createFlower, dragStart, dragging, dragEnd PHẢI được định nghĩa ở đây
+                // hoặc ở phạm vi global trước đó để có thể gọi được.
+                // **LƯU Ý QUAN TRỌNG:** Đảm bảo các hàm này được định nghĩa ĐẦY ĐỦ, không phải chỉ là comment.
+
+                function createFlower(index) {
+                    const flower = document.createElement('span');
+                    flower.className = 'flower';
+                    flower.innerHTML = '❅';
+                    if (!flowerContainer) return;
+                    flowerContainer.appendChild(flower);
+                    const randomLeft = Math.random() * 100;
+                    flower.style.left = `${randomLeft}%`;
+                    const size = 30 + Math.random() * 30;
+                    flower.style.fontSize = `${size}px`; flower.style.width = `${size}px`; flower.style.height = `${size}px`;
+                    flower.style.animationDuration = `${flowerFallDuration}s`;
+                    const delay = (index * totalCycleTime) / flowerCount; // Sử dụng flowerCount đã định nghĩa
+                    flower.style.animationDelay = `-${delay}s`;
+                    const opacity = 0.9 - ((size - 30) / 30) * 0.4;
+                    flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
+                    flower.addEventListener('mousedown', dragStart);
+                    flower.addEventListener('touchstart', dragStart, { passive: false });
+                    flower.addEventListener('animationiteration', () => {
+                        flower.style.left = `${Math.random() * 100}%`;
+                    });
+                 }
+
+                function dragStart(event) {
+                     if (event.type === 'mousedown' && event.button !== 0) return;
+                     activeFlower = event.target; // Gán vào biến activeFlower đã khai báo ở trên
+                     const coords = getEventCoords(event);
+                     activeFlower.classList.add('dragging');
+                     activeFlower.style.animation = 'none';
+                     const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
+                     offsetX = fontSize / 2; // Gán vào biến offsetX đã khai báo
+                     offsetY = fontSize / 2 + offsetYAdjustment; // Gán vào biến offsetY đã khai báo
+                     activeFlower.style.position = 'absolute';
+                     activeFlower.style.left = `${coords.x - offsetX}px`;
+                     activeFlower.style.top = `${coords.y - offsetY}px`;
+                     activeFlower.style.transform = 'none';
+                     document.addEventListener('mousemove', dragging);
+                     document.addEventListener('touchmove', dragging, { passive: false });
+                     document.addEventListener('mouseup', dragEnd);
+                     document.addEventListener('touchend', dragEnd);
+                     event.preventDefault();
+                 }
+
+                function dragging(event) {
+                    if (!activeFlower) return; // Dùng biến activeFlower đã khai báo
+                    const coords = getEventCoords(event);
+                    let newX = coords.x - offsetX; // Dùng offsetX, offsetY đã khai báo
+                    let newY = coords.y - offsetY;
+                    const containerRect = activeFlower.parentElement.getBoundingClientRect();
+                    const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
+                    newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize));
+                    newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize));
+                    activeFlower.style.left = `${newX}px`;
+                    activeFlower.style.top = `${newY}px`;
+                    if (event.type === 'touchmove') event.preventDefault();
+                 }
+
+                function dragEnd(event) {
+                    if (!activeFlower) return; // Dùng biến activeFlower đã khai báo
+                    const flower = activeFlower; // Giữ tham chiếu tạm thời
+                    activeFlower = null; // Reset biến activeFlower
+                    flower.classList.remove('dragging');
+                    const fallTransitionDuration = 1000;
+                    flower.style.transition = `top ${fallTransitionDuration / 1000}s linear, opacity ${fallTransitionDuration / 1000}s linear`;
+                    flower.style.position = 'absolute';
+                    flower.style.top = '110vh';
+                    flower.style.opacity = '0';
+                    setTimeout(() => {
+                        if (!flower.parentNode) return;
+                        flower.style.transition = 'none';
+                        flower.style.position = '';
+                        flower.style.top = '';
+                        flower.style.opacity = '';
+                        flower.style.transform = '';
+                        flower.style.animation = 'none';
+                        flower.style.left = `${Math.random() * 100}%`;
+                        void flower.offsetWidth;
+                        flower.style.animationDuration = `${flowerFallDuration}s`; // Dùng biến đã khai báo
+                        flower.style.animationDelay = '0s';
+                        flower.style.animationName = 'fall';
+                        flower.style.animationTimingFunction = 'linear';
+                        flower.style.animationIterationCount = 'infinite';
+                    }, fallTransitionDuration);
+                    document.removeEventListener('mousemove', dragging);
+                    document.removeEventListener('touchmove', dragging);
+                    document.removeEventListener('mouseup', dragEnd);
+                    document.removeEventListener('touchend', dragEnd);
+                 }
+
+                // Vòng lặp tạo hoa (Quan trọng!)
+                console.log('Starting flower creation loop...');
+                try {
+                    for (let i = 0; i < flowerCount; i++) {
+                        createFlower(i); // Gọi hàm tạo hoa
+                    }
+                    console.log('Flower creation loop finished.');
+                } catch (error) {
+                    console.error('Lỗi trong vòng lặp tạo hoa:', error);
+                }
+
+            }); // Kết thúc DOMContentLoaded
+        } catch (error) {
+            console.error('Lỗi toàn cục trong script:', error);
+        }
+    </script>
+</body>
+</html>
