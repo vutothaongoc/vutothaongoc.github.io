@@ -55,17 +55,19 @@
 
         p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); font-weight: 400; }
         .links { margin-top: 30px; }
-        /* ===== THAY ĐỔI MÀU CHỮ LINK Ở ĐÂY ===== */
+        /* ===== XÓA BOX-SHADOW CỦA LINK Ở ĐÂY ===== */
         .links a {
             display: inline-block; margin: 8px 6px;
             padding: 9px 22px;
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
-            color: rgba(255, 255, 255, 0.8); /* Đổi thành màu trắng 80% */
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none; border-radius: 25px;
             font-weight: 500;
             font-size: 1.1em;
-            transition: background-image 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
+            /* Bỏ transition cho box-shadow vì không cần nữa */
+            transition: background-image 0.3s ease, transform 0.2s ease;
+            box-shadow: none; /* Xóa shadow mặc định */
+            border: none; position: relative; z-index: 1;
             font-family: 'Nunito', sans-serif;
             opacity: 0;
             transform: translateY(50px);
@@ -74,14 +76,15 @@
         .links a.link-entering {
             animation: slideUpFadeIn 0.8s ease-out forwards;
         }
-        /* ===== KẾT THÚC THAY ĐỔI ===== */
 
         .links a:hover {
              background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
-             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+             box-shadow: none; /* Xóa shadow khi hover */
              transform: translateY(-2px);
-             color: white; /* Có thể cho màu chữ đậm lại khi hover */
+             color: white;
         }
+        /* ===== KẾT THÚC XÓA BOX-SHADOW ===== */
+
         .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1; animation-delay: 0s; }
         .links a.do-subtle-squash { animation: subtleSquash 0.4s ease-in-out 1; }
 
@@ -110,7 +113,6 @@
                 padding: 7px 16px;
                 margin: 6px 4px;
                 font-size: 1.05em;
-                /* Màu chữ nhạt cũng áp dụng cho mobile */
             }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
@@ -289,7 +291,7 @@
 
                         link.addEventListener('animationend', function handleLinkEntranceEnd(event) {
                             if (event.animationName === 'slideUpFadeIn') {
-                                link.style.opacity = '1'; // Opacity của element là 1
+                                link.style.opacity = '1';
                                 link.style.transform = 'none';
                                 link.classList.remove('link-entering');
                                 link.style.animationDelay = '';
@@ -420,8 +422,8 @@
                     }, fallTransitionDuration);
                     document.removeEventListener('mousemove', dragging);
                     document.removeEventListener('touchmove', dragging);
-                    document.addEventListener('mouseup', dragEnd);
-                    document.addEventListener('touchend', dragEnd);
+                    document.removeEventListener('mouseup', dragEnd);
+                    document.removeEventListener('touchend', dragEnd);
                 }
                 console.log('Starting flower creation loop...');
                 try { /* ... giữ nguyên ... */
