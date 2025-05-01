@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Puppies+Play&display=swap" rel="stylesheet">
     <style>
-        /* CSS Animations giữ nguyên định nghĩa keyframes */
+        /* CSS Animations */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
         @keyframes subtleSquash { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.03, 0.98); } 70% { transform: scale(0.98, 1.02); } }
@@ -16,7 +16,23 @@
         @keyframes imageClickInPlaceWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.98, 1.02); } 25% { transform: scale(1.08, 0.92); } 50% { transform: scale(0.92, 1.08); } 70% { transform: scale(1.05, 0.95); } 85% { transform: scale(0.95, 1.05); } 95% { transform: scale(1.02, 0.98); } }
         @keyframes imageAutoJellyWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.995, 1.005); } 25% { transform: scale(1.02, 0.98); } 50% { transform: scale(0.98, 1.02); } 70% { transform: scale(1.01, 0.99); } 85% { transform: scale(0.99, 1.01); } 95% { transform: scale(1.005, 0.995); } }
         @keyframes slideFadeUnblurIn { 0% { transform: translateX(110%); opacity: 0; } 30% { opacity: 0.5; } 100% { transform: translateX(0); opacity: 1; } }
-        @keyframes slideDownFadeIn { 0% { transform: translateY(-50vh); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+
+        /* ===== THAY ĐỔI KEYFRAMES Ở ĐÂY ===== */
+        @keyframes slideDownFadeIn {
+            0% {
+                transform: translateY(-50vh);
+                opacity: 0;
+            }
+            /* Thêm mốc này để làm chậm opacity */
+            75% {
+                opacity: 0.6; /* Opacity mới chỉ đạt 0.6 sau 75% thời gian */
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1; /* Tăng từ 0.6 lên 1 trong 25% cuối */
+            }
+        }
+        /* ===== KẾT THÚC THAY ĐỔI KEYFRAMES ===== */
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
@@ -34,12 +50,9 @@
             display: inline-block;
             will-change: transform, opacity;
             opacity: 0;
-
-            /* ===== THAY ĐỔI DELAY CHO WOBBLE Ở ĐÂY ===== */
+            /* Animation definition giữ nguyên, chỉ thay đổi keyframes slideDownFadeIn */
             animation:
-                /* 1. slideDownFadeIn: giữ nguyên */
                 slideDownFadeIn 1.2s cubic-bezier(0.25, 1.2, 0.4, 1) 0.3s forwards,
-                /* 2. gentleHeadingWobble: tăng delay lên 4.5s (1.5s + 3s) */
                 gentleHeadingWobble 10s ease-in-out 4.5s infinite;
         }
 
