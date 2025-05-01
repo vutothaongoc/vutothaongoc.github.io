@@ -12,7 +12,6 @@
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
 
         /* ===== Animation Bounce mạnh khi Click/Touch LINK ===== */
-        /* (Cũng dùng cho nút nhạc) */
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
 
         /* ===== Animation Squash nhẹ tự động cho nút link ===== */
@@ -44,21 +43,20 @@
              95% { transform: scale(1.02, 0.98); }
         }
 
-        /* ===== Animation Wobble nhẹ tự động cho Ảnh (Phiên bản trước khi làm nhẹ hơn nữa) ===== */
+        /* ===== Animation Wobble nhẹ tự động cho Ảnh ===== */
         @keyframes imageAutoJellyWobble {
              0%, 100% { transform: scale(1, 1); }
-             7% { transform: scale(0.99, 1.01); }
-             25% { transform: scale(1.04, 0.96); }
-             50% { transform: scale(0.96, 1.04); }
-             70% { transform: scale(1.025, 0.975); }
-             85% { transform: scale(0.975, 1.025); }
-             95% { transform: scale(1.01, 0.99); }
+             7% { transform: scale(0.995, 1.005); }
+             25% { transform: scale(1.02, 0.98); }
+             50% { transform: scale(0.98, 1.02); }
+             70% { transform: scale(1.01, 0.99); }
+             85% { transform: scale(0.99, 1.01); }
+             95% { transform: scale(1.005, 0.995); }
         }
 
-        /* ===== Các style gốc ===== */
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
-        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; padding-bottom: 80px; /* Thêm padding để nút không che nội dung */ }
+        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
@@ -66,13 +64,32 @@
         h1 {
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            font-weight: 700; margin-bottom: 25px; display: inline-block;
+            font-weight: 700;
+            margin-bottom: 5px; /* Giảm khoảng cách dưới H1 */
+            display: inline-block;
             will-change: transform;
             animation: gentleHeadingWobble 10s ease-in-out infinite;
             animation-delay: 0.3s;
+            /* Có thể cần chỉnh font-size nếu muốn chữ Jazmin to/nhỏ hơn */
+             font-size: 3.5em; /* Giữ nguyên hoặc chỉnh */
         }
 
-        p { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
+        /* ===== Style cho Subtitle ===== */
+        .subtitle {
+            font-size: 1.5em; /* Kích thước chữ nhỏ */
+            font-weight: 400; /* Độ đậm vừa phải */
+            color: var(--text-color);
+            margin-top: -5px; /* Kéo lên gần H1 hơn chút */
+            margin-bottom: 25px; /* Khoảng cách với đoạn text bên dưới */
+            letter-spacing: 1px; /* Giãn cách chữ */
+        }
+
+        p:not(.subtitle) { /* Style cho các đoạn văn bản thường (không phải subtitle) */
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: var(--text-color);
+         }
         .links { margin-top: 30px; }
 
         .links a {
@@ -89,19 +106,22 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
+        /* Style khi nút LINK được click/touch */
         .links a.bounce {
             animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
             animation-delay: 0s;
         }
 
-        .links a.do-subtle-squash {
-             animation: subtleSquash 0.4s ease-in-out 1;
-        }
+        /* Class để kích hoạt animation subtleSquash cho LINK (dùng bởi JS domino) */
+         .links a.do-subtle-squash {
+              animation: subtleSquash 0.4s ease-in-out 1;
+         }
 
+        /* ===== Style cho ảnh ===== */
         #seesaw-image {
             position: fixed;
-            bottom: 10px; /* Nâng lên chút để không sát nút nhạc */
-            right: 10px;
+            bottom: 0;
+            right: 0;
             width: 290px;
             height: auto;
             z-index: 1;
@@ -116,80 +136,36 @@
             -webkit-touch-callout: none;
         }
 
+        /* ===== Style wobble TẠI CHỖ cho ảnh KHI CLICK ===== */
         #seesaw-image.image-wobbling {
              animation: imageClickInPlaceWobble 0.7s ease-in-out 1;
              animation-delay: 0s;
         }
 
+         /* ===== Class cho hiệu ứng wobble nhẹ tự động của ảnh ===== */
         #seesaw-image.auto-jelly-wobbling {
              animation: imageAutoJellyWobble 0.6s ease-in-out 1;
         }
 
-        /* ===== CSS CHO NÚT NHẠC (ĐƯỢC THÊM VÀO) ===== */
-        #music-toggle-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 3;
-            background-image: linear-gradient(to bottom, #FBC7D4, #A083D9);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 26px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            line-height: 1;
-            /* box-shadow: 0 2px 5px rgba(0,0,0,0.2); */ /* Bỏ shadow */
-            transition: background-image 0.3s ease, transform 0.1s ease; /* Bỏ box-shadow khỏi transition */
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-            will-change: transform;
-        }
-
-        #music-toggle-button:hover {
-            background-image: linear-gradient(to bottom, #FFD1E0, #AB92E0);
-            /* box-shadow: 0 4px 8px rgba(0,0,0,0.25); */ /* Bỏ shadow hover */
-        }
-
-        #music-toggle-button:active {
-            transform: scale(0.95);
-        }
-
-        #music-toggle-button.bounce { /* Áp dụng bounce cho nút nhạc */
-            animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
-            animation-delay: 0s;
-        }
-        /* ===== KẾT THÚC CSS NÚT NHẠC ===== */
-
 
         @media (max-width: 576px) {
-            body { padding: 20px 10px; padding-bottom: 70px; }
-            h1 { font-size: 2.5em; }
-            p { font-size: 1em; }
+            body { padding: 20px 10px; }
+            h1 {
+                font-size: 2.8em; /* Điều chỉnh H1 trên mobile */
+                margin-bottom: 2px;
+             }
+            .subtitle {
+                font-size: 1.1em; /* Điều chỉnh subtitle trên mobile */
+                margin-bottom: 20px;
+            }
+            p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
-            /* Style gốc cho hoa trên mobile */
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
-            /* Style gốc cho ảnh trên mobile */
             #seesaw-image {
                  width: 180px;
-                 bottom: 5px; /* Điều chỉnh để không che nút nhạc */
-                 right: 5px;
-            }
-            /* Thêm style cho nút nhạc trên mobile */
-            #music-toggle-button {
-                width: 40px;
-                height: 40px;
-                font-size: 22px;
-                bottom: 15px;
-                left: 15px;
+                 bottom: 0;
+                 right: 0;
             }
         }
     </style>
@@ -197,8 +173,12 @@
 <body>
     <audio id="jellySound" src="jelly.wav" preload="auto"></audio>
     <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
-    <button id="music-toggle-button" aria-label="Toggle Music">○</button>
-    <div class="flower-container"></div> <div class="content-wrapper"> <h1>Coming Soon!</h1>
+
+    <div class="flower-container"></div>
+
+    <div class="content-wrapper">
+        <h1>Jazmin</h1>
+        <p class="subtitle">Coming Soon!</p>
         <p>Cảm ơn bạn vì đã ghé thăm! Jazmin hiện đang trong quá trình tìm tòi và phát triển web.</p>
         <p>Hãy quay lại sớm nhé! Trong lúc chờ đợi, bạn có thể theo dõi tranh của mình qua các kênh bên dưới:</p>
         <div class="links">
@@ -212,147 +192,92 @@
         </div>
     </div>
 
-    <img id="seesaw-image" src="jazmin.png" alt="Jazmin Illustration"> <script>
-        // ----- PHẦN JAVASCRIPT -----
+    <img id="seesaw-image" src="jazmin.png" alt="Jazmin Illustration">
+
+    <script>
+        // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
         console.log('Script started');
 
         try {
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('DOMContentLoaded triggered');
 
-                // Lấy các phần tử DOM gốc
                 const flowerContainer = document.querySelector('.flower-container');
+                const jellySound = document.getElementById('jellySound');
+                const backgroundMusic = document.getElementById('backgroundMusic');
                 const seesawImage = document.getElementById('seesaw-image');
                 const links = document.querySelectorAll('.links a');
 
-                // THÊM PHẦN LẤY DOM CHO NÚT NHẠC
-                const jellySound = document.getElementById('jellySound');
-                const backgroundMusic = document.getElementById('backgroundMusic');
-                const musicToggleButton = document.getElementById('music-toggle-button');
-                // KẾT THÚC PHẦN LẤY DOM NÚT NHẠC
-
-                // ----- LOGIC HOA RƠI VÀ KÉO THẢ (NGUYÊN BẢN) -----
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
-                // ----- KẾT THÚC BIẾN HOA -----
 
-                // THÊM PHẦN KIỂM TRA VÀ SETUP NÚT NHẠC
-                if (!backgroundMusic) console.error('Background music element not found!');
-                if (!jellySound) console.error('Jelly sound element not found!');
-                if (!musicToggleButton) console.error('Music toggle button element not found!');
-                if (!flowerContainer) console.error('Flower container not found!'); // Giữ lại kiểm tra này
+                jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
+                try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                if (musicToggleButton) {
-                    musicToggleButton.textContent = '○'; // Đặt trạng thái ban đầu
-                }
-
-                if (jellySound) jellySound.volume = 0.8;
-                if (backgroundMusic) backgroundMusic.volume = 0.5;
-                try {
-                    if (jellySound) jellySound.load();
-                    if (backgroundMusic) backgroundMusic.load();
-                } catch (error) { console.error('Lỗi tải audio:', error); }
-                // KẾT THÚC SETUP NÚT NHẠC
-
-                // THÊM HÀM AUTOPLAY NHẠC
-                function tryAutoPlay() {
-                    console.log('Trying music autoplay');
-                    if (!backgroundMusic || !musicToggleButton) {
-                        console.error("Audio or toggle button element missing for autoplay.");
-                        if (musicToggleButton) musicToggleButton.textContent = '○';
-                        return;
-                    }
+                function tryAutoPlay() { /* ... giữ nguyên ... */
+                     console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
                         if (bgPromise !== undefined) {
-                            bgPromise.then(() => {
-                                console.log('Background music autoplay succeeded');
-                                musicToggleButton.textContent = '♫'; // ON
-                            }).catch(error => {
+                            bgPromise.then(() => { console.log('Background music autoplay succeeded'); }).catch(error => {
                                 console.error('Autoplay bị chặn, cần tương tác:', error);
-                                musicToggleButton.textContent = '○'; // OFF
                                 const playOnInteraction = () => {
-                                    if (!backgroundMusic) return;
-                                    backgroundMusic.play().then(() => {
-                                        console.log('Background music started after interaction');
-                                        if (musicToggleButton) musicToggleButton.textContent = '♫'; // ON
-                                    }).catch(err => {
-                                        console.error('Lỗi phát sau tương tác:', err);
-                                        if (musicToggleButton) musicToggleButton.textContent = '○'; // OFF/ERROR
-                                    });
-                                    document.removeEventListener('click', playOnInteraction);
-                                    document.removeEventListener('touchstart', playOnInteraction);
+                                    backgroundMusic.play().then(() => { console.log('Background music started after interaction'); }).catch(err => { console.error('Lỗi phát sau tương tác:', err); });
+                                    document.removeEventListener('click', playOnInteraction); document.removeEventListener('touchstart', playOnInteraction);
                                 };
                                 document.addEventListener('click', playOnInteraction, { once: true });
-                                document.addEventListener('touchstart', playOnInteraction, { once: true, passive: true });
+                                document.addEventListener('touchstart', playOnInteraction, { once: true, passive: false });
                             });
-                        } else {
-                             if (!backgroundMusic.paused) {
-                                 musicToggleButton.textContent = '♫'; // ON
-                             } else {
-                                musicToggleButton.textContent = '○'; // OFF
-                             }
                         }
-                        if (jellySound) {
-                           const jellyPromise = jellySound.play();
-                            if (jellyPromise !== undefined) {
-                                jellyPromise.then(() => { jellySound.pause(); jellySound.currentTime = 0; console.log('jellySound initialized'); }).catch(error => { console.log('Lỗi khởi tạo jellySound:', error); });
-                            }
+                        const jellyPromise = jellySound.play();
+                        if (jellyPromise !== undefined) {
+                            jellyPromise.then(() => { jellySound.pause(); jellySound.currentTime = 0; console.log('jellySound initialized'); }).catch(error => { console.log('Lỗi khởi tạo jellySound:', error); });
                         }
-                    } catch (error) {
-                        console.error('Lỗi khởi tạo âm thanh:', error);
-                        if (musicToggleButton) musicToggleButton.textContent = '○'; // OFF/ERROR
+                    } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
+                 }
+                tryAutoPlay();
+
+                function getEventCoords(event) { /* ... giữ nguyên ... */
+                      if (event.type.includes('touch')) {
+                        const touch = event.touches[0] || event.changedTouches[0];
+                        return { x: touch.clientX, y: touch.clientY };
                     }
-                }
-                tryAutoPlay(); // Gọi hàm thử autoplay
-                // KẾT THÚC HÀM AUTOPLAY
+                    return { x: event.clientX, y: event.clientY };
+                 }
 
-                // Lấy tọa độ event (Nguyên bản - Dùng cho hoa)
-                function getEventCoords(event) {
-                     if (event.type.includes('touch')) {
-                         const touch = event.touches[0] || event.changedTouches[0];
-                         return { x: touch.clientX, y: touch.clientY };
-                     }
-                     return { x: event.clientX, y: event.clientY };
-                }
+                // Hàm xử lý bounce cho LINK khi click/touch
+                function handleBounce(event) { /* ... giữ nguyên ... */
+                    const button = event.currentTarget;
+                    if (button.classList.contains('bounce')) return;
+                    event.preventDefault();
+                    button.classList.add('bounce');
+                    setTimeout(() => { button.classList.remove('bounce'); }, 300);
+                    jellySound.currentTime = 0;
+                    jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
+                    setTimeout(() => {
+                        if (button.target === '_blank') {
+                            window.open(button.href, '_blank');
+                        } else {
+                            window.location.href = button.href;
+                        }
+                    }, 300);
+                 }
 
-                // Hàm xử lý bounce cho LINK (Nguyên bản)
-                function handleBounce(event) {
-                     const button = event.currentTarget;
-                     if (button.classList.contains('bounce')) return;
-                     event.preventDefault();
-                     button.classList.add('bounce');
-                     setTimeout(() => { button.classList.remove('bounce'); }, 300);
-                     if (jellySound) { // Sử dụng âm thanh jelly chung
-                         jellySound.currentTime = 0;
-                         jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
-                     }
-                     setTimeout(() => {
-                         if (button.target === '_blank') {
-                             window.open(button.href, '_blank');
-                         } else {
-                             window.location.href = button.href;
-                         }
-                     }, 300); // Delay gốc
-                }
+                // HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK
+                function handleImageBounce(event) { /* ... giữ nguyên ... */
+                    const image = event.currentTarget;
+                    if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) return;
+                    console.log('Image clicked, applying in-place wobble.');
+                    image.classList.add('image-wobbling');
+                    setTimeout(() => {
+                        image.classList.remove('image-wobbling');
+                    }, 700);
+                    jellySound.currentTime = 0;
+                    jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
+                 }
 
-                // HÀM Xử lý wobble cho ẢNH (Nguyên bản)
-                function handleImageBounce(event) {
-                     const image = event.currentTarget;
-                     if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) return;
-                     console.log('Image clicked, applying in-place wobble.');
-                     image.classList.add('image-wobbling');
-                     setTimeout(() => {
-                         image.classList.remove('image-wobbling');
-                     }, 700);
-                     if (jellySound) { // Sử dụng âm thanh jelly chung
-                        jellySound.currentTime = 0;
-                        jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
-                     }
-                }
-
-                // Gắn sự kiện cho link (Nguyên bản)
+                // Gắn sự kiện cho link
                 console.log('Attaching link events');
                 try {
                     document.querySelectorAll('.links a').forEach(button => {
@@ -361,7 +286,7 @@
                     });
                 } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                // GẮN SỰ KIỆN CLICK CHO ẢNH (Nguyên bản)
+                // GẮN SỰ KIỆN CLICK CHO ẢNH
                 if (seesawImage) {
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
@@ -369,62 +294,21 @@
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
 
-                // THÊM HÀM VÀ SỰ KIỆN CHO NÚT NHẠC
-                function toggleMusic() {
-                    if (!backgroundMusic || !musicToggleButton) {
-                        console.error("Missing elements for toggleMusic");
-                        return;
-                    }
-                    if (musicToggleButton.classList.contains('bounce')) return;
-                    musicToggleButton.classList.add('bounce');
-                    setTimeout(() => {
-                        if (musicToggleButton) {
-                            musicToggleButton.classList.remove('bounce');
-                        }
-                    }, 300);
-
-                    if (backgroundMusic.paused) {
-                        backgroundMusic.play()
-                            .then(() => {
-                                musicToggleButton.textContent = '♫'; // ON
-                                console.log("Music Resumed");
-                            })
-                            .catch(error => {
-                                console.error("Error playing music:", error);
-                                musicToggleButton.textContent = '○'; // OFF/ERROR
-                            });
-                    } else {
-                        backgroundMusic.pause();
-                        musicToggleButton.textContent = '○'; // OFF
-                        console.log("Music Paused");
-                    }
-                    if (jellySound) { // Sử dụng âm thanh jelly chung
-                       jellySound.currentTime = 0;
-                       jellySound.play().catch(e => console.warn("Couldn't play jelly sound on toggle:", e));
-                    }
-                }
-
-                if (musicToggleButton) { // Gắn sự kiện cho nút nhạc
-                    musicToggleButton.addEventListener('click', toggleMusic);
-                    console.log("Music toggle button event listener added.");
-                }
-                // KẾT THÚC PHẦN NÚT NHẠC
-
-                // JS cho hiệu ứng DOMINO LINK (Nguyên bản)
+                // JS cho hiệu ứng DOMINO LINK
                 const linkIntervalTime = 3000;
                 const linkInitialDelay = 300;
                 const linkDominoDelay = 100;
                 const linkSquashDuration = 400;
 
-                function startDominoSequence() {
+                function startDominoSequence() { /* ... giữ nguyên ... */
                      links.forEach((link, index) => {
                          if (!link.classList.contains('bounce') && !link.classList.contains('do-subtle-squash')) {
-                             setTimeout(() => {
-                                 link.classList.add('do-subtle-squash');
-                             }, index * linkDominoDelay);
-                             setTimeout(() => {
-                                 link.classList.remove('do-subtle-squash');
-                             }, index * linkDominoDelay + linkSquashDuration);
+                            setTimeout(() => {
+                                link.classList.add('do-subtle-squash');
+                            }, index * linkDominoDelay);
+                            setTimeout(() => {
+                                link.classList.remove('do-subtle-squash');
+                            }, index * linkDominoDelay + linkSquashDuration);
                          }
                      });
                  }
@@ -438,22 +322,22 @@
                     console.warn('No links found for domino effect.');
                 }
 
-                // JS CHO WOBBLE TỰ ĐỘNG CỦA ẢNH (Nguyên bản)
+                // PHẦN JAVASCRIPT CHO WOBBLE NHẸ TỰ ĐỘNG CỦA ẢNH
                 const imageAutoInterval = 5000;
                 const imageAutoWobbleDuration = 600;
                 const imageInitialAutoDelay = 5000;
 
-                function triggerImageAutoWobble() {
-                     if (seesawImage &&
-                         !seesawImage.classList.contains('image-wobbling') &&
-                         !seesawImage.classList.contains('auto-jelly-wobbling'))
-                     {
-                         seesawImage.classList.add('auto-jelly-wobbling');
-                         setTimeout(() => {
-                             seesawImage.classList.remove('auto-jelly-wobbling');
-                         }, imageAutoWobbleDuration);
-                     }
-                 }
+                function triggerImageAutoWobble() { /* ... giữ nguyên ... */
+                    if (seesawImage &&
+                        !seesawImage.classList.contains('image-wobbling') &&
+                        !seesawImage.classList.contains('auto-jelly-wobbling'))
+                    {
+                        seesawImage.classList.add('auto-jelly-wobbling');
+                        setTimeout(() => {
+                            seesawImage.classList.remove('auto-jelly-wobbling');
+                        }, imageAutoWobbleDuration);
+                    }
+                }
 
                 if (seesawImage) {
                     setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
@@ -461,90 +345,79 @@
                 }
 
 
-                // ----- LOGIC HOA RƠI VÀ KÉO THẢ (NGUYÊN BẢN) -----
+                // LOGIC HOA RƠI VÀ KÉO THẢ (Giữ nguyên)
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
                 const flowerFallDuration = 10;
 
-                // Hàm tạo hoa (Nguyên bản)
-                function createFlower(index) {
-                     const flower = document.createElement('span');
-                     flower.className = 'flower';
-                     flower.innerHTML = '❅';
-                     if (flowerContainer) flowerContainer.appendChild(flower);
-                     const randomLeft = Math.random() * 100;
-                     flower.style.left = `${randomLeft}%`;
-                     const size = 30 + Math.random() * 30;
-                     flower.style.fontSize = `${size}px`; flower.style.width = `${size}px`; flower.style.height = `${size}px`;
-                     flower.style.animationDuration = `${flowerFallDuration}s`;
-                     const delay = (index * totalCycleTime) / flowerCount;
-                     flower.style.animationDelay = `-${delay}s`;
-                     const opacity = 0.9 - ((size - 30) / 30) * 0.4;
-                     flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
-                     flower.addEventListener('mousedown', dragStart);
-                     flower.addEventListener('touchstart', dragStart, { passive: false });
-                     flower.addEventListener('animationiteration', () => {
-                          if (!flower.classList.contains('dragging')) {
-                              flower.style.left = `${Math.random() * 100}%`;
-                          }
-                     });
+                function createFlower(index) { /* ... giữ nguyên ... */
+                    const flower = document.createElement('span');
+                    flower.className = 'flower';
+                    flower.innerHTML = '❅';
+                    flowerContainer.appendChild(flower);
+                    const randomLeft = Math.random() * 100;
+                    flower.style.left = `${randomLeft}%`;
+                    const size = 30 + Math.random() * 30;
+                    flower.style.fontSize = `${size}px`; flower.style.width = `${size}px`; flower.style.height = `${size}px`;
+                    flower.style.animationDuration = `${flowerFallDuration}s`;
+                    const delay = (index * totalCycleTime) / flowerCount;
+                    flower.style.animationDelay = `-${delay}s`;
+                    const opacity = 0.9 - ((size - 30) / 30) * 0.4;
+                    flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
+                    flower.addEventListener('mousedown', dragStart);
+                    flower.addEventListener('touchstart', dragStart, { passive: false });
+                    flower.addEventListener('animationiteration', () => {
+                        flower.style.left = `${Math.random() * 100}%`;
+                    });
                  }
-                // Hàm bắt đầu kéo (Nguyên bản)
-                function dragStart(event) {
-                      if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault();
+                function dragStart(event) { /* ... giữ nguyên ... */
+                     if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault();
                  }
-                 // Hàm đang kéo (Nguyên bản)
-                 function dragging(event) {
-                      if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault();
+                function dragging(event) { /* ... giữ nguyên ... */
+                    if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault();
                  }
-                 // Hàm kết thúc kéo (Nguyên bản)
-                 function dragEnd(event) {
-                      if (!activeFlower) return;
-                      const flower = activeFlower;
-                      activeFlower = null;
-                      flower.classList.remove('dragging');
-                      const fallTransitionDuration = 1000;
-                      flower.style.transition = `top ${fallTransitionDuration / 1000}s linear, opacity ${fallTransitionDuration / 1000}s linear`;
-                      flower.style.position = 'absolute';
-                      flower.style.top = '110vh';
-                      flower.style.opacity = '0';
-                      setTimeout(() => {
-                          if (!flower.parentNode) return;
-                          flower.style.transition = 'none';
-                          flower.style.position = '';
-                          flower.style.top = '';
-                          flower.style.opacity = '';
-                          flower.style.transform = '';
-                          flower.style.animation = 'none';
-                          flower.style.left = `${Math.random() * 100}%`;
-                          void flower.offsetWidth;
-                          flower.style.animationDuration = `${flowerFallDuration}s`;
-                          flower.style.animationDelay = '0s';
-                          flower.style.animationName = 'fall';
-                          flower.style.animationTimingFunction = 'linear';
-                          flower.style.animationIterationCount = 'infinite';
-                      }, fallTransitionDuration);
-                      document.removeEventListener('mousemove', dragging);
-                      document.removeEventListener('touchmove', dragging);
-                      document.removeEventListener('mouseup', dragEnd);
-                      document.removeEventListener('touchend', dragEnd);
+                function dragEnd(event) { /* ... giữ nguyên ... */
+                    if (!activeFlower) return;
+                    const flower = activeFlower;
+                    activeFlower = null;
+                    flower.classList.remove('dragging');
+                    const fallTransitionDuration = 1000;
+                    flower.style.transition = `top ${fallTransitionDuration / 1000}s linear, opacity ${fallTransitionDuration / 1000}s linear`;
+                    flower.style.position = 'absolute';
+                    flower.style.top = '110vh';
+                    flower.style.opacity = '0';
+                    setTimeout(() => {
+                        if (!flower.parentNode) return;
+                        flower.style.transition = 'none';
+                        flower.style.position = '';
+                        flower.style.top = '';
+                        flower.style.opacity = '';
+                        flower.style.transform = '';
+                        flower.style.animation = 'none';
+                        flower.style.left = `${Math.random() * 100}%`;
+                        void flower.offsetWidth;
+                        flower.style.animationDuration = `${flowerFallDuration}s`;
+                        flower.style.animationDelay = '0s';
+                        flower.style.animationName = 'fall';
+                        flower.style.animationTimingFunction = 'linear';
+                        flower.style.animationIterationCount = 'infinite';
+                    }, fallTransitionDuration);
+                    document.removeEventListener('mousemove', dragging);
+                    document.removeEventListener('touchmove', dragging);
+                    document.removeEventListener('mouseup', dragEnd);
+                    document.removeEventListener('touchend', dragEnd);
                  }
 
-                // Vòng lặp tạo hoa (Nguyên bản)
+                // Vòng lặp tạo hoa
                 console.log('Starting flower creation');
-                if (flowerContainer) {
-                    try {
-                        for (let i = 0; i < flowerCount; i++) {
-                            createFlower(i);
-                        }
-                    } catch (error) {
-                        console.error('Lỗi tạo hoa:', error); // Sửa lỗi chính tả
+                try {
+                    for (let i = 0; i < flowerCount; i++) {
+                        createFlower(i);
                     }
-                } else {
-                    console.error("Flower container not found!");
+                } catch (error) {
+                    console.error('Lỗi tạo bông tuyết:', error);
                 }
-                // ----- KẾT THÚC LOGIC HOA -----
 
             }); // Kết thúc DOMContentLoaded
         } catch (error) {
