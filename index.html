@@ -21,9 +21,9 @@
         body {
             text-align: center;
             font-family: 'Nunito', sans-serif;
-            /* ===== GIẢM PADDING TOP ===== */
-            padding: 20px 20px 40px 20px; /* Top=20px, L/R=20px, Bottom=40px */
-            /* ========================== */
+            /* ===== GIẢM PADDING TOP NỮA ===== */
+            padding: 10px 20px 40px 20px; /* Top=10px, L/R=20px, Bottom=40px */
+            /* ============================== */
             color: var(--text-color);
             background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
             background-repeat: no-repeat;
@@ -113,7 +113,11 @@
 
 
         @media (max-width: 576px) {
-            body { padding: 20px 10px 20px 10px; } /* Có thể giữ 20px top/bottom cho mobile */
+            body {
+                 /* ===== GIẢM PADDING TOP (Mobile) ===== */
+                 padding: 10px 10px 20px 10px; /* Top=10px */
+                 /* ==================================== */
+            }
             h1 {
                 font-size: 6.5em;
                 margin-bottom: 0px;
@@ -121,7 +125,7 @@
              }
             .subtitle {
                 font-size: 1.8em;
-                margin-top: -20px; /* Giữ nguyên margin âm mobile */
+                margin-top: -20px; /* Giữ nguyên độ sát */
                 line-height: 1.1;
                 margin-bottom: 15px;
                 opacity: 0.75;
