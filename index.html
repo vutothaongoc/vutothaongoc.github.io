@@ -6,7 +6,7 @@
     <title>Jazmin's Portfolio - Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Puppies+Play&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&family=Puppies+Play&display=swap" rel="stylesheet">
     <style>
         /* CSS Animations */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
@@ -53,14 +53,14 @@
             animation: revealFromRight 6s ease-out 0s forwards;
         }
 
-        p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); }
+        p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); font-weight: 400; /* Đảm bảo p dùng weight 400 */ }
         .links { margin-top: 30px; }
         /* ===== THAY ĐỔI FONT-WEIGHT CỦA LINK Ở ĐÂY ===== */
         .links a {
             display: inline-block; margin: 8px 6px; padding: 12px 28px;
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
             color: white; text-decoration: none; border-radius: 25px;
-            font-weight: 400; /* Đổi từ 700 thành 400 */
+            font-weight: 500; /* Đổi thành 500 */
             transition: background-image 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
             font-family: 'Nunito', sans-serif;
@@ -102,7 +102,7 @@
             h1 { font-size: 5em; }
             .subtitle { font-size: 1.8em; margin-top: -20px; }
             p:not(.subtitle) { font-size: 1em; }
-            .links a { padding: 10px 20px; margin: 6px 4px; } /* Giữ padding/margin cho mobile */
+            .links a { padding: 10px 20px; margin: 6px 4px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
                 bottom: 0;
@@ -182,7 +182,7 @@
                     return { x: event.clientX, y: event.clientY };
                 }
 
-                function handleBounce(event) { /* ... giữ nguyên, đã có check .link-entering ... */
+                function handleBounce(event) { /* ... giữ nguyên ... */
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce') || button.classList.contains('link-entering')) return;
                     event.preventDefault();
