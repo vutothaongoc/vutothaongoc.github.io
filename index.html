@@ -69,8 +69,11 @@
         .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1; animation-delay: 0s; }
         .links a.do-subtle-squash { animation: subtleSquash 0.4s ease-in-out 1; }
 
+        /* ===== THAY ĐỔI KÍCH THƯỚC ẢNH Ở ĐÂY ===== */
         #seesaw-image {
-            position: fixed; bottom: 0; right: 0; width: 290px; height: auto;
+            position: fixed; bottom: 0; right: 0;
+            width: 220px; /* Kích thước cố định mới */
+            height: auto;
             z-index: 1; cursor: pointer; opacity: 0; transform: translateX(110%);
             transform-origin: bottom left; will-change: transform, opacity;
             -webkit-tap-highlight-color: transparent; outline: none;
@@ -90,7 +93,12 @@
             p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
-            #seesaw-image { width: 180px; bottom: 0; right: 0; }
+            /* ===== XÓA BỎ KÍCH THƯỚC RIÊNG CHO ẢNH Ở ĐÂY ===== */
+            #seesaw-image {
+                /* width: 180px; -- Dòng này đã bị xóa bỏ */
+                bottom: 0;
+                right: 0;
+            }
         }
     </style>
 </head>
@@ -116,30 +124,25 @@
     <img id="seesaw-image" src="jazmin.png" alt="Jazmin Illustration">
 
     <script>
-        // ----- PHẦN JAVASCRIPT -----
+        // ----- PHẦN JAVASCRIPT (Giữ nguyên không đổi) -----
         console.log('Script started');
         try {
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('DOMContentLoaded triggered');
 
-                // --- 1. Lấy các phần tử DOM ---
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
                 const seesawImage = document.getElementById('seesaw-image');
                 const links = document.querySelectorAll('.links a');
-
-                // --- 2. Biến cho hoa rơi kéo thả ---
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
-                // --- 3. Thiết lập âm lượng và tải audio ---
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                // --- 4. Hàm thử autoplay nhạc nền ---
-                function tryAutoPlay() {
+                function tryAutoPlay() { /* ... giữ nguyên ... */
                     console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
@@ -159,20 +162,18 @@
                             jellyPromise.then(() => { jellySound.pause(); jellySound.currentTime = 0; console.log('jellySound initialized'); }).catch(error => { console.log('Lỗi khởi tạo jellySound:', error); });
                         }
                     } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
-                   }
-                tryAutoPlay(); // Gọi hàm
+                }
+                tryAutoPlay();
 
-                // --- 5. Hàm lấy tọa độ event ---
-                function getEventCoords(event) {
+                function getEventCoords(event) { /* ... giữ nguyên ... */
                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
                         return { x: touch.clientX, y: touch.clientY };
                     }
                     return { x: event.clientX, y: event.clientY };
-                   }
+                }
 
-                // --- 6. Hàm xử lý bounce cho LINK khi click/touch ---
-                function handleBounce(event) {
+                function handleBounce(event) { /* ... giữ nguyên ... */
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
                     event.preventDefault();
@@ -187,47 +188,35 @@
                             window.location.href = button.href;
                         }
                     }, 300);
-                   }
+                }
 
-                // --- 7. HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK ---
-                function handleImageBounce(event) {
+                function handleImageBounce(event) { /* ... giữ nguyên ... */
                     const image = event.currentTarget;
-                    // Ngăn chặn nếu đang wobble do click HOẶC tự động wobble
                     if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) {
-                        // console.log('Click wobble prevented - already wobbling');
                         return;
                     }
-                    // console.log('Applying image-wobbling class');
                     image.classList.add('image-wobbling');
                     setTimeout(() => {
-                        // console.log('Removing image-wobbling class');
                         image.classList.remove('image-wobbling');
-                    }, 700); // Khớp duration imageClickInPlaceWobble
+                    }, 700);
                     jellySound.currentTime = 0;
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
-                   }
+                }
 
-                // --- 8. Gắn sự kiện cho link ---
                 console.log('Attaching link events');
-                try {
-                    links.forEach(button => { // Sử dụng biến 'links' đã lấy ở trên
+                try { /* ... giữ nguyên ... */
+                    links.forEach(button => {
                         button.addEventListener('click', handleBounce);
                         button.addEventListener('touchstart', handleBounce, { passive: false });
                     });
-                } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
+                 } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                // --- 9. Xử lý ảnh (Entrance, Click, Auto Wobble) ---
-                if (seesawImage) {
-                    // 9.1 Gắn sự kiện click cho ảnh
+                if (seesawImage) { /* ... giữ nguyên xử lý entrance và click ... */
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
-
-                    // 9.2 Kích hoạt và xử lý Animation Entrance (CHỈ CHẠY 1 LẦN)
                     console.log('Adding entrance animation class to image');
-                    seesawImage.classList.add('image-entering'); // Kích hoạt animation CSS
-
+                    seesawImage.classList.add('image-entering');
                     const handleEntranceEnd = (event) => {
-                        // Chỉ xử lý khi đúng animation entrance kết thúc
                         if (event.animationName === 'slideFadeUnblurIn') {
                             console.log('Image Entrance animation finished.');
                             seesawImage.style.opacity = '1';
@@ -239,58 +228,43 @@
                     };
                     seesawImage.addEventListener('animationend', handleEntranceEnd);
 
-                    // --- 9.3 Setup Wobble tự động cho ảnh (LOGIC MỚI) ---
-                    const imageAutoInterval = 5000; // Khoảng cách giữa các lần wobble tự động (5 giây)
-                    const imageAutoWobbleDuration = 600; // Thời gian chạy animation wobble tự động
-                    const imageInitialAutoDelay = 4000; // Delay ban đầu (4 giây)
-                    let autoWobbleTimeoutId = null; // Biến để lưu ID của setTimeout
-
-                    // Hàm thực hiện wobble và lên lịch lần tiếp theo
+                    // --- Giữ nguyên logic wobble tự động đã sửa ---
+                    const imageAutoInterval = 5000;
+                    const imageAutoWobbleDuration = 600;
+                    const imageInitialAutoDelay = 4000;
+                    let autoWobbleTimeoutId = null;
                     function triggerImageAutoWobble() {
-                        // Xóa timeout cũ nếu có (phòng trường hợp gọi lại trước khi timeout cũ chạy)
                         if(autoWobbleTimeoutId) clearTimeout(autoWobbleTimeoutId);
-
-                        // console.log(Date.now(), 'Attempting auto wobble check');
                         if (seesawImage &&
-                            !seesawImage.classList.contains('image-wobbling') &&    // Không đang wobble do click
-                            !seesawImage.classList.contains('auto-jelly-wobbling') && // Không đang tự wobble
-                            !seesawImage.classList.contains('image-entering'))       // Không đang chạy entrance
+                            !seesawImage.classList.contains('image-wobbling') &&
+                            !seesawImage.classList.contains('auto-jelly-wobbling') &&
+                            !seesawImage.classList.contains('image-entering'))
                         {
-                            // console.log(Date.now(), 'Applying auto-jelly-wobbling class');
                             seesawImage.classList.add('auto-jelly-wobbling');
-                            // Đặt timeout để xóa class sau khi animation kết thúc
                             setTimeout(() => {
-                                // console.log(Date.now(), 'Removing auto-jelly-wobbling class');
-                                if (seesawImage) { // Kiểm tra ảnh còn tồn tại không
+                                if (seesawImage) {
                                    seesawImage.classList.remove('auto-jelly-wobbling');
                                 }
                             }, imageAutoWobbleDuration);
                         }
-                        // Luôn lên lịch cho lần thử tiếp theo sau khoảng thời gian interval
                         scheduleNextAutoWobble(imageAutoInterval);
                     }
-
-                    // Hàm mới để lên lịch chạy triggerImageAutoWobble
                     function scheduleNextAutoWobble(delay) {
-                        // console.log(Date.now(), `Scheduling next auto wobble in ${delay}ms`);
-                        // Lưu ID của timeout để có thể hủy nếu cần
                         autoWobbleTimeoutId = setTimeout(triggerImageAutoWobble, delay);
                     }
-
-                    // Bắt đầu chuỗi tự động wobble với delay ban đầu
                     scheduleNextAutoWobble(imageInitialAutoDelay);
-                    // --- Kết thúc logic wobble tự động mới ---
+                    // --- Kết thúc logic wobble tự động ---
 
                 } else {
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
 
-                // --- 10. JS cho hiệu ứng DOMINO LINK ---
+                // --- Domino link giữ nguyên ---
                 const linkIntervalTime = 3000;
                 const linkInitialDelay = 300;
                 const linkDominoDelay = 100;
                 const linkSquashDuration = 400;
-                function startDominoSequence() {
+                function startDominoSequence() { /* ... giữ nguyên ... */
                     links.forEach((link, index) => {
                         if (!link.classList.contains('bounce') && !link.classList.contains('do-subtle-squash')) {
                             setTimeout(() => {
@@ -301,8 +275,8 @@
                             }, index * linkDominoDelay + linkSquashDuration);
                         }
                     });
-                   }
-                if (links.length > 0) {
+                }
+                if (links.length > 0) { /* ... giữ nguyên ... */
                     console.log('Setting up domino effect for links.');
                     setTimeout(() => {
                         startDominoSequence();
@@ -312,13 +286,12 @@
                     console.warn('No links found for domino effect.');
                 }
 
-                // --- 11. LOGIC HOA RƠI VÀ KÉO THẢ + TẠO HOA ---
+                // --- Hoa rơi giữ nguyên ---
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
                 const flowerFallDuration = 10;
-
-                function createFlower(index) {
+                function createFlower(index) { /* ... giữ nguyên ... */
                     const flower = document.createElement('span');
                     flower.className = 'flower';
                     flower.innerHTML = '❅';
@@ -338,9 +311,8 @@
                     flower.addEventListener('animationiteration', () => {
                         flower.style.left = `${Math.random() * 100}%`;
                     });
-                   }
-
-                function dragStart(event) {
+                }
+                function dragStart(event) { /* ... giữ nguyên ... */
                     if (event.type === 'mousedown' && event.button !== 0) return;
                     activeFlower = event.target;
                     const coords = getEventCoords(event);
@@ -358,9 +330,8 @@
                     document.addEventListener('mouseup', dragEnd);
                     document.addEventListener('touchend', dragEnd);
                     event.preventDefault();
-                   }
-
-                function dragging(event) {
+                }
+                function dragging(event) { /* ... giữ nguyên ... */
                     if (!activeFlower) return;
                     const coords = getEventCoords(event);
                     let newX = coords.x - offsetX;
@@ -372,10 +343,9 @@
                     activeFlower.style.left = `${newX}px`;
                     activeFlower.style.top = `${newY}px`;
                     if (event.type === 'touchmove') event.preventDefault();
-                   }
-
-                function dragEnd(event) {
-                    if (!activeFlower) return;
+                }
+                function dragEnd(event) { /* ... giữ nguyên ... */
+                     if (!activeFlower) return;
                     const flower = activeFlower;
                     activeFlower = null;
                     flower.classList.remove('dragging');
@@ -404,16 +374,14 @@
                     document.removeEventListener('touchmove', dragging);
                     document.removeEventListener('mouseup', dragEnd);
                     document.removeEventListener('touchend', dragEnd);
-                   }
-
-                // Vòng lặp tạo hoa
+                }
                 console.log('Starting flower creation loop...');
-                try {
-                    for (let i = 0; i < flowerCount; i++) {
+                try { /* ... giữ nguyên ... */
+                     for (let i = 0; i < flowerCount; i++) {
                         createFlower(i);
                     }
                     console.log('Flower creation loop finished.');
-                } catch (error) {
+                 } catch (error) {
                     console.error('Lỗi trong vòng lặp tạo hoa:', error);
                 }
 
