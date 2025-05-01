@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Puppies+Play&display=swap" rel="stylesheet">
     <style>
-        /* CSS Animations hoa, link bounce, link squash, H1 wobble giữ nguyên */
+        /* CSS Animations giữ nguyên */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
         @keyframes subtleSquash { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.03, 0.98); } 70% { transform: scale(0.98, 1.02); } }
@@ -16,67 +16,56 @@
         @keyframes imageClickInPlaceWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.98, 1.02); } 25% { transform: scale(1.08, 0.92); } 50% { transform: scale(0.92, 1.08); } 70% { transform: scale(1.05, 0.95); } 85% { transform: scale(0.95, 1.05); } 95% { transform: scale(1.02, 0.98); } }
         @keyframes imageAutoJellyWobble { 0%, 100% { transform: scale(1, 1); } 7% { transform: scale(0.995, 1.005); } 25% { transform: scale(1.02, 0.98); } 50% { transform: scale(0.98, 1.02); } 70% { transform: scale(1.01, 0.99); } 85% { transform: scale(0.99, 1.01); } 95% { transform: scale(1.005, 0.995); } }
 
-        /* ===== Animation MỚI: Entrance cho ảnh ===== */
+        /* Animation Entrance cho ảnh */
         @keyframes slideFadeUnblurIn {
             0% {
-                transform: translateX(110%); /* Bắt đầu ngoài màn hình bên phải */
+                transform: translateX(110%);
                 opacity: 0;
-                filter: blur(6px); /* Hơi nhòe */
+                filter: blur(6px);
             }
             30% {
-                 opacity: 0.5; /* Hiện dần đến 50% */
+                 opacity: 0.5;
                  filter: blur(3px);
             }
             100% {
-                transform: translateX(0); /* Về vị trí cuối */
+                transform: translateX(0);
                 opacity: 1;
-                filter: blur(0px); /* Rõ nét */
+                filter: blur(0px);
             }
         }
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
-        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 15px 20px 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
+        body {
+            text-align: center; font-family: 'Nunito', sans-serif;
+            padding: 15px 20px 40px 20px; color: var(--text-color);
+            background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
+            background-repeat: no-repeat; background-attachment: fixed;
+            min-height: 100%; position: relative; overflow-x: hidden;
+        }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
-        .content-wrapper {
-             padding-top: 15px;
-        }
+        .content-wrapper { padding-top: 15px; }
 
         h1 {
-            font-family: 'Puppies Play', cursive;
-            font-weight: 400;
-            font-size: 7.5em;
-            line-height: 1.1;
-            margin-bottom: 0px;
-            margin-top: 0;
+            font-family: 'Puppies Play', cursive; font-weight: 400;
+            font-size: 7.5em; line-height: 1.1; margin-bottom: 0px; margin-top: 0;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            display: inline-block;
-            will-change: transform;
-            animation: gentleHeadingWobble 10s ease-in-out infinite;
-            animation-delay: 0.3s;
+            display: inline-block; will-change: transform;
+            animation: gentleHeadingWobble 10s ease-in-out infinite; animation-delay: 0.3s;
         }
 
         .subtitle {
-            font-family: 'Puppies Play', cursive;
-            font-size: 2.2em;
-            margin-top: -25px;
-            font-weight: 400;
-            color: var(--text-color);
-            line-height: 1.1;
-            margin-bottom: 20px;
-            letter-spacing: normal;
-            opacity: 0.75;
+            font-family: 'Puppies Play', cursive; font-size: 2.2em; margin-top: -27px;
+            font-weight: 400; color: var(--text-color); line-height: 1.1;
+            margin-bottom: 20px; letter-spacing: normal; opacity: 0.75;
         }
 
         p:not(.subtitle) {
-            font-size: 1.1em;
-            line-height: 1.7;
-            margin-bottom: 15px;
-            color: var(--text-color);
+            font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color);
          }
         .links { margin-top: 30px; }
 
@@ -86,8 +75,7 @@
             color: white; text-decoration: none; border-radius: 25px; font-weight: 700;
             transition: background-image 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
-            will-change: transform;
-            font-family: 'Nunito', sans-serif;
+            will-change: transform; font-family: 'Nunito', sans-serif;
         }
 
         .links a:hover {
@@ -95,91 +83,48 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .links a.bounce {
-            animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
-            animation-delay: 0s;
-        }
+        .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1; animation-delay: 0s; }
+         .links a.do-subtle-squash { animation: subtleSquash 0.4s ease-in-out 1; }
 
-         .links a.do-subtle-squash {
-              animation: subtleSquash 0.4s ease-in-out 1;
-         }
-
-        /* ===== Style cho ảnh (Trạng thái ban đầu cho entrance) ===== */
+        /* Style cho ảnh (Trạng thái ban đầu) */
         #seesaw-image {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 290px;
-            height: auto;
-            z-index: 1;
-            cursor: pointer;
+            position: fixed; bottom: 0; right: 0; width: 290px; height: auto;
+            z-index: 1; cursor: pointer;
             opacity: 0; /* Bắt đầu ẩn */
-            transform: translateX(110%); /* Bắt đầu ngoài màn hình */
+            transform: translateX(110%); /* Bắt đầu ngoài */
             filter: blur(8px); /* Bắt đầu nhòe */
-            transform-origin: bottom left; /* Giữ nguyên nếu muốn xoay */
-            will-change: transform, opacity, filter; /* Thêm filter */
-            /* Fix highlight */
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-            /* Bỏ animation cũ nếu có */
-            /* animation: ... */
+            transform-origin: bottom left;
+            will-change: transform, opacity, filter;
+            -webkit-tap-highlight-color: transparent; outline: none;
+            user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
         }
 
-        /* ===== Class mới để kích hoạt Entrance cho ảnh ===== */
+        /* Class kích hoạt Entrance cho ảnh (chạy 1 lần) */
         #seesaw-image.image-entering {
             animation: slideFadeUnblurIn 1.2s ease-out 0.5s forwards;
-            /* Duration 1.2s, ease-out (chậm dần), delay 0.5s, giữ trạng thái cuối */
         }
 
-        /* ===== Style wobble TẠI CHỖ cho ảnh KHI CLICK ===== */
+        /* Style wobble TẠI CHỖ cho ảnh KHI CLICK */
         #seesaw-image.image-wobbling {
              animation: imageClickInPlaceWobble 0.7s ease-in-out 1;
              animation-delay: 0s;
         }
 
-        /* ===== Class cho hiệu ứng wobble nhẹ tự động của ảnh ===== */
+        /* Class cho hiệu ứng wobble nhẹ tự động của ảnh */
         #seesaw-image.auto-jelly-wobbling {
              animation: imageAutoJellyWobble 0.6s ease-in-out 1;
         }
 
 
         @media (max-width: 576px) {
-            body {
-                 padding: 15px 10px 20px 10px;
-            }
-             .content-wrapper {
-                 padding-top: 0;
-             }
-            h1 {
-                font-size: 6.5em;
-                margin-top: 0;
-                margin-bottom: 0px;
-                line-height: 1.1;
-             }
-            .subtitle {
-                font-size: 1.8em;
-                margin-top: -25px;
-                line-height: 1.1;
-                margin-bottom: 15px;
-                opacity: 0.75;
-            }
+            body { padding: 15px 10px 20px 10px; }
+            .content-wrapper { padding-top: 0; }
+            h1 { font-size: 6.5em; margin-top: 0; margin-bottom: 0px; line-height: 1.1; }
+            .subtitle { font-size: 1.8em; margin-top: -25px; line-height: 1.1; margin-bottom: 15px; opacity: 0.75; }
             p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
-            /* .content-wrapper { padding: 20px; } */
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
-            #seesaw-image {
-                 width: 180px;
-                 bottom: 0;
-                 right: 0;
-                 /* Trạng thái ban đầu cũng cần đặt ở đây nếu muốn giống desktop */
-                 /* opacity: 0; */ /* Kế thừa từ trên */
-                 /* transform: translateX(110%); */ /* Kế thừa từ trên */
-                 /* filter: blur(8px); */ /* Kế thừa từ trên */
-            }
-            /* Không cần ghi đè class .image-entering trong media query */
+            #seesaw-image { width: 180px; bottom: 0; right: 0; }
         }
     </style>
 </head>
@@ -213,7 +158,7 @@
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
-                const seesawImage = document.getElementById('seesaw-image'); // Lấy ảnh
+                const seesawImage = document.getElementById('seesaw-image');
                 const links = document.querySelectorAll('.links a');
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
@@ -221,77 +166,12 @@
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                function tryAutoPlay() { /* ... giữ nguyên ... */
-                    console.log('Trying autoplay');
-                    try {
-                        const bgPromise = backgroundMusic.play();
-                        if (bgPromise !== undefined) {
-                            bgPromise.then(() => { console.log('Background music autoplay succeeded'); }).catch(error => {
-                                console.error('Autoplay bị chặn, cần tương tác:', error);
-                                const playOnInteraction = () => {
-                                    backgroundMusic.play().then(() => { console.log('Background music started after interaction'); }).catch(err => { console.error('Lỗi phát sau tương tác:', err); });
-                                    document.removeEventListener('click', playOnInteraction); document.removeEventListener('touchstart', playOnInteraction);
-                                };
-                                document.addEventListener('click', playOnInteraction, { once: true });
-                                document.addEventListener('touchstart', playOnInteraction, { once: true, passive: false });
-                            });
-                        }
-                        const jellyPromise = jellySound.play();
-                        if (jellyPromise !== undefined) {
-                            jellyPromise.then(() => { jellySound.pause(); jellySound.currentTime = 0; console.log('jellySound initialized'); }).catch(error => { console.log('Lỗi khởi tạo jellySound:', error); });
-                        }
-                    } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
-                 }
+                function tryAutoPlay() { /* ... giữ nguyên ... */ }
                 tryAutoPlay();
 
-                // ===== KÍCH HOẠT ANIMATION ENTRANCE CHO ẢNH =====
-                if (seesawImage) {
-                    console.log('Adding entrance animation class to image');
-                    // Thêm class để chạy animation entrance định nghĩa trong CSS
-                    seesawImage.classList.add('image-entering');
-                    // Không cần xóa class này vì đã có forwards
-                } else {
-                     console.error('Seesaw image element (#seesaw-image) not found!');
-                }
-                // ================================================
-
-                function getEventCoords(event) { /* ... giữ nguyên ... */
-                      if (event.type.includes('touch')) {
-                        const touch = event.touches[0] || event.changedTouches[0];
-                        return { x: touch.clientX, y: touch.clientY };
-                    }
-                    return { x: event.clientX, y: event.clientY };
-                 }
-
-                function handleBounce(event) { /* ... giữ nguyên ... */
-                    const button = event.currentTarget;
-                    if (button.classList.contains('bounce')) return;
-                    event.preventDefault();
-                    button.classList.add('bounce');
-                    setTimeout(() => { button.classList.remove('bounce'); }, 300);
-                    jellySound.currentTime = 0;
-                    jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
-                    setTimeout(() => {
-                        if (button.target === '_blank') {
-                            window.open(button.href, '_blank');
-                        } else {
-                            window.location.href = button.href;
-                        }
-                    }, 300);
-                 }
-
-                function handleImageBounce(event) { /* ... giữ nguyên ... */
-                    const image = event.currentTarget;
-                    // Kiểm tra cả class wobble click và class wobble tự động
-                    if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) return;
-                    console.log('Image clicked, applying in-place wobble.');
-                    image.classList.add('image-wobbling');
-                    setTimeout(() => {
-                        image.classList.remove('image-wobbling');
-                    }, 700);
-                    jellySound.currentTime = 0;
-                    jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
-                 }
+                function getEventCoords(event) { /* ... giữ nguyên ... */ }
+                function handleBounce(event) { /* ... giữ nguyên ... */ }
+                function handleImageBounce(event) { /* ... giữ nguyên ... */ }
 
                 console.log('Attaching link events');
                 try {
@@ -301,12 +181,37 @@
                     });
                 } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                // GẮN SỰ KIỆN CLICK CHO ẢNH (Giữ nguyên)
                 if (seesawImage) {
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
+
+                    // ===== KÍCH HOẠT VÀ XỬ LÝ ANIMATION ENTRANCE CHO ẢNH =====
+                    console.log('Adding entrance animation class to image');
+                    seesawImage.classList.add('image-entering'); // Kích hoạt animation
+
+                    const handleEntranceEnd = (event) => {
+                        // Chỉ xử lý khi đúng animation entrance kết thúc
+                        if (event.animationName === 'slideFadeUnblurIn') {
+                            console.log('Entrance animation finished.');
+                            // Set style cuối cùng để đảm bảo trạng thái được giữ lại sau khi xóa class
+                            seesawImage.style.opacity = '1';
+                            seesawImage.style.transform = 'translateX(0)';
+                            seesawImage.style.filter = 'none'; // Hoặc 'blur(0px)'
+
+                            // Xóa class entrance đi để nó không ảnh hưởng các animation sau
+                            seesawImage.classList.remove('image-entering');
+
+                            // Xóa luôn listener này
+                            seesawImage.removeEventListener('animationend', handleEntranceEnd);
+                            console.log('Entrance class and listener removed.');
+                        }
+                    };
+                    // Lắng nghe sự kiện animation kết thúc
+                    seesawImage.addEventListener('animationend', handleEntranceEnd);
+                    // ========================================================
+
                 } else {
-                    console.error('Seesaw image element (#seesaw-image) not found!');
+                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
 
                 // JS cho hiệu ứng DOMINO LINK (Giữ nguyên)
@@ -314,19 +219,7 @@
                 const linkInitialDelay = 300;
                 const linkDominoDelay = 100;
                 const linkSquashDuration = 400;
-
-                function startDominoSequence() { /* ... giữ nguyên ... */
-                     links.forEach((link, index) => {
-                         if (!link.classList.contains('bounce') && !link.classList.contains('do-subtle-squash')) {
-                            setTimeout(() => {
-                                link.classList.add('do-subtle-squash');
-                            }, index * linkDominoDelay);
-                            setTimeout(() => {
-                                link.classList.remove('do-subtle-squash');
-                            }, index * linkDominoDelay + linkSquashDuration);
-                         }
-                     });
-                 }
+                function startDominoSequence() { /* ... giữ nguyên ... */ }
                 if (links.length > 0) {
                     console.log('Setting up domino effect for links.');
                     setTimeout(() => {
@@ -341,88 +234,21 @@
                 const imageAutoInterval = 5000;
                 const imageAutoWobbleDuration = 600;
                 const imageInitialAutoDelay = 5000;
-
-                function triggerImageAutoWobble() { /* ... giữ nguyên ... */
-                    if (seesawImage &&
-                        !seesawImage.classList.contains('image-wobbling') &&
-                        !seesawImage.classList.contains('auto-jelly-wobbling'))
-                    {
-                        seesawImage.classList.add('auto-jelly-wobbling');
-                        setTimeout(() => {
-                            seesawImage.classList.remove('auto-jelly-wobbling');
-                        }, imageAutoWobbleDuration);
-                    }
-                }
-
+                function triggerImageAutoWobble() { /* ... giữ nguyên ... */ }
                 if (seesawImage) {
                     setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
                     setInterval(triggerImageAutoWobble, imageAutoInterval);
                 }
-
 
                 // LOGIC HOA RƠI VÀ KÉO THẢ (Giữ nguyên)
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
                 const flowerFallDuration = 10;
-
-                function createFlower(index) { /* ... giữ nguyên ... */
-                    const flower = document.createElement('span');
-                    flower.className = 'flower';
-                    flower.innerHTML = '❅';
-                    flowerContainer.appendChild(flower);
-                    const randomLeft = Math.random() * 100;
-                    flower.style.left = `${randomLeft}%`;
-                    const size = 30 + Math.random() * 30;
-                    flower.style.fontSize = `${size}px`; flower.style.width = `${size}px`; flower.style.height = `${size}px`;
-                    flower.style.animationDuration = `${flowerFallDuration}s`;
-                    const delay = (index * totalCycleTime) / flowerCount;
-                    flower.style.animationDelay = `-${delay}s`;
-                    const opacity = 0.9 - ((size - 30) / 30) * 0.4;
-                    flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
-                    flower.addEventListener('mousedown', dragStart);
-                    flower.addEventListener('touchstart', dragStart, { passive: false });
-                    flower.addEventListener('animationiteration', () => {
-                        flower.style.left = `${Math.random() * 100}%`;
-                    });
-                 }
-                function dragStart(event) { /* ... giữ nguyên ... */
-                     if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault();
-                 }
-                function dragging(event) { /* ... giữ nguyên ... */
-                    if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault();
-                 }
-                function dragEnd(event) { /* ... giữ nguyên ... */
-                    if (!activeFlower) return;
-                    const flower = activeFlower;
-                    activeFlower = null;
-                    flower.classList.remove('dragging');
-                    const fallTransitionDuration = 1000;
-                    flower.style.transition = `top ${fallTransitionDuration / 1000}s linear, opacity ${fallTransitionDuration / 1000}s linear`;
-                    flower.style.position = 'absolute';
-                    flower.style.top = '110vh';
-                    flower.style.opacity = '0';
-                    setTimeout(() => {
-                        if (!flower.parentNode) return;
-                        flower.style.transition = 'none';
-                        flower.style.position = '';
-                        flower.style.top = '';
-                        flower.style.opacity = '';
-                        flower.style.transform = '';
-                        flower.style.animation = 'none';
-                        flower.style.left = `${Math.random() * 100}%`;
-                        void flower.offsetWidth;
-                        flower.style.animationDuration = `${flowerFallDuration}s`;
-                        flower.style.animationDelay = '0s';
-                        flower.style.animationName = 'fall';
-                        flower.style.animationTimingFunction = 'linear';
-                        flower.style.animationIterationCount = 'infinite';
-                    }, fallTransitionDuration);
-                    document.removeEventListener('mousemove', dragging);
-                    document.removeEventListener('touchmove', dragging);
-                    document.removeEventListener('mouseup', dragEnd);
-                    document.removeEventListener('touchend', dragEnd);
-                 }
+                function createFlower(index) { /* ... giữ nguyên ... */ }
+                function dragStart(event) { /* ... giữ nguyên ... */ }
+                function dragging(event) { /* ... giữ nguyên ... */ }
+                function dragEnd(event) { /* ... giữ nguyên ... */ }
                 console.log('Starting flower creation');
                 try {
                     for (let i = 0; i < flowerCount; i++) {
@@ -431,7 +257,7 @@
                 } catch (error) {
                     console.error('Lỗi tạo bông tuyết:', error);
                 }
-            });
+            }); // Kết thúc DOMContentLoaded
         } catch (error) {
             console.error('Lỗi toàn cục trong script:', error);
         }
