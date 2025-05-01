@@ -21,9 +21,8 @@
         body {
             text-align: center;
             font-family: 'Nunito', sans-serif;
-            /* ===== ĐẶT LẠI PADDING TOP ===== */
-            padding: 10px 20px 40px 20px; /* Top=10px */
-            /* ============================ */
+            /* Padding body đã bỏ top */
+            padding: 0 20px 40px 20px;
             color: var(--text-color);
             background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
             background-repeat: no-repeat;
@@ -36,9 +35,9 @@
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
-        /* Bỏ padding-top khỏi content-wrapper */
+        /* ===== Thêm lại padding-top cho content-wrapper ===== */
         .content-wrapper {
-             /* padding-top: 0; */ /* Đảm bảo không có padding top ở đây */
+             padding-top: 20px; /* Khoảng cách 20px phía trên */
         }
 
         h1 {
@@ -46,9 +45,8 @@
             font-weight: 400;
             font-size: 7.5em;
             line-height: 1.1;
-            /* ===== BỎ MARGIN TOP ===== */
-            margin-top: 0; /* Bỏ margin top để sát với padding body */
-            /* ======================= */
+             /* ===== Xóa margin-top ===== */
+             /* margin-top: 15px; */
             margin-bottom: 0px;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -61,7 +59,7 @@
         .subtitle {
             font-family: 'Puppies Play', cursive;
             font-size: 2.2em;
-            margin-top: -27px; /* Giữ nguyên độ sát */
+            margin-top: -27px;
             font-weight: 400;
             color: var(--text-color);
             line-height: 1.1;
@@ -122,20 +120,16 @@
 
         @media (max-width: 576px) {
             body {
-                 /* ===== ĐẶT LẠI PADDING TOP (Mobile) ===== */
-                 padding: 10px 10px 20px 10px; /* Top=10px */
-                 /* ====================================== */
+                 padding: 0 10px 20px 10px; /* Top=0 */
             }
-             .content-wrapper {
-                 /* padding-top: 0; */ /* Bỏ luôn padding wrapper mobile */
-             }
+             /* Bỏ padding trong media query vì đã set ở rule chính */
+             /* .content-wrapper { padding-top: 15px; } */
             h1 {
                 font-size: 6.5em;
-                /* ===== BỎ MARGIN TOP (Mobile) ===== */
-                margin-top: 0;
-                /* ================================= */
-                margin-bottom: 0px;
-                line-height: 1.1;
+                /* ===== Xóa margin-top (mobile) ===== */
+                /* margin-top: 10px; */
+                 margin-bottom: 0px;
+                 line-height: 1.1;
              }
             .subtitle {
                 font-size: 1.8em;
@@ -146,7 +140,6 @@
             }
             p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
-            /* .content-wrapper { padding: 20px; } */
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
                  width: 180px;
