@@ -35,11 +35,11 @@
             will-change: transform, opacity;
             opacity: 0;
 
-            /* ===== THAY ĐỔI TIMING FUNCTION Ở ĐÂY ===== */
+            /* ===== THAY ĐỔI TIMING FUNCTION MẠNH HƠN Ở ĐÂY ===== */
             animation:
-                /* 1. slideDownFadeIn: dùng cubic-bezier thay cho ease-out */
-                slideDownFadeIn 1.2s cubic-bezier(0.2, 1, 0.4, 1) 0.3s forwards,
-                /* 2. gentleHeadingWobble: giữ nguyên, delay tính lại nếu cần (vẫn là 1.2s + 0.3s) */
+                /* 1. slideDownFadeIn: dùng cubic-bezier mạnh hơn */
+                slideDownFadeIn 1.2s cubic-bezier(0.3, 1.5, 0.5, 1) 0.3s forwards,
+                /* 2. gentleHeadingWobble: giữ nguyên */
                 gentleHeadingWobble 10s ease-in-out 1.5s infinite;
         }
 
@@ -69,10 +69,10 @@
             -webkit-tap-highlight-color: transparent; outline: none;
             user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
         }
-        /* ===== THAY ĐỔI TIMING FUNCTION Ở ĐÂY ===== */
+        /* ===== THAY ĐỔI TIMING FUNCTION MẠNH HƠN Ở ĐÂY ===== */
         #seesaw-image.image-entering {
-            /* dùng cubic-bezier thay cho ease-out */
-            animation: slideFadeUnblurIn 1.2s cubic-bezier(0.2, 1, 0.4, 1) 0.5s forwards;
+            /* dùng cubic-bezier mạnh hơn */
+            animation: slideFadeUnblurIn 1.2s cubic-bezier(0.3, 1.5, 0.5, 1) 0.5s forwards;
         }
         #seesaw-image.image-wobbling { animation: imageClickInPlaceWobble 0.7s ease-in-out 1; animation-delay: 0s; }
         #seesaw-image.auto-jelly-wobbling { animation: imageAutoJellyWobble 0.6s ease-in-out 1; }
@@ -218,45 +218,35 @@
 
                     const handleEntranceEnd = (event) => {
                         // Chỉ xử lý khi đúng animation entrance kết thúc
-                        // Kiểm tra animationName để đảm bảo đúng là animation entrance của ảnh
                         if (event.animationName === 'slideFadeUnblurIn') {
                             console.log('Image Entrance animation finished.');
-                            // Set style cuối cùng để đảm bảo trạng thái giữ lại
                             seesawImage.style.opacity = '1';
                             seesawImage.style.transform = 'translateX(0)';
-
-                            // Xóa class entrance đi để nó không ảnh hưởng các animation sau
                             seesawImage.classList.remove('image-entering');
-
-                            // Xóa luôn listener này để tránh chạy lại
                             seesawImage.removeEventListener('animationend', handleEntranceEnd);
                             console.log('Image Entrance class and listener removed.');
                         }
                     };
-                    // Lắng nghe sự kiện animation kết thúc
                     seesawImage.addEventListener('animationend', handleEntranceEnd);
 
                     // 9.3 Setup Wobble tự động cho ảnh
                     const imageAutoInterval = 5000;
                     const imageAutoWobbleDuration = 600;
-                    const imageInitialAutoDelay = 5000; // Delay ban đầu
+                    const imageInitialAutoDelay = 5000;
 
                     function triggerImageAutoWobble() {
                         if (seesawImage &&
-                            !seesawImage.classList.contains('image-wobbling') && // Đang wobble do click
-                            !seesawImage.classList.contains('auto-jelly-wobbling') && // Đang wobble tự động
-                            !seesawImage.classList.contains('image-entering')) // Đang chạy entrance
+                            !seesawImage.classList.contains('image-wobbling') &&
+                            !seesawImage.classList.contains('auto-jelly-wobbling') &&
+                            !seesawImage.classList.contains('image-entering'))
                         {
-                            // console.log('Triggering auto jelly wobble on image');
                             seesawImage.classList.add('auto-jelly-wobbling');
                             setTimeout(() => {
                                 seesawImage.classList.remove('auto-jelly-wobbling');
                             }, imageAutoWobbleDuration);
                         }
                     }
-                    // Chạy lần đầu sau delay
                     setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
-                    // Lặp lại bằng setInterval
                     setInterval(triggerImageAutoWobble, imageAutoInterval);
 
                 } else {
@@ -384,11 +374,11 @@
                     document.removeEventListener('touchend', dragEnd);
                    }
 
-                // Vòng lặp tạo hoa (Quan trọng!)
+                // Vòng lặp tạo hoa
                 console.log('Starting flower creation loop...');
                 try {
                     for (let i = 0; i < flowerCount; i++) {
-                        createFlower(i); // Gọi hàm tạo hoa
+                        createFlower(i);
                     }
                     console.log('Flower creation loop finished.');
                 } catch (error) {
