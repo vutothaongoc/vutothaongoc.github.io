@@ -34,9 +34,8 @@
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
-        /* Bỏ padding-top khỏi content-wrapper nếu có */
         .content-wrapper {
-             padding-top: 0; /* Đảm bảo không có padding top ở đây */
+             padding-top: 15px; /* Giữ padding top */
         }
 
         h1 {
@@ -45,7 +44,7 @@
             font-size: 7.5em;
             line-height: 1.1;
             margin-bottom: 0px;
-            margin-top: 0; /* Xóa margin top H1 nếu có */
+            margin-top: 0;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             display: inline-block;
@@ -103,9 +102,9 @@
             position: fixed;
             bottom: 0;
             right: 0;
-            /* ===== ĐỔI KÍCH THƯỚC PC (NHỎ HƠN) ===== */
-            width: 180px; /* Đổi thành kích thước nhỏ hơn */
-            /* ====================================== */
+            /* ===== ĐẶT KÍCH THƯỚC CHUNG ===== */
+            width: 240px; /* Kích thước trung bình */
+            /* ============================== */
             height: auto;
             z-index: 1;
             cursor: pointer;
@@ -125,7 +124,7 @@
              animation-delay: 0s;
         }
 
-         /* ===== Class cho hiệu ứng wobble nhẹ tự động của ảnh ===== */
+        /* ===== Class cho hiệu ứng wobble nhẹ tự động của ảnh ===== */
         #seesaw-image.auto-jelly-wobbling {
              animation: imageAutoJellyWobble 0.6s ease-in-out 1;
         }
@@ -133,10 +132,10 @@
 
         @media (max-width: 576px) {
             body {
-                 padding: 15px 10px 20px 10px; /* Giữ 15px padding top mobile */
+                 padding: 15px 10px 20px 10px; /* Giữ padding top 15px mobile */
             }
              .content-wrapper {
-                 padding-top: 0; /* Bỏ padding top mobile */
+                 padding-top: 0; /* Bỏ padding top wrapper mobile nếu body đã có */
              }
             h1 {
                 font-size: 6.5em;
@@ -146,7 +145,7 @@
              }
             .subtitle {
                 font-size: 1.8em;
-                margin-top: -22px;
+                margin-top: -25px; /* Giảm margin âm mobile */
                 line-height: 1.1;
                 margin-bottom: 15px;
                 opacity: 0.75;
@@ -156,9 +155,8 @@
             /* .content-wrapper { padding: 20px; } */
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
-                 /* ===== ĐỔI KÍCH THƯỚC MOBILE (TO HƠN) ===== */
-                 width: 220px; /* Tăng lên, ví dụ 220px */
-                 /* ======================================= */
+                 /* Bỏ width ở đây để kế thừa từ rule chính */
+                 /* width: 240px; */
                  bottom: 0;
                  right: 0;
             }
