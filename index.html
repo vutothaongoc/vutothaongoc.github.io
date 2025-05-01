@@ -26,9 +26,13 @@
         h1 {
             font-family: 'Puppies Play', cursive;
             font-weight: 400;
-            font-size: 5.3em; /* Kích thước đã chỉnh */
+            /* ===== TĂNG FONT SIZE H1 ===== */
+            font-size: 5.6em; /* Tăng từ 5.3em */
+            /* =========================== */
             line-height: 1.2;
-            margin-bottom: 5px;
+            /* ===== GIẢM MARGIN BOTTOM ===== */
+            margin-bottom: 0px; /* Giảm từ 5px */
+            /* =========================== */
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             display: inline-block;
@@ -37,17 +41,18 @@
             animation-delay: 0.3s;
         }
 
-        /* ===== Style cho Subtitle (ĐÃ SỬA) ===== */
         .subtitle {
-            font-family: 'Puppies Play', cursive; /* Đổi font giống H1 */
-            font-size: 1.3em; /* Tăng nhẹ size cho dễ đọc */
-            font-weight: 400; /* Puppies Play chỉ có weight 400 */
+            font-family: 'Puppies Play', cursive;
+            /* ===== TĂNG FONT SIZE SUBTITLE ===== */
+            font-size: 1.4em; /* Tăng từ 1.3em */
+            /* ================================ */
+            font-weight: 400;
             color: var(--text-color);
-            margin-top: 0px;
+            margin-top: 0px; /* Giữ nguyên để sát H1 */
             margin-bottom: 20px;
-            letter-spacing: normal; /* Bỏ giãn cách */
-            opacity: 0.75; /* Giữ màu nhạt */
-            line-height: 1.2; /* Chỉnh line-height */
+            letter-spacing: normal;
+            opacity: 0.75;
+            line-height: 1.2;
         }
 
         p:not(.subtitle) {
@@ -65,7 +70,7 @@
             transition: background-image 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
             will-change: transform;
-            font-family: 'Nunito', sans-serif; /* Nút link vẫn dùng Nunito */
+            font-family: 'Nunito', sans-serif;
         }
 
         .links a:hover {
@@ -103,11 +108,15 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 4.3em; /* Kích thước đã chỉnh */
-                margin-bottom: 0px;
+                /* ===== TĂNG FONT SIZE H1 (Mobile) ===== */
+                font-size: 4.5em; /* Tăng từ 4.3em */
+                /* ==================================== */
+                margin-bottom: 0px; /* Giữ nguyên */
              }
             .subtitle {
-                font-size: 1.1em; /* Tăng nhẹ size mobile */
+                /* ===== TĂNG FONT SIZE SUBTITLE (Mobile) ===== */
+                font-size: 1.2em; /* Tăng từ 1.1em */
+                /* ======================================== */
                 margin-top: 0px;
                 margin-bottom: 15px;
                 opacity: 0.75;
