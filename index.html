@@ -6,7 +6,7 @@
     <title>Jazmin's Portfolio - Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Rouge+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Ruge+Boogie&display=swap" rel="stylesheet">
     <style>
         /* CSS Animations (fall, jellyBounce, subtleSquash, gentleHeadingWobble, imageClickInPlaceWobble, imageAutoJellyWobble) giữ nguyên như trước */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
@@ -25,11 +25,11 @@
 
         h1 {
             /* ===== THAY ĐỔI FONT H1 ===== */
-            font-family: 'Rouge Script', cursive; /* Đổi sang Rouge Script */
+            font-family: 'Ruge Boogie', cursive; /* Đổi sang Ruge Boogie */
             font-weight: 400; /* Chỉ có weight 400 */
-            font-size: 6.5em; /* Điều chỉnh kích thước */
+            font-size: 5.5em; /* Điều chỉnh kích thước */
             line-height: 1.1;
-            margin-bottom: 0px;
+            margin-bottom: 5px; /* Chỉnh lại margin */
             /* ============================ */
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -44,7 +44,7 @@
             font-size: 1.1em;
             font-weight: 400;
             color: var(--text-color);
-            margin-top: -2px; /* Điều chỉnh cho khớp font H1 mới */
+            margin-top: 0px;
             margin-bottom: 20px;
             letter-spacing: normal;
             opacity: 0.75;
@@ -103,8 +103,8 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 5.2em; /* Chỉnh size H1 trên mobile */
-                margin-bottom: -5px;
+                font-size: 4.5em; /* Chỉnh size H1 trên mobile */
+                margin-bottom: 0px;
              }
             .subtitle {
                 font-size: 1em;
