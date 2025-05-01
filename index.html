@@ -21,20 +21,7 @@
         @keyframes revealFromRight { 0% { clip-path: inset(0 100% 0 0); opacity: 1; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
         @keyframes slideUpFadeIn { 0% { transform: translateY(50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
-        /* ===== THAY ĐỔI MÀU CHỮ GỐC Ở ĐÂY ===== */
-        :root {
-            --pastel-pink: #ffdde1;
-            --pastel-blue: #c5c8ff;
-            --button-pink: #d1a0b8;
-            --button-blue: #a2a6dd;
-            --button-pink-hover: #d6a9c0;
-            --button-blue-hover: #b0b3e3;
-            --heading-gradient-start: #5f6394;
-            --heading-gradient-end: #a86b7f;
-            --text-color: rgba(92, 92, 92, 0.8); /* Đổi từ #5c5c5c sang rgba với alpha 0.8 */
-        }
-        /* ===== KẾT THÚC THAY ĐỔI ===== */
-
+        :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
         body { text-align: center; font-family: 'Nunito', sans-serif; padding: 15px 20px 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
@@ -59,20 +46,22 @@
 
         .subtitle {
             font-family: 'Puppies Play', cursive; font-size: 2.2em; margin-top: -27px;
-            font-weight: 400; color: var(--text-color); line-height: 1.1; /* Vẫn dùng --text-color */
+            font-weight: 400; color: var(--text-color); line-height: 1.1;
             margin-bottom: 20px; letter-spacing: normal;
-            opacity: 0.75; /* Opacity riêng vẫn được áp dụng -> tổng là 0.8 * 0.75 = 0.6 */
+            opacity: 0;
             will-change: clip-path, opacity;
             animation: revealFromRight 6s ease-out 0s forwards;
         }
 
-        p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); font-weight: 400; } /* Sẽ dùng màu text-color mới */
+        p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); font-weight: 400; }
         .links { margin-top: 30px; }
+        /* ===== THAY ĐỔI MÀU CHỮ LINK Ở ĐÂY ===== */
         .links a {
             display: inline-block; margin: 8px 6px;
             padding: 9px 22px;
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
-            color: white; text-decoration: none; border-radius: 25px;
+            color: rgba(255, 255, 255, 0.8); /* Đổi thành màu trắng 80% */
+            text-decoration: none; border-radius: 25px;
             font-weight: 500;
             font-size: 1.1em;
             transition: background-image 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
@@ -85,11 +74,13 @@
         .links a.link-entering {
             animation: slideUpFadeIn 0.8s ease-out forwards;
         }
+        /* ===== KẾT THÚC THAY ĐỔI ===== */
 
         .links a:hover {
              background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
              transform: translateY(-2px);
+             color: white; /* Có thể cho màu chữ đậm lại khi hover */
         }
         .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1; animation-delay: 0s; }
         .links a.do-subtle-squash { animation: subtleSquash 0.4s ease-in-out 1; }
@@ -119,6 +110,7 @@
                 padding: 7px 16px;
                 margin: 6px 4px;
                 font-size: 1.05em;
+                /* Màu chữ nhạt cũng áp dụng cho mobile */
             }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
@@ -297,7 +289,7 @@
 
                         link.addEventListener('animationend', function handleLinkEntranceEnd(event) {
                             if (event.animationName === 'slideUpFadeIn') {
-                                link.style.opacity = '1';
+                                link.style.opacity = '1'; // Opacity của element là 1
                                 link.style.transform = 'none';
                                 link.classList.remove('link-entering');
                                 link.style.animationDelay = '';
@@ -428,8 +420,8 @@
                     }, fallTransitionDuration);
                     document.removeEventListener('mousemove', dragging);
                     document.removeEventListener('touchmove', dragging);
-                    document.removeEventListener('mouseup', dragEnd);
-                    document.removeEventListener('touchend', dragEnd);
+                    document.addEventListener('mouseup', dragEnd);
+                    document.addEventListener('touchend', dragEnd);
                 }
                 console.log('Starting flower creation loop...');
                 try { /* ... giữ nguyên ... */
