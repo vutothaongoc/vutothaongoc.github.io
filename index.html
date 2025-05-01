@@ -6,7 +6,7 @@
     <title>Jazmin's Portfolio - Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* CSS Animations (fall, jellyBounce, subtleSquash, gentleHeadingWobble, imageClickInPlaceWobble, imageAutoJellyWobble) giữ nguyên như trước */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
@@ -24,13 +24,13 @@
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
-            /* ===== ĐỔI FONT H1 VỀ NUNITO ===== */
-            font-family: 'Nunito', sans-serif; /* Đổi về Nunito */
-            font-weight: 700; /* Đặt lại weight 700 */
-            font-size: 4em; /* Chỉnh lại size */
-            line-height: 1.2; /* Chỉnh lại line-height */
-            margin-bottom: 10px; /* Tăng khoảng cách dưới */
-            /* ================================ */
+            /* ===== THAY ĐỔI FONT H1 ===== */
+            font-family: 'Comfortaa', sans-serif; /* Đổi sang Comfortaa */
+            font-weight: 300; /* Dùng weight Light */
+            font-size: 4.5em; /* Điều chỉnh kích thước */
+            line-height: 1.2;
+            margin-bottom: 10px;
+            /* ============================ */
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             display: inline-block;
@@ -44,7 +44,7 @@
             font-size: 1.1em;
             font-weight: 400;
             color: var(--text-color);
-            margin-top: 0px; /* Bỏ margin âm */
+            margin-top: 0px;
             margin-bottom: 20px;
             letter-spacing: normal;
             opacity: 0.75;
@@ -103,8 +103,8 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 3.2em; /* Chỉnh size H1 trên mobile */
-                margin-bottom: 5px; /* Chỉnh lại */
+                font-size: 3.5em; /* Chỉnh size H1 trên mobile */
+                margin-bottom: 5px;
              }
             .subtitle {
                 font-size: 1em;
@@ -127,9 +127,7 @@
 <body>
     <audio id="jellySound" src="jelly.wav" preload="auto"></audio>
     <audio id="backgroundMusic" src="background_music.mp3" preload="auto" loop></audio>
-
     <div class="flower-container"></div>
-
     <div class="content-wrapper">
         <h1>Jazmin</h1>
         <p class="subtitle">Vũ Tô Thảo Ngọc</p>
@@ -145,31 +143,25 @@
              <a href="https://www.tiktok.com/@vutothaongoc?_t=ZS-8vnE6CeY9dF&_r=1" target="_blank">TikTok</a>
         </div>
     </div>
-
     <img id="seesaw-image" src="jazmin.png" alt="Jazmin Illustration">
 
     <script>
         // ----- PHẦN JAVASCRIPT GIỮ NGUYÊN NHƯ BẢN TRƯỚC -----
         console.log('Script started');
-
         try {
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('DOMContentLoaded triggered');
-
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
                 const seesawImage = document.getElementById('seesaw-image');
                 const links = document.querySelectorAll('.links a');
-
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
-
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
-
-                function tryAutoPlay() { /* ... giữ nguyên ... */
+                function tryAutoPlay() {
                     console.log('Trying autoplay');
                     try {
                         const bgPromise = backgroundMusic.play();
@@ -191,16 +183,14 @@
                     } catch (error) { console.error('Lỗi khởi tạo âm thanh:', error); }
                  }
                 tryAutoPlay();
-
-                function getEventCoords(event) { /* ... giữ nguyên ... */
+                function getEventCoords(event) {
                       if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
                         return { x: touch.clientX, y: touch.clientY };
                     }
                     return { x: event.clientX, y: event.clientY };
                  }
-
-                function handleBounce(event) { /* ... giữ nguyên ... */
+                function handleBounce(event) {
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce')) return;
                     event.preventDefault();
@@ -216,8 +206,7 @@
                         }
                     }, 300);
                  }
-
-                function handleImageBounce(event) { /* ... giữ nguyên ... */
+                function handleImageBounce(event) {
                     const image = event.currentTarget;
                     if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) return;
                     console.log('Image clicked, applying in-place wobble.');
@@ -228,7 +217,6 @@
                     jellySound.currentTime = 0;
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                  }
-
                 console.log('Attaching link events');
                 try {
                     document.querySelectorAll('.links a').forEach(button => {
@@ -236,20 +224,17 @@
                         button.addEventListener('touchstart', handleBounce, { passive: false });
                     });
                 } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
-
                 if (seesawImage) {
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
                 } else {
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
-
                 const linkIntervalTime = 3000;
                 const linkInitialDelay = 300;
                 const linkDominoDelay = 100;
                 const linkSquashDuration = 400;
-
-                function startDominoSequence() { /* ... giữ nguyên ... */
+                function startDominoSequence() {
                      links.forEach((link, index) => {
                          if (!link.classList.contains('bounce') && !link.classList.contains('do-subtle-squash')) {
                             setTimeout(() => {
@@ -270,12 +255,10 @@
                 } else {
                     console.warn('No links found for domino effect.');
                 }
-
                 const imageAutoInterval = 5000;
                 const imageAutoWobbleDuration = 600;
                 const imageInitialAutoDelay = 5000;
-
-                function triggerImageAutoWobble() { /* ... giữ nguyên ... */
+                function triggerImageAutoWobble() {
                     if (seesawImage &&
                         !seesawImage.classList.contains('image-wobbling') &&
                         !seesawImage.classList.contains('auto-jelly-wobbling'))
@@ -286,19 +269,15 @@
                         }, imageAutoWobbleDuration);
                     }
                 }
-
                 if (seesawImage) {
                     setTimeout(triggerImageAutoWobble, imageInitialAutoDelay);
                     setInterval(triggerImageAutoWobble, imageAutoInterval);
                 }
-
-
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
                 const flowerFallDuration = 10;
-
-                function createFlower(index) { /* ... giữ nguyên ... */
+                function createFlower(index) {
                     const flower = document.createElement('span');
                     flower.className = 'flower';
                     flower.innerHTML = '❅';
@@ -318,13 +297,13 @@
                         flower.style.left = `${Math.random() * 100}%`;
                     });
                  }
-                function dragStart(event) { /* ... giữ nguyên ... */
+                function dragStart(event) {
                      if (event.type === 'mousedown' && event.button !== 0) return; activeFlower = event.target; const coords = getEventCoords(event); activeFlower.classList.add('dragging'); activeFlower.style.animation = 'none'; const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); offsetX = fontSize / 2; offsetY = fontSize / 2 + offsetYAdjustment; activeFlower.style.position = 'absolute'; activeFlower.style.left = `${coords.x - offsetX}px`; activeFlower.style.top = `${coords.y - offsetY}px`; activeFlower.style.transform = 'none'; document.addEventListener('mousemove', dragging); document.addEventListener('touchmove', dragging, { passive: false }); document.addEventListener('mouseup', dragEnd); document.addEventListener('touchend', dragEnd); event.preventDefault();
                  }
-                function dragging(event) { /* ... giữ nguyên ... */
+                function dragging(event) {
                     if (!activeFlower) return; const coords = getEventCoords(event); let newX = coords.x - offsetX; let newY = coords.y - offsetY; const containerRect = activeFlower.parentElement.getBoundingClientRect(); const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize); newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize)); newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize)); activeFlower.style.left = `${newX}px`; activeFlower.style.top = `${newY}px`; if (event.type === 'touchmove') event.preventDefault();
                  }
-                function dragEnd(event) { /* ... giữ nguyên ... */
+                function dragEnd(event) {
                     if (!activeFlower) return;
                     const flower = activeFlower;
                     activeFlower = null;
@@ -355,7 +334,6 @@
                     document.removeEventListener('mouseup', dragEnd);
                     document.removeEventListener('touchend', dragEnd);
                  }
-
                 console.log('Starting flower creation');
                 try {
                     for (let i = 0; i < flowerCount; i++) {
@@ -364,8 +342,7 @@
                 } catch (error) {
                     console.error('Lỗi tạo bông tuyết:', error);
                 }
-
-            }); // Kết thúc DOMContentLoaded
+            });
         } catch (error) {
             console.error('Lỗi toàn cục trong script:', error);
         }
