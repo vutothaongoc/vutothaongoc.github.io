@@ -55,18 +55,17 @@
 
         p:not(.subtitle) { font-size: 1.1em; line-height: 1.7; margin-bottom: 15px; color: var(--text-color); font-weight: 400; }
         .links { margin-top: 30px; }
-        /* ===== XÓA BOX-SHADOW CỦA LINK Ở ĐÂY ===== */
+        /* ===== THAY ĐỔI MÀU CHỮ LINK Ở ĐÂY ===== */
         .links a {
             display: inline-block; margin: 8px 6px;
             padding: 9px 22px;
             background-image: linear-gradient(to right, var(--button-pink), var(--button-blue));
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9); /* Đổi thành màu trắng 90% */
             text-decoration: none; border-radius: 25px;
             font-weight: 500;
             font-size: 1.1em;
-            /* Bỏ transition cho box-shadow vì không cần nữa */
-            transition: background-image 0.3s ease, transform 0.2s ease;
-            box-shadow: none; /* Xóa shadow mặc định */
+            transition: background-image 0.3s ease, transform 0.2s ease, color 0.3s ease; /* Thêm color vào transition */
+            box-shadow: none;
             border: none; position: relative; z-index: 1;
             font-family: 'Nunito', sans-serif;
             opacity: 0;
@@ -79,11 +78,11 @@
 
         .links a:hover {
              background-image: linear-gradient(to right, var(--button-pink-hover), var(--button-blue-hover));
-             box-shadow: none; /* Xóa shadow khi hover */
+             box-shadow: none;
              transform: translateY(-2px);
-             color: white;
+             color: white; /* Giữ màu chữ đậm lại khi hover */
         }
-        /* ===== KẾT THÚC XÓA BOX-SHADOW ===== */
+        /* ===== KẾT THÚC THAY ĐỔI ===== */
 
         .links a.bounce { animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1; animation-delay: 0s; }
         .links a.do-subtle-squash { animation: subtleSquash 0.4s ease-in-out 1; }
@@ -113,6 +112,7 @@
                 padding: 7px 16px;
                 margin: 6px 4px;
                 font-size: 1.05em;
+                /* Màu chữ nhạt cũng áp dụng cho mobile */
             }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
