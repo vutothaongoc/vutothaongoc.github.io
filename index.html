@@ -72,7 +72,7 @@
         /* ===== THAY ĐỔI KÍCH THƯỚC ẢNH Ở ĐÂY ===== */
         #seesaw-image {
             position: fixed; bottom: 0; right: 0;
-            width: 220px; /* Kích thước cố định mới */
+            width: 250px; /* Kích thước cố định mới */
             height: auto;
             z-index: 1; cursor: pointer; opacity: 0; transform: translateX(110%);
             transform-origin: bottom left; will-change: transform, opacity;
@@ -93,9 +93,8 @@
             p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
-            /* ===== XÓA BỎ KÍCH THƯỚC RIÊNG CHO ẢNH Ở ĐÂY ===== */
+            /* Ảnh sẽ kế thừa width: 250px từ quy tắc chung */
             #seesaw-image {
-                /* width: 180px; -- Dòng này đã bị xóa bỏ */
                 bottom: 0;
                 right: 0;
             }
@@ -211,7 +210,7 @@
                     });
                  } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                if (seesawImage) { /* ... giữ nguyên xử lý entrance và click ... */
+                if (seesawImage) { /* ... giữ nguyên xử lý entrance, click, wobble tự động ... */
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
                     console.log('Adding entrance animation class to image');
@@ -228,7 +227,6 @@
                     };
                     seesawImage.addEventListener('animationend', handleEntranceEnd);
 
-                    // --- Giữ nguyên logic wobble tự động đã sửa ---
                     const imageAutoInterval = 5000;
                     const imageAutoWobbleDuration = 600;
                     const imageInitialAutoDelay = 4000;
@@ -253,7 +251,6 @@
                         autoWobbleTimeoutId = setTimeout(triggerImageAutoWobble, delay);
                     }
                     scheduleNextAutoWobble(imageInitialAutoDelay);
-                    // --- Kết thúc logic wobble tự động ---
 
                 } else {
                     console.error('Seesaw image element (#seesaw-image) not found!');
