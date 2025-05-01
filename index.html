@@ -24,12 +24,12 @@
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
-            /* ===== THAY ĐỔI FONT H1 ===== */
-            font-family: 'Allura', cursive; /* Đổi sang Allura */
-            font-weight: 400; /* Chỉ có weight 400 */
-            font-size: 6.8em; /* Điều chỉnh kích thước */
-            line-height: 1; /* Giữ line-height thấp cho script */
-            /* ============================ */
+            font-family: 'Allura', cursive;
+            font-weight: 400;
+            /* ===== TĂNG FONT SIZE H1 ===== */
+            font-size: 7.5em; /* Tăng từ 6.8em */
+            /* ========================== */
+            line-height: 1;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             margin-bottom: -5px;
@@ -103,7 +103,9 @@
         @media (max-width: 576px) {
             body { padding: 20px 10px; }
             h1 {
-                font-size: 5.5em; /* Chỉnh size H1 trên mobile */
+                /* ===== TĂNG FONT SIZE H1 (Mobile) ===== */
+                font-size: 6em; /* Tăng từ 5.5em */
+                /* ==================================== */
                 margin-bottom: -8px;
              }
             .subtitle {
