@@ -24,12 +24,12 @@
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
 
         h1 {
-            font-family: 'Comic Relief', cursive;
+            font-family: 'Comic Relief', cursive; /* Font H1 vẫn là Comic Relief */
             font-weight: 400;
             font-size: 4.5em;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            margin-bottom: 0px; /* Giảm nữa cho subtitle gần hơn */
+            margin-bottom: 0px;
             display: inline-block;
             will-change: transform;
             animation: gentleHeadingWobble 10s ease-in-out infinite;
@@ -37,15 +37,15 @@
             line-height: 1.1;
         }
 
-        /* ===== Style cho Subtitle (ĐÃ SỬA) ===== */
+        /* ===== Style cho Subtitle (ĐÃ SỬA LẠI FONT) ===== */
         .subtitle {
-            font-family: 'Comic Relief', cursive; /* Đổi font giống H1 */
-            font-size: 1.1em; /* Đổi size giống thẻ p */
+            font-family: 'Nunito', sans-serif; /* Đổi lại font Nunito như cũ */
+            font-size: 1.1em; /* Giữ size giống thẻ p */
             font-weight: 400;
             color: var(--text-color);
-            margin-top: 0px; /* Chỉnh lại margin top */
-            margin-bottom: 20px; /* Giảm khoảng cách dưới */
-            letter-spacing: normal; /* Bỏ giãn cách chữ */
+            margin-top: 0px;
+            margin-bottom: 20px;
+            letter-spacing: normal;
         }
 
         p:not(.subtitle) {
@@ -63,7 +63,7 @@
             transition: background-image 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: none; position: relative; z-index: 1;
             will-change: transform;
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Nunito', sans-serif; /* Nút link vẫn dùng Nunito */
         }
 
         .links a:hover {
@@ -102,14 +102,14 @@
             body { padding: 20px 10px; }
             h1 {
                 font-size: 3.5em;
-                margin-bottom: -2px; /* Chỉnh lại */
+                margin-bottom: -2px;
              }
             .subtitle {
-                font-size: 1em; /* Size giống p trên mobile */
+                font-size: 1em; /* Giữ size giống p trên mobile */
                 margin-top: -2px;
-                margin-bottom: 15px;
+                margin-bottom: 15px; /* Chỉnh lại margin bottom mobile */
             }
-            p:not(.subtitle) { font-size: 1em; } /* Size chữ đoạn văn thường trên mobile */
+            p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
             .content-wrapper { padding: 20px; }
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
