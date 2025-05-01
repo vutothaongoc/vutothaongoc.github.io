@@ -21,8 +21,9 @@
         body {
             text-align: center;
             font-family: 'Nunito', sans-serif;
-            /* Padding top của body đã là 0 */
-            padding: 0 20px 40px 20px;
+            /* ===== ĐẶT LẠI PADDING TOP ===== */
+            padding: 10px 20px 40px 20px; /* Top=10px */
+            /* ============================ */
             color: var(--text-color);
             background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
             background-repeat: no-repeat;
@@ -37,7 +38,7 @@
 
         /* Bỏ padding-top khỏi content-wrapper */
         .content-wrapper {
-             /* padding-top: 30px; */ /* Bỏ dòng này */
+             /* padding-top: 0; */ /* Đảm bảo không có padding top ở đây */
         }
 
         h1 {
@@ -45,9 +46,10 @@
             font-weight: 400;
             font-size: 7.5em;
             line-height: 1.1;
+            /* ===== BỎ MARGIN TOP ===== */
+            margin-top: 0; /* Bỏ margin top để sát với padding body */
+            /* ======================= */
             margin-bottom: 0px;
-            /* Thêm margin-top để H1 không bị quá sát mép trên */
-            margin-top: 15px;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             display: inline-block;
@@ -120,16 +122,20 @@
 
         @media (max-width: 576px) {
             body {
-                 padding: 0 10px 20px 10px; /* Top=0 */
+                 /* ===== ĐẶT LẠI PADDING TOP (Mobile) ===== */
+                 padding: 10px 10px 20px 10px; /* Top=10px */
+                 /* ====================================== */
             }
              .content-wrapper {
-                 padding-top: 15px; /* Giảm padding top mobile */
+                 /* padding-top: 0; */ /* Bỏ luôn padding wrapper mobile */
              }
             h1 {
                 font-size: 6.5em;
-                 margin-top: 10px; /* Giảm margin top H1 mobile */
-                 margin-bottom: 0px;
-                 line-height: 1.1;
+                /* ===== BỎ MARGIN TOP (Mobile) ===== */
+                margin-top: 0;
+                /* ================================= */
+                margin-bottom: 0px;
+                line-height: 1.1;
              }
             .subtitle {
                 font-size: 1.8em;
@@ -140,7 +146,7 @@
             }
             p:not(.subtitle) { font-size: 1em; }
             .links a { padding: 10px 20px; margin: 6px 4px; }
-            /* .content-wrapper { padding: 20px; } */ /* Bỏ vì đã có padding-top */
+            /* .content-wrapper { padding: 20px; } */
             .flower { font-size: 25px; width: 50px; height: 50px; top: -40px; }
             #seesaw-image {
                  width: 180px;
