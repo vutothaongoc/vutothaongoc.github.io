@@ -18,7 +18,20 @@
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
-        body { text-align: center; font-family: 'Nunito', sans-serif; padding: 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
+        body {
+            text-align: center;
+            font-family: 'Nunito', sans-serif;
+            /* ===== GIẢM PADDING TOP ===== */
+            padding: 20px 20px 40px 20px; /* Top=20px, L/R=20px, Bottom=40px */
+            /* ========================== */
+            color: var(--text-color);
+            background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue));
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100%;
+            position: relative;
+            overflow-x: hidden;
+        }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
         .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
@@ -26,7 +39,7 @@
         h1 {
             font-family: 'Puppies Play', cursive;
             font-weight: 400;
-            font-size: 7.5em; /* Giữ nguyên size */
+            font-size: 7.5em;
             line-height: 1.1;
             margin-bottom: 0px;
             background-image: linear-gradient(to right, var(--heading-gradient-start), var(--heading-gradient-end));
@@ -39,10 +52,8 @@
 
         .subtitle {
             font-family: 'Puppies Play', cursive;
-            font-size: 2.2em; /* Giữ nguyên size */
-             /* ===== KÉO LÊN SÁT HƠN NỮA (1 tẹo) ===== */
-            margin-top: -27px; /* Tăng thêm giá trị âm */
-            /* ===================================== */
+            font-size: 2.2em;
+            margin-top: -25px; /* Giữ nguyên độ sát */
             font-weight: 400;
             color: var(--text-color);
             line-height: 1.1;
@@ -102,17 +113,15 @@
 
 
         @media (max-width: 576px) {
-            body { padding: 20px 10px; }
+            body { padding: 20px 10px 20px 10px; } /* Có thể giữ 20px top/bottom cho mobile */
             h1 {
-                font-size: 6.5em; /* Giữ nguyên size */
+                font-size: 6.5em;
                 margin-bottom: 0px;
                 line-height: 1.1;
              }
             .subtitle {
-                font-size: 1.8em; /* Giữ nguyên size */
-                 /* ===== KÉO LÊN SÁT HƠN NỮA (Mobile) ===== */
-                margin-top: -22px; /* Tăng thêm giá trị âm */
-                /* ====================================== */
+                font-size: 1.8em;
+                margin-top: -20px; /* Giữ nguyên margin âm mobile */
                 line-height: 1.1;
                 margin-bottom: 15px;
                 opacity: 0.75;
