@@ -421,14 +421,14 @@
                     console.warn('No links found for entrance/domino effect.');
                 }
 
-                // --- 11. LOGIC HOA RƠI (ĐÃ CẬP NHẬT TỐC ĐỘ) ---
+                // --- 11. LOGIC HOA RƠI (ĐÃ ĐẢO NGƯỢC TỐC ĐỘ) ---
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
 
-                // --- Cài đặt tốc độ hoa rơi ---
-                const flowerMinDuration = 3; // Giây (nhanh nhất)
-                const flowerMaxDuration = 15; // Giây (chậm nhất)
+                // --- Cài đặt tốc độ hoa rơi (Đã cập nhật) ---
+                const flowerMinDuration = 3; // Giây (nhanh nhất, cho bông nhỏ nhất)
+                const flowerMaxDuration = 15; // Giây (chậm nhất, cho bông to nhất)
                 const durationRange = flowerMaxDuration - flowerMinDuration;
                 // --- Cài đặt kích thước hoa rơi ---
                 const flowerMinSize = 25; // px
@@ -450,8 +450,11 @@
                     flower.style.width = `${size}px`;
                     flower.style.height = `${size}px`;
 
-                    const sizeFactor = (size - flowerMinSize) / sizeRange;
-                    const duration = flowerMaxDuration - sizeFactor * durationRange;
+                    // Tính duration dựa trên size (nhỏ = nhanh = duration ngắn)
+                    const sizeFactor = (size - flowerMinSize) / sizeRange; // 0 (nhỏ nhất) -> 1 (to nhất)
+                    // ***** SỬA CÔNG THỨC TÍNH DURATION *****
+                    const duration = flowerMinDuration + sizeFactor * durationRange;
+                    // ***** KẾT THÚC SỬA CÔNG THỨC *****
                     flower.style.animationDuration = `${duration.toFixed(2)}s`;
 
                     const delay = (index * totalCycleTime) / flowerCount;
@@ -510,7 +513,7 @@
                     flower.style.position = 'absolute';
                     flower.style.top = '110vh';
                     flower.style.opacity = '0';
-                    const originalDuration = flower.dataset.duration || flowerMaxDuration;
+                    const originalDuration = flower.dataset.duration || flowerMaxDuration; // Dùng max làm fallback
 
                     setTimeout(() => {
                         if (!flower.parentNode) return;
