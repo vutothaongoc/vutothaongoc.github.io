@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&family=Puppies+Play&display=swap" rel="stylesheet">
     <style>
-        /* CSS Animations (Giữ nguyên) */
+        /* CSS Animations */
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
         @keyframes subtleSquash { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.03, 0.98); } 70% { transform: scale(0.98, 1.02); } }
@@ -26,7 +26,7 @@
         html { height: 100%; }
         body { text-align: center; font-family: 'Nunito', sans-serif; padding: 15px 20px 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
-        .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
+        .flower { position: absolute; top: -50px; color: white; /* font-size set by JS */ user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; /* width/height set by JS */ text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
         .content-wrapper { padding-top: 15px; }
 
@@ -224,24 +224,19 @@
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('DOMContentLoaded triggered');
 
-                // --- 1. Lấy các phần tử DOM ---
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
                 const seesawImage = document.getElementById('seesaw-image');
                 const links = document.querySelectorAll('.links a');
                 const musicToggleButton = document.getElementById('music-toggle');
-
-                // --- 2. Biến cho hoa rơi kéo thả ---
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
-                // --- 3. Thiết lập âm lượng và tải audio ---
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                // --- 4. Hàm thử autoplay nhạc nền (Giữ nguyên) ---
                 function tryAutoPlay() {
                     console.log('Trying autoplay');
                     if (!musicToggleButton) return;
@@ -278,7 +273,6 @@
                 }
                 tryAutoPlay();
 
-                // --- 5. Hàm lấy tọa độ event (Giữ nguyên) ---
                 function getEventCoords(event) {
                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
@@ -287,7 +281,6 @@
                     return { x: event.clientX, y: event.clientY };
                  }
 
-                // --- 6. Hàm xử lý bounce cho LINK khi click/touch (Giữ nguyên) ---
                 function handleBounce(event) {
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce') || button.classList.contains('link-entering')) return;
@@ -305,7 +298,6 @@
                     }, 300);
                  }
 
-                // --- 7. HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK (Giữ nguyên) ---
                 function handleImageBounce(event) {
                     const image = event.currentTarget;
                     if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) {
@@ -319,7 +311,6 @@
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                  }
 
-                // --- 8. Gắn sự kiện click/touch cho link (Giữ nguyên) ---
                 console.log('Attaching link events');
                 try {
                     links.forEach(button => {
@@ -328,7 +319,6 @@
                     });
                  } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                // --- 9. Xử lý ảnh (Entrance, Click, Auto Wobble) (Giữ nguyên) ---
                 if (seesawImage) {
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
@@ -375,7 +365,6 @@
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
 
-                // --- 10. Xử lý hiệu ứng entrance và domino cho link (Giữ nguyên) ---
                 if (links.length > 0) {
                     console.log('Setting up entrance animation for links.');
                     const linkEntranceBaseDelay = 1.0;
@@ -432,16 +421,21 @@
                     console.warn('No links found for entrance/domino effect.');
                 }
 
-
-                // --- 11. LOGIC HOA RƠI VÀ KÉO THẢ + TẠO HOA (SỬA LẠI TỐC ĐỘ) ---
+                // --- 11. LOGIC HOA RƠI (CÓ THAY ĐỔI KÍCH THƯỚC VÀ TỐC ĐỘ) ---
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
-                const totalCycleTime = 10; // Giữ nguyên cycle time cho staggering ban đầu
-                // Bỏ biến cố định: const flowerFallDuration = 10;
-                // Định nghĩa khoảng tốc độ rơi
-                const MIN_FLOWER_DURATION = 8; // Giây (rơi nhanh nhất)
-                const MAX_FLOWER_DURATION = 15; // Giây (rơi chậm nhất)
+                const totalCycleTime = 10; // Giữ nguyên để tính delay ban đầu
+                // const flowerFallDuration = 10; // Bỏ, vì duration giờ là động
 
+                // --- Cài đặt tốc độ hoa rơi ---
+                const flowerMinDuration = 7; // Giây (cho bông to nhất)
+                const flowerMaxDuration = 15; // Giây (cho bông nhỏ nhất)
+                const durationRange = flowerMaxDuration - flowerMinDuration;
+                // --- Cài đặt kích thước hoa rơi ---
+                const flowerMinSize = 25; // px
+                const flowerMaxSize = 50; // px
+                const sizeRange = flowerMaxSize - flowerMinSize;
+                // --- Kết thúc cài đặt ---
 
                 function createFlower(index) {
                     const flower = document.createElement('span');
@@ -451,28 +445,41 @@
                     flowerContainer.appendChild(flower);
                     const randomLeft = Math.random() * 100;
                     flower.style.left = `${randomLeft}%`;
-                    const size = 30 + Math.random() * 30;
-                    flower.style.fontSize = `${size}px`; flower.style.width = `${size}px`; flower.style.height = `${size}px`;
 
-                    // ===== TÍNH TOÁN VÀ ÁP DỤNG THỜI GIAN RƠI NGẪU NHIÊN =====
-                    const randomDuration = MIN_FLOWER_DURATION + Math.random() * (MAX_FLOWER_DURATION - MIN_FLOWER_DURATION);
-                    flower.style.animationDuration = `${randomDuration.toFixed(2)}s`;
-                    // ==========================================================
+                    // Tính size ngẫu nhiên trong khoảng mới
+                    const size = flowerMinSize + Math.random() * sizeRange;
+                    flower.style.fontSize = `${size}px`;
+                    flower.style.width = `${size}px`; // Đặt width/height bằng font-size
+                    flower.style.height = `${size}px`;
 
-                    // Staggering ban đầu vẫn dựa trên totalCycleTime
+                    // Tính duration dựa trên size (to = nhanh = duration ngắn)
+                    const sizeFactor = (size - flowerMinSize) / sizeRange; // 0 (nhỏ nhất) -> 1 (to nhất)
+                    const duration = flowerMaxDuration - sizeFactor * durationRange;
+                    flower.style.animationDuration = `${duration.toFixed(2)}s`; // Gán duration động
+
+                    // Giữ nguyên cách tính delay ban đầu để rải rác
                     const delay = (index * totalCycleTime) / flowerCount;
-                    flower.style.animationDelay = `-${delay}s`;
+                    flower.style.animationDelay = `-${delay.toFixed(2)}s`;
 
-                    const opacity = 0.9 - ((size - 30) / 30) * 0.4;
+                    // Giữ nguyên opacity theo size
+                    const opacity = 0.9 - ((size - flowerMinSize) / sizeRange) * 0.4;
                     flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
+
                     flower.addEventListener('mousedown', dragStart);
                     flower.addEventListener('touchstart', dragStart, { passive: false });
+                    // Khi animation lặp lại, random lại vị trí và có thể cả tốc độ/size nếu muốn (hiện tại chỉ random vị trí)
                     flower.addEventListener('animationiteration', () => {
-                        // Reset left position khi lặp lại animation
                         flower.style.left = `${Math.random() * 100}%`;
-                        // Có thể random lại duration ở đây nếu muốn tốc độ thay đổi mỗi lần rơi lại
-                        // const newRandomDuration = MIN_FLOWER_DURATION + Math.random() * (MAX_FLOWER_DURATION - MIN_FLOWER_DURATION);
-                        // flower.style.animationDuration = `${newRandomDuration.toFixed(2)}s`;
+                        // Optional: Randomize lại tốc độ/size ở đây nếu muốn mỗi vòng lặp khác nhau hoàn toàn
+                        // const newSize = flowerMinSize + Math.random() * sizeRange;
+                        // const newSizeFactor = (newSize - flowerMinSize) / sizeRange;
+                        // const newDuration = flowerMaxDuration - newSizeFactor * durationRange;
+                        // flower.style.fontSize = `${newSize}px`;
+                        // flower.style.width = `${newSize}px`;
+                        // flower.style.height = `${newSize}px`;
+                        // flower.style.animationDuration = `${newDuration.toFixed(2)}s`;
+                        // const newOpacity = 0.9 - newSizeFactor * 0.4;
+                        // flower.style.setProperty('--flower-opacity', newOpacity.toFixed(2));
                     });
                 }
                 function dragStart(event) {
@@ -480,16 +487,17 @@
                     activeFlower = event.target;
                     const coords = getEventCoords(event);
                     activeFlower.classList.add('dragging');
-                    activeFlower.style.animationPlayState = 'paused'; // Dừng animation khi kéo
-                    // Không set animation thành none nữa, chỉ pause
-                    // activeFlower.style.animation = 'none';
+                    // Lấy animation duration hiện tại của bông hoa đang kéo
+                    const currentDuration = parseFloat(activeFlower.style.animationDuration);
+                    activeFlower.dataset.duration = currentDuration; // Lưu lại để dùng khi thả ra
+                    activeFlower.style.animation = 'none'; // Tạm dừng animation CSS
                     const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
                     offsetX = fontSize / 2;
                     offsetY = fontSize / 2 + offsetYAdjustment;
-                    activeFlower.style.position = 'absolute'; // Cần thiết khi kéo
+                    activeFlower.style.position = 'absolute';
                     activeFlower.style.left = `${coords.x - offsetX}px`;
                     activeFlower.style.top = `${coords.y - offsetY}px`;
-                    activeFlower.style.transform = 'none'; // Bỏ transform của animation
+                    activeFlower.style.transform = 'none';
                     document.addEventListener('mousemove', dragging);
                     document.addEventListener('touchmove', dragging, { passive: false });
                     document.addEventListener('mouseup', dragEnd);
@@ -501,11 +509,10 @@
                     const coords = getEventCoords(event);
                     let newX = coords.x - offsetX;
                     let newY = coords.y - offsetY;
-                    // Giới hạn trong container (Nếu flowerContainer là viewport thì không cần giới hạn chặt)
-                    // const containerRect = flowerContainer.getBoundingClientRect();
-                    // const flowerSize = activeFlower.offsetWidth; // Hoặc offsetHeight
-                    // newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - flowerSize));
-                    // newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - flowerSize));
+                    const containerRect = activeFlower.parentElement.getBoundingClientRect();
+                    const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
+                    newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - fontSize));
+                    newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - fontSize));
                     activeFlower.style.left = `${newX}px`;
                     activeFlower.style.top = `${newY}px`;
                     if (event.type === 'touchmove') event.preventDefault();
@@ -515,26 +522,34 @@
                     const flower = activeFlower;
                     activeFlower = null;
                     flower.classList.remove('dragging');
-                    flower.style.animationPlayState = 'running'; // Tiếp tục animation
-                    // Không cần reset animation phức tạp như trước nữa vì chỉ pause/run
-                    /*
-                    const fallTransitionDuration = 1000;
+                    const fallTransitionDuration = 1000; // Thời gian để nó rơi nhanh xuống đáy sau khi thả
                     flower.style.transition = `top ${fallTransitionDuration / 1000}s linear, opacity ${fallTransitionDuration / 1000}s linear`;
-                    flower.style.position = 'absolute';
-                    flower.style.top = '110vh';
-                    flower.style.opacity = '0';
+                    flower.style.position = 'absolute'; // Đảm bảo vẫn là absolute
+                    flower.style.top = '110vh'; // Rơi xuống đáy
+                    flower.style.opacity = '0'; // Mờ đi
+                    // Lấy lại duration gốc đã lưu
+                    const originalDuration = flower.dataset.duration || flowerMaxDuration; // Lấy giá trị đã lưu hoặc mặc định chậm nhất
+
                     setTimeout(() => {
                         if (!flower.parentNode) return;
                         flower.style.transition = 'none';
-                        // ... reset các style khác về trạng thái animation ...
-                        flower.style.animation = ''; // Hoặc đặt lại các thuộc tính animation
-                        void flower.offsetWidth; // Reflow
-                         // Lấy lại duration đã random trước đó hoặc random mới
-                        const currentDuration = flower.style.animationDuration || `${(MIN_FLOWER_DURATION + MAX_FLOWER_DURATION) / 2}s`; // Lấy duration hiện tại hoặc giá trị mặc định
-                        flower.style.animation = `fall ${currentDuration} linear -${Math.random() * totalCycleTime}s infinite`; // Ước lượng delay mới
+                        // Reset lại style và animation như ban đầu
+                        flower.style.position = ''; // Bỏ absolute để CSS kiểm soát lại
+                        flower.style.top = '';      // Bỏ top inline
+                        flower.style.opacity = '';    // Bỏ opacity inline
+                        flower.style.transform = '';  // Bỏ transform inline
+                        flower.style.animation = 'none'; // Reset animation để áp dụng lại
+                        flower.style.left = `${Math.random() * 100}%`; // Vị trí mới
+                        void flower.offsetWidth; // Trigger reflow
+
+                        // Áp dụng lại animation với duration gốc
+                        flower.style.animationDuration = `${originalDuration}s`;
+                        flower.style.animationDelay = '0s'; // Bắt đầu lại ngay
+                        flower.style.animationName = 'fall';
+                        flower.style.animationTimingFunction = 'linear';
+                        flower.style.animationIterationCount = 'infinite';
 
                     }, fallTransitionDuration);
-                    */
                     document.removeEventListener('mousemove', dragging);
                     document.removeEventListener('touchmove', dragging);
                     document.removeEventListener('mouseup', dragEnd);
