@@ -421,19 +421,20 @@
                     console.warn('No links found for entrance/domino effect.');
                 }
 
-                // --- 11. LOGIC HOA RƠI (ĐÃ ĐẢO NGƯỢC TỐC ĐỘ, ĐÃ CẬP NHẬT RANGE) ---
+                // --- 11. LOGIC HOA RƠI (ĐÃ CẬP NHẬT TỐC ĐỘ) ---
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
 
-                // --- Cài đặt tốc độ hoa rơi (MỚI: 3s - 20s) ---
-                const flowerMinDuration = 3; // Giây (nhanh nhất, cho bông nhỏ nhất)
+                // --- Cài đặt tốc độ hoa rơi (MỚI: 5s - 20s) ---
+                const flowerMinDuration = 5; // Giây (nhanh nhất, cho bông nhỏ nhất) ***** ĐÃ SỬA *****
                 const flowerMaxDuration = 20; // Giây (chậm nhất, cho bông to nhất)
                 // --- Các biến khác tính tự động ---
                 const durationRange = flowerMaxDuration - flowerMinDuration;
                 const flowerMinSize = 25;
                 const flowerMaxSize = 50;
                 const sizeRange = flowerMaxSize - flowerMinSize;
+                // --- Kết thúc cài đặt ---
 
                 function createFlower(index) {
                     const flower = document.createElement('span');
@@ -449,9 +450,8 @@
                     flower.style.width = `${size}px`;
                     flower.style.height = `${size}px`;
 
-                    // Tính duration dựa trên size (nhỏ = nhanh = duration gần min)
-                    const sizeFactor = (size - flowerMinSize) / sizeRange; // 0 -> 1
-                    const duration = flowerMinDuration + sizeFactor * durationRange; // 3s -> 20s
+                    const sizeFactor = (size - flowerMinSize) / sizeRange;
+                    const duration = flowerMinDuration + sizeFactor * durationRange;
                     flower.style.animationDuration = `${duration.toFixed(2)}s`;
 
                     const delay = (index * totalCycleTime) / flowerCount;
