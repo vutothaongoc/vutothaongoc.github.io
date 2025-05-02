@@ -106,7 +106,7 @@
         #seesaw-image.image-wobbling { animation: imageClickInPlaceWobble 0.7s ease-in-out 1; animation-delay: 0s; }
         #seesaw-image.auto-jelly-wobbling { animation: imageAutoJellyWobble 0.6s ease-in-out 1; }
 
-        /* ===== CSS CHO NÚT NHẠC (ĐÃ SỬA) ===== */
+        /* ===== CSS CHO NÚT NHẠC (SỬA LẠI ANIMATION) ===== */
         #music-toggle {
             position: fixed;
             bottom: 15px;
@@ -128,14 +128,14 @@
             line-height: 1;
             -webkit-tap-highlight-color: transparent;
             outline: none;
-            /* Trạng thái ban đầu cho animation entrance */
+            /* Trạng thái ban đầu cho animation */
             opacity: 0;
             transform: translateX(-150%);
             will-change: transform, opacity;
-            /* Bỏ animation entrance khỏi quy tắc chính */
+            /* Xóa animation trực tiếp khỏi đây */
             /* animation: slideInFromLeft 1.0s ease-out 0.7s forwards; */
         }
-        /* Class kích hoạt animation entrance */
+        /* Thêm class để kích hoạt animation entrance */
         #music-toggle.music-toggle-entering {
              animation: slideInFromLeft 1.0s ease-out 0.7s forwards;
         }
@@ -146,7 +146,7 @@
             color: white;
         }
         #music-toggle.muted {
-            opacity: 0.6; /* Opacity này sẽ được áp dụng sau khi entrance xong nếu nhạc tắt */
+            opacity: 0.6;
         }
         #music-toggle.muted::after {
             content: '';
@@ -185,6 +185,10 @@
                 width: 40px;
                 height: 40px;
                 font-size: 1.4em;
+            }
+            #music-toggle:hover {
+                 /* Đảm bảo transform hover đúng trên mobile */
+                 transform: scale(1.1);
             }
             #music-toggle.muted::after {
                  left: 18%;
@@ -245,8 +249,8 @@
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                // --- 4. Hàm thử autoplay nhạc nền ---
-                function tryAutoPlay() { /* ... giữ nguyên ... */
+                // --- 4. Hàm thử autoplay nhạc nền (Giữ nguyên cập nhật trước) ---
+                function tryAutoPlay() {
                     console.log('Trying autoplay');
                     if (!musicToggleButton) return;
                     try {
@@ -537,26 +541,25 @@
                     console.error('Lỗi trong vòng lặp tạo hoa:', error);
                 }
 
-                // --- 12. LOGIC CHO NÚT BẬT/TẮT NHẠC (ĐÃ SỬA) ---
+                // --- 12. LOGIC CHO NÚT BẬT/TẮT NHẠC (CÓ BOUNCE, CÓ ENTRANCE) ---
                 if (musicToggleButton && backgroundMusic && jellySound) {
-
-                    // -- Kích hoạt animation entrance cho nút nhạc --
+                    // Kích hoạt animation entrance cho nút nhạc
+                    console.log('Adding entrance animation class to music toggle');
                     musicToggleButton.classList.add('music-toggle-entering');
 
-                    // -- Listener để xóa class sau khi entrance kết thúc --
-                    musicToggleButton.addEventListener('animationend', function handleMusicToggleEntranceEnd(event) {
+                    // Listener dọn dẹp sau khi entrance kết thúc
+                    musicToggleButton.addEventListener('animationend', function handleMusicEntranceEnd(event) {
                         if (event.animationName === 'slideInFromLeft') {
-                            // console.log('Music toggle entrance finished.');
-                            // Không cần set style vì 'forwards' đã giữ lại
+                            console.log('Music toggle entrance finished.');
+                            musicToggleButton.style.opacity = '1'; // Đặt lại opacity
+                            musicToggleButton.style.transform = 'translateX(0)'; // Đặt lại transform
                             musicToggleButton.classList.remove('music-toggle-entering');
-                            // Xóa listener này đi
-                            musicToggleButton.removeEventListener('animationend', handleMusicToggleEntranceEnd);
+                            musicToggleButton.removeEventListener('animationend', handleMusicEntranceEnd);
                         }
                     });
 
-                    // -- Listener cho click (bao gồm bounce và toggle) --
+                    // Listener xử lý click (bounce + toggle)
                     musicToggleButton.addEventListener('click', () => {
-                        // Logic bounce
                         if (musicToggleButton.classList.contains('bounce')) return;
                         musicToggleButton.classList.add('bounce');
                         jellySound.currentTime = 0;
@@ -565,7 +568,6 @@
                             musicToggleButton.classList.remove('bounce');
                         }, 300);
 
-                        // Logic bật/tắt nhạc
                         if (backgroundMusic.paused) {
                             backgroundMusic.play()
                                 .then(() => {
