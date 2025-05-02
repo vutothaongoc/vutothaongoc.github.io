@@ -20,19 +20,7 @@
         @keyframes fadeInSlowly { 0% { opacity: 0; } 100% { opacity: 1; } }
         @keyframes revealFromRight { 0% { clip-path: inset(0 100% 0 0); opacity: 1; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
         @keyframes slideUpFadeIn { 0% { transform: translateY(50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-
-        /* ===== KEYFRAMES MỚI CHO NÚT NHẠC ===== */
-        @keyframes slideInFromLeft {
-            0% {
-                transform: translateX(-150%); /* Bắt đầu ngoài màn hình bên trái */
-                opacity: 0;
-            }
-            100% {
-                transform: translateX(0);   /* Về vị trí bình thường */
-                opacity: 1;                 /* Hiện rõ */
-            }
-        }
-        /* ===== KẾT THÚC KEYFRAMES NÚT NHẠC ===== */
+        @keyframes slideInFromLeft { 0% { transform: translateX(-150%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
 
         :root { --pastel-pink: #ffdde1; --pastel-blue: #c5c8ff; --button-pink: #d1a0b8; --button-blue: #a2a6dd; --button-pink-hover: #d6a9c0; --button-blue-hover: #b0b3e3; --heading-gradient-start: #5f6394; --heading-gradient-end: #a86b7f; --text-color: #5c5c5c; }
         html { height: 100%; }
@@ -118,7 +106,7 @@
         #seesaw-image.image-wobbling { animation: imageClickInPlaceWobble 0.7s ease-in-out 1; animation-delay: 0s; }
         #seesaw-image.auto-jelly-wobbling { animation: imageAutoJellyWobble 0.6s ease-in-out 1; }
 
-        /* ===== CSS CHO NÚT NHẠC (THÊM ANIMATION) ===== */
+        /* ===== CSS CHO NÚT NHẠC (ĐÃ SỬA) ===== */
         #music-toggle {
             position: fixed;
             bottom: 15px;
@@ -140,20 +128,25 @@
             line-height: 1;
             -webkit-tap-highlight-color: transparent;
             outline: none;
-            /* Trạng thái ban đầu cho animation */
+            /* Trạng thái ban đầu cho animation entrance */
             opacity: 0;
             transform: translateX(-150%);
             will-change: transform, opacity;
-            /* Áp dụng animation entrance */
-            animation: slideInFromLeft 1.0s ease-out 0.7s forwards;
+            /* Bỏ animation entrance khỏi quy tắc chính */
+            /* animation: slideInFromLeft 1.0s ease-out 0.7s forwards; */
+        }
+        /* Class kích hoạt animation entrance */
+        #music-toggle.music-toggle-entering {
+             animation: slideInFromLeft 1.0s ease-out 0.7s forwards;
         }
         #music-toggle:hover {
             background-image: linear-gradient(to right, rgba(214, 169, 192, 0.9), rgba(176, 179, 227, 0.9));
-            transform: scale(1.1) translateX(0); /* Kết hợp scale và translateX cuối cùng */
+            /* Chỉ scale khi hover, không cần translateX(0) nữa */
+            transform: scale(1.1);
             color: white;
         }
         #music-toggle.muted {
-            opacity: 0.6; /* Opacity này sẽ ghi đè opacity 1 sau khi animation chạy xong */
+            opacity: 0.6; /* Opacity này sẽ được áp dụng sau khi entrance xong nếu nhạc tắt */
         }
         #music-toggle.muted::after {
             content: '';
@@ -229,26 +222,31 @@
     <button id="music-toggle" class="muted" aria-label="Bật/Tắt nhạc">♫</button>
 
     <script>
-        // ----- PHẦN JAVASCRIPT (Giữ nguyên không đổi) -----
+        // ----- PHẦN JAVASCRIPT -----
         console.log('Script started');
         try {
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('DOMContentLoaded triggered');
 
+                // --- 1. Lấy các phần tử DOM ---
                 const flowerContainer = document.querySelector('.flower-container');
                 const jellySound = document.getElementById('jellySound');
                 const backgroundMusic = document.getElementById('backgroundMusic');
                 const seesawImage = document.getElementById('seesaw-image');
                 const links = document.querySelectorAll('.links a');
                 const musicToggleButton = document.getElementById('music-toggle');
+
+                // --- 2. Biến cho hoa rơi kéo thả ---
                 let activeFlower = null;
                 let offsetX = 0, offsetY = 0;
                 const offsetYAdjustment = -5;
 
+                // --- 3. Thiết lập âm lượng và tải audio ---
                 jellySound.volume = 0.8; backgroundMusic.volume = 0.5;
                 try { jellySound.load(); backgroundMusic.load(); } catch (error) { console.error('Lỗi tải audio:', error); }
 
-                function tryAutoPlay() {
+                // --- 4. Hàm thử autoplay nhạc nền ---
+                function tryAutoPlay() { /* ... giữ nguyên ... */
                     console.log('Trying autoplay');
                     if (!musicToggleButton) return;
                     try {
@@ -284,7 +282,8 @@
                 }
                 tryAutoPlay();
 
-                function getEventCoords(event) {
+                // --- 5. Hàm lấy tọa độ event ---
+                function getEventCoords(event) { /* ... giữ nguyên ... */
                     if (event.type.includes('touch')) {
                         const touch = event.touches[0] || event.changedTouches[0];
                         return { x: touch.clientX, y: touch.clientY };
@@ -292,7 +291,8 @@
                     return { x: event.clientX, y: event.clientY };
                  }
 
-                function handleBounce(event) {
+                // --- 6. Hàm xử lý bounce cho LINK khi click/touch ---
+                function handleBounce(event) { /* ... giữ nguyên ... */
                     const button = event.currentTarget;
                     if (button.classList.contains('bounce') || button.classList.contains('link-entering')) return;
                     event.preventDefault();
@@ -309,7 +309,8 @@
                     }, 300);
                  }
 
-                function handleImageBounce(event) {
+                // --- 7. HÀM Xử lý wobble TẠI CHỖ cho ẢNH KHI CLICK ---
+                function handleImageBounce(event) { /* ... giữ nguyên ... */
                     const image = event.currentTarget;
                     if (image.classList.contains('image-wobbling') || image.classList.contains('auto-jelly-wobbling')) {
                         return;
@@ -322,15 +323,17 @@
                     jellySound.play().then(() => {}).catch(error => { console.error('Lỗi phát âm thanh jelly:', error); });
                  }
 
+                // --- 8. Gắn sự kiện click/touch cho link ---
                 console.log('Attaching link events');
-                try {
+                try { /* ... giữ nguyên ... */
                     links.forEach(button => {
                         button.addEventListener('click', handleBounce);
                         button.addEventListener('touchstart', handleBounce, { passive: false });
                     });
                  } catch (error) { console.error('Lỗi gắn sự kiện nút:', error); }
 
-                if (seesawImage) {
+                // --- 9. Xử lý ảnh (Entrance, Click, Auto Wobble) ---
+                if (seesawImage) { /* ... giữ nguyên ... */
                     console.log('Attaching click event to seesaw image');
                     seesawImage.addEventListener('click', handleImageBounce);
                     console.log('Adding entrance animation class to image');
@@ -376,6 +379,7 @@
                     console.error('Seesaw image element (#seesaw-image) not found!');
                 }
 
+                // --- 10. Xử lý hiệu ứng entrance và domino cho link (giữ nguyên) ---
                 if (links.length > 0) {
                     console.log('Setting up entrance animation for links.');
                     const linkEntranceBaseDelay = 1.0;
@@ -432,7 +436,10 @@
                     console.warn('No links found for entrance/domino effect.');
                 }
 
-                 const isMobile = window.innerWidth <= 576;
+
+                // --- 11. LOGIC HOA RƠI VÀ KÉO THẢ + TẠO HOA ---
+                 /* ... giữ nguyên ... */
+                const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
                 const flowerFallDuration = 10;
@@ -530,8 +537,26 @@
                     console.error('Lỗi trong vòng lặp tạo hoa:', error);
                 }
 
+                // --- 12. LOGIC CHO NÚT BẬT/TẮT NHẠC (ĐÃ SỬA) ---
                 if (musicToggleButton && backgroundMusic && jellySound) {
+
+                    // -- Kích hoạt animation entrance cho nút nhạc --
+                    musicToggleButton.classList.add('music-toggle-entering');
+
+                    // -- Listener để xóa class sau khi entrance kết thúc --
+                    musicToggleButton.addEventListener('animationend', function handleMusicToggleEntranceEnd(event) {
+                        if (event.animationName === 'slideInFromLeft') {
+                            // console.log('Music toggle entrance finished.');
+                            // Không cần set style vì 'forwards' đã giữ lại
+                            musicToggleButton.classList.remove('music-toggle-entering');
+                            // Xóa listener này đi
+                            musicToggleButton.removeEventListener('animationend', handleMusicToggleEntranceEnd);
+                        }
+                    });
+
+                    // -- Listener cho click (bao gồm bounce và toggle) --
                     musicToggleButton.addEventListener('click', () => {
+                        // Logic bounce
                         if (musicToggleButton.classList.contains('bounce')) return;
                         musicToggleButton.classList.add('bounce');
                         jellySound.currentTime = 0;
@@ -540,6 +565,7 @@
                             musicToggleButton.classList.remove('bounce');
                         }, 300);
 
+                        // Logic bật/tắt nhạc
                         if (backgroundMusic.paused) {
                             backgroundMusic.play()
                                 .then(() => {
@@ -557,7 +583,7 @@
                      console.error('Không tìm thấy nút nhạc, audio nhạc nền hoặc audio jelly!');
                 }
 
-            });
+            }); // Kết thúc DOMContentLoaded
         } catch (error) {
             console.error('Lỗi toàn cục trong script:', error);
         }
