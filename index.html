@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&family=Puppies+Play&display=swap" rel="stylesheet">
     <style>
         /* CSS Animations */
-        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.8); } /* Đổi giá trị mặc định nếu cần */ 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.8); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.8); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.8); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.8); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.8); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.8); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.8); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
         @keyframes subtleSquash { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.03, 0.98); } 70% { transform: scale(0.98, 1.02); } }
         @keyframes gentleHeadingWobble { 0%, 12%, 100% { transform: scale(1, 1); } 0.5% { transform: scale(0.99, 1.01); } 2% { transform: scale(1.08, 0.92); } 4% { transform: scale(0.92, 1.08); } 6% { transform: scale(1.05, 0.95); } 8% { transform: scale(0.95, 1.05); } 10% { transform: scale(1.02, 0.98); } }
@@ -421,20 +421,20 @@
                     console.warn('No links found for entrance/domino effect.');
                 }
 
-                // --- 11. LOGIC HOA RƠI (ĐÃ ĐẢO NGƯỢC TỐC ĐỘ, ĐÃ CẬP NHẬT RANGE OPACITY) ---
+                // --- 11. LOGIC HOA RƠI (ĐÃ SỬA DELAY) ---
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
-                const totalCycleTime = 10;
+                // const totalCycleTime = 10; // Bỏ totalCycleTime
 
                 // --- Cài đặt tốc độ hoa rơi (3s - 20s) ---
                 const flowerMinDuration = 3;
-                const flowerMaxDuration = 20; // Đã đổi thành 20
+                const flowerMaxDuration = 20;
                 const durationRange = flowerMaxDuration - flowerMinDuration;
                 // --- Cài đặt kích thước hoa rơi ---
                 const flowerMinSize = 25;
                 const flowerMaxSize = 50;
                 const sizeRange = flowerMaxSize - flowerMinSize;
-                // --- Cài đặt opacity hoa rơi (Mới: 0.4 - 0.8) ---
+                // --- Cài đặt opacity hoa rơi (0.4 - 0.8) ---
                 const flowerMaxOpacity = 0.8;
                 const flowerMinOpacity = 0.4;
                 const opacityRange = flowerMaxOpacity - flowerMinOpacity;
@@ -460,19 +460,20 @@
                     const duration = flowerMinDuration + sizeFactor * durationRange; // 3s -> 20s
                     flower.style.animationDuration = `${duration.toFixed(2)}s`;
 
-                    // Tính delay ban đầu
-                    const delay = (index * totalCycleTime) / flowerCount;
-                    flower.style.animationDelay = `-${delay.toFixed(2)}s`;
+                    // ***** TÍNH DELAY MỚI *****
+                    // Tính delay dương tăng dần, cách nhau 0.3s
+                    const positiveDelay = index * 0.3;
+                    flower.style.animationDelay = `${positiveDelay.toFixed(2)}s`;
+                    // ***** KẾT THÚC TÍNH DELAY MỚI *****
 
-                    // ***** SỬA CÔNG THỨC TÍNH OPACITY *****
                     // Tính opacity (to = mờ = opacity gần min)
                     const opacity = flowerMaxOpacity - sizeFactor * opacityRange; // 0.8 -> 0.4
-                    // ***** KẾT THÚC SỬA CÔNG THỨC *****
                     flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
 
                     flower.addEventListener('mousedown', dragStart);
                     flower.addEventListener('touchstart', dragStart, { passive: false });
                     flower.addEventListener('animationiteration', () => {
+                        // Chỉ cần reset left khi lặp lại animation là đủ
                         flower.style.left = `${Math.random() * 100}%`;
                     });
                 }
@@ -483,6 +484,9 @@
                     activeFlower.classList.add('dragging');
                     const currentDuration = parseFloat(activeFlower.style.animationDuration);
                     activeFlower.dataset.duration = currentDuration;
+                    // Cần lấy cả delay hiện tại để đặt lại đúng nếu cần (dù có thể không cần thiết với logic lặp lại mới)
+                    // const currentDelay = parseFloat(activeFlower.style.animationDelay);
+                    // activeFlower.dataset.delay = currentDelay; // Lưu lại nếu cần
                     activeFlower.style.animation = 'none';
                     const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
                     offsetX = fontSize / 2;
@@ -521,19 +525,21 @@
                     flower.style.top = '110vh';
                     flower.style.opacity = '0';
                     const originalDuration = flower.dataset.duration || flowerMaxDuration;
+                    // const originalDelay = flower.dataset.delay || 0; // Lấy delay nếu cần
 
                     setTimeout(() => {
                         if (!flower.parentNode) return;
                         flower.style.transition = 'none';
                         flower.style.position = '';
                         flower.style.top = '';
-                        flower.style.opacity = ''; // Reset để CSS variable có hiệu lực lại
+                        flower.style.opacity = '';
                         flower.style.transform = '';
                         flower.style.animation = 'none';
                         flower.style.left = `${Math.random() * 100}%`;
                         void flower.offsetWidth;
 
                         flower.style.animationDuration = `${originalDuration}s`;
+                        // Khi animation lặp lại, delay nên là 0 để nó bắt đầu ngay
                         flower.style.animationDelay = '0s';
                         flower.style.animationName = 'fall';
                         flower.style.animationTimingFunction = 'linear';
