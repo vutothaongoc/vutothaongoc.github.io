@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&family=Puppies+Play&display=swap" rel="stylesheet">
     <style>
         /* CSS Animations */
-        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.8); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.8); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.8); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.8); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
         @keyframes subtleSquash { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.03, 0.98); } 70% { transform: scale(0.98, 1.02); } }
         @keyframes gentleHeadingWobble { 0%, 12%, 100% { transform: scale(1, 1); } 0.5% { transform: scale(0.99, 1.01); } 2% { transform: scale(1.08, 0.92); } 4% { transform: scale(0.92, 1.08); } 6% { transform: scale(1.05, 0.95); } 8% { transform: scale(0.95, 1.05); } 10% { transform: scale(1.02, 0.98); } }
@@ -421,22 +421,22 @@
                     console.warn('No links found for entrance/domino effect.');
                 }
 
-                // --- 11. LOGIC HOA RƠI (ĐÃ CẬP NHẬT TỐC ĐỘ 5s-15s) ---
+                // --- 11. LOGIC HOA RƠI (ĐÃ CẬP NHẬT TỐC ĐỘ VÀ OPACITY) ---
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
 
-                // --- Cài đặt tốc độ hoa rơi (MỚI: 5s - 15s) ---
+                // --- Cài đặt tốc độ hoa rơi (MỚI: 5s - 20s) ---
                 const flowerMinDuration = 5; // Giây (nhanh nhất, cho bông to nhất)
-                const flowerMaxDuration = 15; // Giây (chậm nhất, cho bông nhỏ nhất)
+                const flowerMaxDuration = 20; // Giây (chậm nhất, cho bông nhỏ nhất)
                 const durationRange = flowerMaxDuration - flowerMinDuration;
                 // --- Cài đặt kích thước hoa rơi ---
                 const flowerMinSize = 25;
                 const flowerMaxSize = 50;
                 const sizeRange = flowerMaxSize - flowerMinSize;
-                // --- Cài đặt opacity hoa rơi (0.5 - 0.9) ---
-                const flowerMaxOpacity = 0.9; // Cho bông nhỏ nhất
-                const flowerMinOpacity = 0.5; // Cho bông to nhất
+                // --- Cài đặt opacity hoa rơi (MỚI: 0.4 - 0.8) ---
+                const flowerMaxOpacity = 0.8; // Cho bông nhỏ nhất
+                const flowerMinOpacity = 0.4; // Cho bông to nhất
                 const opacityRange = flowerMaxOpacity - flowerMinOpacity;
 
 
@@ -457,7 +457,7 @@
                     const sizeFactor = (size - flowerMinSize) / sizeRange; // 0 -> 1
 
                     // Tính duration (to = nhanh = duration gần min)
-                    const duration = flowerMaxDuration - sizeFactor * durationRange; // 15s -> 5s
+                    const duration = flowerMaxDuration - sizeFactor * durationRange; // 20s -> 5s
                     flower.style.animationDuration = `${duration.toFixed(2)}s`;
 
                     // Tính delay âm ban đầu
@@ -465,7 +465,7 @@
                     flower.style.animationDelay = `-${delay.toFixed(2)}s`;
 
                     // Tính opacity (to = mờ = opacity gần min)
-                    const opacity = flowerMaxOpacity - sizeFactor * opacityRange; // 0.9 -> 0.5
+                    const opacity = flowerMaxOpacity - sizeFactor * opacityRange; // 0.8 -> 0.4
                     flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
 
                     flower.addEventListener('mousedown', dragStart);
