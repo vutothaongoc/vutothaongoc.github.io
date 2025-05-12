@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&family=Puppies+Play&display=swap" rel="stylesheet">
     <style>
         /* CSS Animations */
-        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.8); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.8); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.8); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.8); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: var(--flower-opacity, 0.9); } 25% { transform: translateY(25vh) rotate(90deg); opacity: var(--flower-opacity, 0.9); } 50% { transform: translateY(50vh) rotate(180deg); opacity: var(--flower-opacity, 0.9); } 75% { transform: translateY(75vh) rotate(270deg); opacity: var(--flower-opacity, 0.9); } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; } }
         @keyframes jellyBounce { 0%{transform:scale(1,1);letter-spacing:0}33%{transform:scale(1.25,.75);letter-spacing:2px}66%{transform:scale(.85,1.15);letter-spacing:1px}75%{transform:scale(1,1);letter-spacing:0}90%{transform:scale(1.15,.85);letter-spacing:.5px}95%{transform:scale(.9,1.1);letter-spacing:.2px}100%{transform:scale(1.05,.95);letter-spacing:0} }
         @keyframes subtleSquash { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.03, 0.98); } 70% { transform: scale(0.98, 1.02); } }
         @keyframes gentleHeadingWobble { 0%, 12%, 100% { transform: scale(1, 1); } 0.5% { transform: scale(0.99, 1.01); } 2% { transform: scale(1.08, 0.92); } 4% { transform: scale(0.92, 1.08); } 6% { transform: scale(1.05, 0.95); } 8% { transform: scale(0.95, 1.05); } 10% { transform: scale(1.02, 0.98); } }
@@ -26,7 +26,7 @@
         html { height: 100%; }
         body { text-align: center; font-family: 'Nunito', sans-serif; padding: 15px 20px 40px 20px; color: var(--text-color); background: linear-gradient(to bottom, var(--pastel-pink), var(--pastel-blue)); background-repeat: no-repeat; background-attachment: fixed; min-height: 100%; position: relative; overflow-x: hidden; }
         .flower-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 2; }
-        .flower { position: absolute; top: -50px; color: white; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; text-align: center; will-change: transform, opacity; }
+        .flower { position: absolute; top: -50px; color: white; font-size: 30px; user-select: none; animation: fall linear infinite; cursor: grab; pointer-events: auto; margin: 0; padding: 0; box-sizing: border-box; line-height: 1; display: flex; justify-content: center; align-items: center; width: 60px; height: 60px; text-align: center; will-change: transform, opacity; opacity: 1; }
         .flower.dragging { animation-play-state: paused; cursor: grabbing; opacity: 0.9; }
         .content-wrapper { padding-top: 15px; }
 
@@ -106,6 +106,7 @@
         #seesaw-image.image-wobbling { animation: imageClickInPlaceWobble 0.7s ease-in-out 1; animation-delay: 0s; }
         #seesaw-image.auto-jelly-wobbling { animation: imageAutoJellyWobble 0.6s ease-in-out 1; }
 
+        /* ===== CSS CHO NÚT NHẠC (SỬA LẠI ANIMATION DELAY) ===== */
         #music-toggle {
             position: fixed;
             bottom: 15px;
@@ -131,7 +132,9 @@
             transform: translateX(-150%);
             will-change: transform, opacity;
         }
+        /* Class kích hoạt animation entrance */
         #music-toggle.music-toggle-entering {
+             /* Tên | Thời gian | Timing | Delay (2s) | Fill Mode */
              animation: slideInFromLeft 1.0s ease-out 2s forwards;
         }
         #music-toggle:hover {
@@ -157,6 +160,7 @@
              animation: jellyBounce 0.3s cubic-bezier(0.4, 0, 0.2, 1) 1;
              animation-delay: 0s;
         }
+        /* ===== KẾT THÚC CSS NÚT NHẠC ===== */
 
 
         @media (max-width: 576px) {
@@ -218,7 +222,7 @@
     <button id="music-toggle" class="muted" aria-label="Bật/Tắt nhạc">♫</button>
 
     <script>
-        // ----- PHẦN JAVASCRIPT -----
+        // ----- PHẦN JAVASCRIPT (Giữ nguyên không đổi) -----
         console.log('Script started');
         try {
             document.addEventListener('DOMContentLoaded', () => {
@@ -421,25 +425,10 @@
                     console.warn('No links found for entrance/domino effect.');
                 }
 
-                // --- 11. LOGIC HOA RƠI (ĐÃ CẬP NHẬT TỐC ĐỘ VÀ OPACITY) ---
                 const isMobile = window.innerWidth <= 576;
                 const flowerCount = isMobile ? 10 : 20;
                 const totalCycleTime = 10;
-
-                // --- Cài đặt tốc độ hoa rơi (MỚI: 5s - 20s) ---
-                const flowerMinDuration = 5; // Giây (nhanh nhất, cho bông to nhất)
-                const flowerMaxDuration = 20; // Giây (chậm nhất, cho bông nhỏ nhất)
-                const durationRange = flowerMaxDuration - flowerMinDuration;
-                // --- Cài đặt kích thước hoa rơi ---
-                const flowerMinSize = 25;
-                const flowerMaxSize = 50;
-                const sizeRange = flowerMaxSize - flowerMinSize;
-                // --- Cài đặt opacity hoa rơi (MỚI: 0.4 - 0.8) ---
-                const flowerMaxOpacity = 0.8; // Cho bông nhỏ nhất
-                const flowerMinOpacity = 0.4; // Cho bông to nhất
-                const opacityRange = flowerMaxOpacity - flowerMinOpacity;
-
-
+                const flowerFallDuration = 10;
                 function createFlower(index) {
                     const flower = document.createElement('span');
                     flower.className = 'flower';
@@ -448,26 +437,13 @@
                     flowerContainer.appendChild(flower);
                     const randomLeft = Math.random() * 100;
                     flower.style.left = `${randomLeft}%`;
-
-                    const size = flowerMinSize + Math.random() * sizeRange;
-                    flower.style.fontSize = `${size}px`;
-                    flower.style.width = `${size}px`;
-                    flower.style.height = `${size}px`;
-
-                    const sizeFactor = (size - flowerMinSize) / sizeRange; // 0 -> 1
-
-                    // Tính duration (to = nhanh = duration gần min)
-                    const duration = flowerMaxDuration - sizeFactor * durationRange; // 20s -> 5s
-                    flower.style.animationDuration = `${duration.toFixed(2)}s`;
-
-                    // Tính delay âm ban đầu
+                    const size = 30 + Math.random() * 30;
+                    flower.style.fontSize = `${size}px`; flower.style.width = `${size}px`; flower.style.height = `${size}px`;
+                    flower.style.animationDuration = `${flowerFallDuration}s`;
                     const delay = (index * totalCycleTime) / flowerCount;
-                    flower.style.animationDelay = `-${delay.toFixed(2)}s`;
-
-                    // Tính opacity (to = mờ = opacity gần min)
-                    const opacity = flowerMaxOpacity - sizeFactor * opacityRange; // 0.8 -> 0.4
+                    flower.style.animationDelay = `-${delay}s`;
+                    const opacity = 0.9 - ((size - 30) / 30) * 0.4;
                     flower.style.setProperty('--flower-opacity', opacity.toFixed(2));
-
                     flower.addEventListener('mousedown', dragStart);
                     flower.addEventListener('touchstart', dragStart, { passive: false });
                     flower.addEventListener('animationiteration', () => {
@@ -479,8 +455,6 @@
                     activeFlower = event.target;
                     const coords = getEventCoords(event);
                     activeFlower.classList.add('dragging');
-                    const currentDuration = parseFloat(activeFlower.style.animationDuration);
-                    activeFlower.dataset.duration = currentDuration;
                     activeFlower.style.animation = 'none';
                     const fontSize = parseFloat(window.getComputedStyle(activeFlower).fontSize);
                     offsetX = fontSize / 2;
@@ -518,8 +492,6 @@
                     flower.style.position = 'absolute';
                     flower.style.top = '110vh';
                     flower.style.opacity = '0';
-                    const originalDuration = flower.dataset.duration || flowerMaxDuration;
-
                     setTimeout(() => {
                         if (!flower.parentNode) return;
                         flower.style.transition = 'none';
@@ -530,13 +502,11 @@
                         flower.style.animation = 'none';
                         flower.style.left = `${Math.random() * 100}%`;
                         void flower.offsetWidth;
-
-                        flower.style.animationDuration = `${originalDuration}s`;
+                        flower.style.animationDuration = `${flowerFallDuration}s`;
                         flower.style.animationDelay = '0s';
                         flower.style.animationName = 'fall';
                         flower.style.animationTimingFunction = 'linear';
                         flower.style.animationIterationCount = 'infinite';
-
                     }, fallTransitionDuration);
                     document.removeEventListener('mousemove', dragging);
                     document.removeEventListener('touchmove', dragging);
@@ -553,7 +523,7 @@
                     console.error('Lỗi trong vòng lặp tạo hoa:', error);
                 }
 
-                // --- 12. LOGIC CHO NÚT BẬT/TẮT NHẠC (Giữ nguyên) ---
+                // --- 12. LOGIC CHO NÚT BẬT/TẮT NHẠC (Đã sửa lỗi entrance) ---
                 if (musicToggleButton && backgroundMusic && jellySound) {
                     console.log('Adding entrance animation class to music toggle');
                     musicToggleButton.classList.add('music-toggle-entering');
@@ -561,6 +531,7 @@
                     musicToggleButton.addEventListener('animationend', function handleMusicEntranceEnd(event) {
                         if (event.animationName === 'slideInFromLeft') {
                             console.log('Music toggle entrance finished.');
+                            // Quan trọng: Đặt style cuối cùng để không bị reset khi xóa class
                             musicToggleButton.style.opacity = '1';
                             musicToggleButton.style.transform = 'translateX(0)';
                             musicToggleButton.classList.remove('music-toggle-entering');
